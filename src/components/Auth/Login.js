@@ -62,7 +62,7 @@ const Login = () => {
 	};
 
 	if (loginSuccess) {
-		return <Redirect to='/supplier' />;
+		return <Redirect to='/account/supplier/dashboard' />;
 	}
 
 	return (

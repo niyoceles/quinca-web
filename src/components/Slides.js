@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveContainer } from 'recharts';
-import Title from '../pages/Title';
+import Title from '../layouts/Title';
 
 export default function Slides() {
 

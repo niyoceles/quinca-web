@@ -4,12 +4,14 @@ import landingPage from './pages/client/landingPage';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
 import clients from './pages/client/clients';
-import suppliers from './pages/supplier/suppliers';
-import admins from './pages/admin/admins';
+import ItemPage from './pages/supplier/ItemPage';
+import customersPage from './pages/supplier/CustomersPage';
+import BookingsPage from './pages/supplier/BookingsPage';
+import DashboardPage from './pages/supplier/DashboardPage';
+import ReportPage from './pages/supplier/ReportPage';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
-import dashboard from './pages/dashboard';
 
 export const Routes = () => {
 	return (
@@ -20,10 +22,12 @@ export const Routes = () => {
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/signup' component={SignupPage} />
 					<AuthRoute exact path='/client' component={clients} />
-					<AuthRoute exact path='/dashboard' component={dashboard} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
-					<AuthRoute exact path='/supplier' component={suppliers} />
-					<AuthRoute exact path='/admin' component={admins} />
+					<AuthRoute exact path='/account/supplier/items' component={ItemPage} />
+					<AuthRoute exact path='/account/supplier/bookings' component={BookingsPage} />
+					<AuthRoute exact path='/account/supplier/customers' component={customersPage} />
+					<AuthRoute exact path='/account/supplier/dashboard' component={DashboardPage} />
+					<AuthRoute exact path='/account/supplier/reports' component={ReportPage} />
 				</Switch>
 			</div>
 		</Router>

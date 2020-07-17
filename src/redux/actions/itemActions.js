@@ -7,13 +7,14 @@ import {
 	LOADING_UI,
 } from '../types';
 import axios from 'axios';
-
+const { REACT_APP_BACKEND } = process.env;
 // Post a item
 export const addItem = newItem => dispatch => {
 	dispatch({ type: LOADING_UI });
 	axios
-		.post('http://localhost:3000/api/item', newItem)
+		.post(`${REACT_APP_BACKEND}/item`, newItem)
 		.then(res => {
+			console.log('that is Ok', res.data)
 			dispatch({
 				type: POST_ITEM,
 				payload: res.data,

@@ -13,7 +13,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 
 import { connect } from 'react-redux';
-import { deleteStar } from '../../redux/actions';
+import { deleteItem } from '../../redux/actions';
 
 const styles = {
   deleteButton: {
@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-class DeleteStar extends Component {
+class DeleteItem extends Component {
   state = {
     open: false,
   };
@@ -33,8 +33,8 @@ class DeleteStar extends Component {
     this.setState({ open: false });
   };
 
-  deleteStar = () => {
-    this.props.deleteStar(this.props.starId);
+  deleteItem = () => {
+    this.props.deleteItem(this.props.starId);
     this.setState({ open: false });
   };
   render() {
@@ -43,7 +43,7 @@ class DeleteStar extends Component {
     return (
       <Fragment>
         <MyButton
-          tip='Delete Star'
+          tip='Delete Item'
           onClick={this.handleOpen}
           btnClassName={classes.deleteButton}
         >
@@ -58,15 +58,15 @@ class DeleteStar extends Component {
           <DialogTitle>Are you sure you want to delete this star?</DialogTitle>
           <DialogContent>
             <DialogContentText id='alert-dialog-description'>
-              Star name: {this.props.starName} <br />
-              Star Coordinates:{this.props.starCoordinates}
+              Item name: {this.props.starName} <br />
+              Item Coordinates:{this.props.starCoordinates}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color='primary'>
               Cancel
             </Button>
-            <Button onClick={this.deleteStar} color='secondary'>
+            <Button onClick={this.deleteItem} color='secondary'>
               Delete
             </Button>
           </DialogActions>
@@ -76,10 +76,10 @@ class DeleteStar extends Component {
   }
 }
 
-DeleteStar.propTypes = {
-  deleteStar: PropTypes.func.isRequired,
+DeleteItem.propTypes = {
+  deleteItem: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   starId: PropTypes.number.isRequired,
 };
 
-export default connect(null, { deleteStar })(withStyles(styles)(DeleteStar));
+export default connect(null, { deleteItem })(withStyles(styles)(DeleteItem));

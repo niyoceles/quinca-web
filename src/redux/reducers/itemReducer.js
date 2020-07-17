@@ -3,6 +3,8 @@ import { DELETE_ITEM, POST_ITEM, SET_ITEM } from '../types';
 const initialState = {
 	items: [],
 	item: {},
+	addItemSuccess: null,
+	addItemFailure: null,
 	loading: false,
 };
 
@@ -26,6 +28,8 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				items: [action.payload, ...state.items],
+				item: action.payload.item,
+				addItemSuccess: action.payload.message,
 			};
 		default:
 			return state;

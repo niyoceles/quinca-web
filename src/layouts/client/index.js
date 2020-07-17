@@ -10,7 +10,7 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Slides from '../../components/Slides';
 import Features from '../../components/Features';
-import NavBar from '../../layouts/NavBar';
+import NavBar from './NavBar';
 
 function Copyright() {
   return (
