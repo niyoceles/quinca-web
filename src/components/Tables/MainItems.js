@@ -17,7 +17,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
-import Items from './Item';
+import Item from './Item';
 import Title from '../../layouts/Title';
 import AddItem from '../Modals/AddItem';
 // import NavBar from '../';
@@ -193,8 +193,8 @@ const MainItems = () => {
 											page * rowsPerPage + rowsPerPage
 									  )
 									: items
-								).map(star => (
-									<Items key={star.order_id} star={star} />
+								).map(item => (
+									<Item key={item.id} item={item} />
 								))}
 
 								{emptyRows > 0 && (

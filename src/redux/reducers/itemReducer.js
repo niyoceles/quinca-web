@@ -1,10 +1,11 @@
-import { DELETE_ITEM, POST_ITEM, SET_ITEM } from '../types';
+import { DELETE_ITEM, POST_ITEM, SET_ITEM, UPDATE_ITEM } from '../types';
 
 const initialState = {
 	items: [],
 	item: {},
 	addItemSuccess: null,
 	addItemFailure: null,
+	updateItemSuccess: null,
 	loading: false,
 };
 
@@ -30,6 +31,13 @@ export default function (state = initialState, action) {
 				items: [action.payload, ...state.items],
 				item: action.payload.item,
 				addItemSuccess: action.payload.message,
+			};
+		case UPDATE_ITEM:
+			return {
+				...state,
+				items: [action.payload, ...state.items],
+				item: action.payload.item,
+				updateItemSuccess: action.payload.message,
 			};
 		default:
 			return state;
