@@ -33,7 +33,7 @@ const DeleteItem = (props) => {
 
   const handleClose = () => {
     setOpen(false);
-    submitted(false);
+    // submitted(false);
   };
 
   const handleSubmit = (e) => {

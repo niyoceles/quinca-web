@@ -2,6 +2,7 @@ import 'dotenv/config';
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import MyButton from '../../utils/MyButton';
 import { makeStyles } from '@material-ui/core/styles';
 // Redux stuff
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +21,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-// Icons
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 
 const {
   REACT_APP_CLOUDINARY_NAME,
@@ -129,12 +129,15 @@ const EditItem = (props) => {
 
   return (
     <Fragment>
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        <AddIcon />
-        Add Item
-      </Button>
+      <MyButton
+        tip="Edit item"
+        onClick={handleOpen}
+        btnClassName={classes.deleteButton}
+      >
+        <EditIcon color="primary" />
+      </MyButton>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-        <DialogTitle>Add item details</DialogTitle>
+        <DialogTitle>Update item details</DialogTitle>
         {itemSubmitted && <Alert severity="success">{itemSubmitted}</Alert>}
         <DialogContent>
           <form>

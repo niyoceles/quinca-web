@@ -58,7 +58,7 @@ class Items extends Component {
           {dayjs(createdAt).fromNow()}
         </TableCell>
         <TableCell align="right" size="small">
-          <DeleteItem itemId={id} itemName={itemName} itemType={itemPrice} />
+          <DeleteItem itemId={id} itemName={itemName} itemPrice={itemPrice} />
           <EditItem
             itemId={id}
             itemName={itemName}
