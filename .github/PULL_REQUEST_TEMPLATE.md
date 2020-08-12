@@ -1,14 +1,20 @@
 #### What does this PR do?
 
 #### Description of Task to be completed
-
+ - 
+ - 
+ - 
 #### How should this be manually tested?
-
-#### Any background context you want to provide?
+1. Run the following commands in Terminal
+```
+git clone https://github.com/niyoceles/Traveller-frontend.git
+cd Traveller-frontend
+git checkout branch-name
+```
+2. run `yarn install` and `yarn start`
 
 #### What are the relevant pivotal tracker stories?
-
-#### Screenshots (if appropriate)
+[#......](https://www.pivotaltracker.com/story/show/.....)
 
 #### Checklist
 

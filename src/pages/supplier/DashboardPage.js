@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ItemPage = () => {
+const DashboardPage = () => {
 	const classes = useStyles();
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -43,4 +43,4 @@ const ItemPage = () => {
 		</SupplierLayout>
 	);
 };
-export default ItemPage;
+export default DashboardPage;

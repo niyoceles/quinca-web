@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import landingPage from './pages/client/landingPage';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
-import clients from './pages/client/clients';
+import clients from './components/client';
 import ItemPage from './pages/supplier/ItemPage';
 import customersPage from './pages/supplier/CustomersPage';
 import BookingsPage from './pages/supplier/BookingsPage';
 import DashboardPage from './pages/supplier/DashboardPage';
 import ReportPage from './pages/supplier/ReportPage';
+import ProfilePage from './pages/supplier/ProfilePage';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
@@ -28,6 +29,7 @@ export const Routes = () => {
 					<AuthRoute exact path='/account/supplier/customers' component={customersPage} />
 					<AuthRoute exact path='/account/supplier/dashboard' component={DashboardPage} />
 					<AuthRoute exact path='/account/supplier/reports' component={ReportPage} />
+					<AuthRoute exact path='/account/supplier/myaccount' component={ProfilePage} />
 				</Switch>
 			</div>
 		</Router>

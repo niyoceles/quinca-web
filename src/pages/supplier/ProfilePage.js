@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Slides from '../../components/Slides';
 import SupplierLayout from '../../layouts/SupplierLayout';
 import { Typography } from '@material-ui/core';
+import Profile from '../../components/supplier/Profile';
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const BookingsPage = () => {
+const ProfilePage = () => {
 	const classes = useStyles();
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -25,7 +26,7 @@ const BookingsPage = () => {
 			{/* Slides */}
 			<Grid item xs={12} md={8} lg={9}>
 				<Paper className={fixedHeightPaper}>
-					<Slides />
+					<Profile />
 				</Paper>
 			</Grid>
 			{/* Recent Deposits */}
@@ -37,10 +38,10 @@ const BookingsPage = () => {
 			{/* Recent Features */}
 			<Grid item xs={12}>
 				<Paper className={classes.paper}>
-					<Typography>Booking page</Typography>
+					<Typography>Reports page</Typography>
 				</Paper>
 			</Grid>
 		</SupplierLayout>
 	);
 };
-export default BookingsPage;
+export default ProfilePage;
