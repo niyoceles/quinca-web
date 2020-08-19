@@ -6,7 +6,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Informing from './Informing';
+import Informing from '../components/Auth/Informing';
 
 function Copyright() {
   return (

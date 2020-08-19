@@ -8,8 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import Slides from '../../components/Slides';
-import Features from '../../components/Features';
+import Slides from '../Slides';
+import Features from '../Features';
 import NavBar from './NavBar';
 
 function Copyright() {
@@ -25,7 +25,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },

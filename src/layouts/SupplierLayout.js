@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import AuthNavbar from './AuthNavbar';
+import AuthNavbar from '../components/supplier/AuthNavbar';
 
 function Copyright() {
 	return (
