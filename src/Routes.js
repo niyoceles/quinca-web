@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import landingPage from './pages/client/landingPage';
+import LandingPage from './pages/client/landingPage';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
 import clients from './components/client';
@@ -20,7 +20,7 @@ export const Routes = () => {
 		<Router>
 			<div className='container'>
 				<Switch>
-					<Route exact path='/' component={landingPage} />
+					<Route exact path='/' component={LandingPage} />
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/signup' component={SignupPage} />
 					<AuthRoute exact path='/client' component={clients} />

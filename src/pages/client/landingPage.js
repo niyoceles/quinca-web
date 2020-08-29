@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHotels, getTours, getCars } from '../../redux/actions';
+import SearchSection from '../../components/client/SearchSection';
 
 function Copyright() {
 	return (
@@ -108,21 +109,8 @@ export default function LandingPage() {
 						>
 							Let us help you in your Travel in Rwanda
 						</Typography>
-						<div className={classes.topBodyButtons}>
-							<Grid container spacing={2} justify='center'>
-								<Grid item>
-									<Button variant='contained' color='primary'>
-										Main call to action
-									</Button>
-								</Grid>
-								<Grid item>
-									<Button variant='outlined' color='primary'>
-										Secondary action
-									</Button>
-								</Grid>
-							</Grid>
-						</div>
 					</Container>
+					<SearchSection />
 				</div>
 				<Divider />
 				<Container className={classes.cardGrid} maxWidth='lg'>
