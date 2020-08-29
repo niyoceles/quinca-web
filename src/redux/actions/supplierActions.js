@@ -1,5 +1,10 @@
 import 'dotenv/config';
-import { GET_PROFILE_SUCCESS, GET_PROFILE_FAILURE } from '../types';
+import {
+	GET_PROFILE_SUCCESS,
+	GET_PROFILE_FAILURE,
+	GET_SUPPLIER_SUCCESS,
+	GET_SUPPLIER_FAILURE,
+} from '../types';
 import axios from 'axios';
 const { REACT_APP_BACKEND } = process.env;
 
@@ -8,7 +13,22 @@ export const getMyProfile = () => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/supplier/myprofile`)
 		.then(res => {
-      // console.log('ccchhhhhh', res.data);
+			dispatch({ type: GET_PROFILE_SUCCESS, payload: res.data });
+		})
+		.catch(err => {
+			dispatch({
+				type: GET_PROFILE_FAILURE,
+				payload: err.response ? err.response.data.error : null,
+			});
+		});
+};
+
+// update profile
+export const updateMyProfile = () => dispatch => {
+	// not working
+	axios
+		.get(`${REACT_APP_BACKEND}/supplier/myprofile`)
+		.then(res => {
 			dispatch({ type: GET_PROFILE_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
@@ -20,18 +40,16 @@ export const getMyProfile = () => dispatch => {
 };
 
 // Get my profile
-export const updateMyProfile = () => dispatch => {
+export const getSupplier = id => dispatch => {
 	axios
-		.get(`${REACT_APP_BACKEND}/supplier/myprofile`)
+		.get(`${REACT_APP_BACKEND}/supplier/viewsupplier/${id}`)
 		.then(res => {
-      // console.log('ccchhhhhh', res.data);
-			dispatch({ type: GET_PROFILE_SUCCESS, payload: res.data });
+			dispatch({ type: GET_SUPPLIER_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
 			dispatch({
-				type: GET_PROFILE_FAILURE,
+				type: GET_SUPPLIER_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
 		});
 };
-

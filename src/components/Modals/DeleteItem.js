@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 const DeleteItem = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const dispatch = useDispatch();
 

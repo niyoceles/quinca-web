@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import landingPage from './pages/client/landingPage';
+import LandingPage from './pages/client/landingPage';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
 import clients from './components/client';
@@ -10,6 +10,7 @@ import BookingsPage from './pages/supplier/BookingsPage';
 import DashboardPage from './pages/supplier/DashboardPage';
 import ReportPage from './pages/supplier/ReportPage';
 import ProfilePage from './pages/supplier/ProfilePage';
+import ViewSupplierPage from './pages/supplier/ViewSupplierPage';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
@@ -19,11 +20,12 @@ export const Routes = () => {
 		<Router>
 			<div className='container'>
 				<Switch>
-					<Route exact path='/' component={landingPage} />
+					<Route exact path='/' component={LandingPage} />
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/signup' component={SignupPage} />
 					<AuthRoute exact path='/client' component={clients} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
+					<Route exact path='/view/:id' component={ViewSupplierPage} />
 					<AuthRoute exact path='/account/supplier/items' component={ItemPage} />
 					<AuthRoute exact path='/account/supplier/bookings' component={BookingsPage} />
 					<AuthRoute exact path='/account/supplier/customers' component={customersPage} />
