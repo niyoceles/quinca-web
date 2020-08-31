@@ -109,6 +109,20 @@ export default function LandingPage() {
 						>
 							Let us help you in your Travel in Rwanda
 						</Typography>
+						<div className={classes.topBodyButtons}>
+							<Grid container spacing={2} justify='center'>
+								<Grid item>
+									<Button variant='contained' color='primary'>
+										Main call to action
+									</Button>
+								</Grid>
+								<Grid item>
+									<Button variant='outlined' color='primary'>
+										Secondary action
+									</Button>
+								</Grid>
+							</Grid>
+						</div>
 					</Container>
 					<SearchSection />
 				</div>
@@ -267,21 +281,28 @@ export default function LandingPage() {
 				</Container>
 			</main>
 			{/* Footer */}
-			<footer className={classes.footer}>
-				<Typography variant='h6' align='center' gutterBottom>
-					Footer
-				</Typography>
-				<Typography
-					variant='subtitle1'
-					align='center'
-					color='textSecondary'
-					component='p'
-				>
-					Something here to give the footer a purpose!
-				</Typography>
-				<Copyright />
-			</footer>
+			<Footer />
 			{/* End footer */}
 		</React.Fragment>
 	);
 }
+
+export const Footer = () => {
+	const classes = useStyles();
+	return (
+		<footer className={classes.footer}>
+			<Typography variant='h6' align='center' gutterBottom>
+				Footer
+			</Typography>
+			<Typography
+				variant='subtitle1'
+				align='center'
+				color='textSecondary'
+				component='p'
+			>
+				Something here to give the footer a purpose!
+			</Typography>
+			<Copyright />
+		</footer>
+	);
+};
