@@ -23,22 +23,11 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import EmailIcon from '@material-ui/icons/Email';
 import SupplierItems from '../../components/supplier/SupplierItems';
+import Carousel from '@brainhubeu/react-carousel';
+import '@brainhubeu/react-carousel/lib/style.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getSupplier } from '../../redux/actions';
-
-function Copyright() {
-	return (
-		<Typography variant='body2' color='textSecondary' align='center'>
-			{'Copyright © '}
-			<Link color='inherit' href='https://material-ui.com/'>
-				Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -71,7 +60,63 @@ const useStyles = makeStyles(theme => ({
 		marginTop: -30,
 		marginLeft: 25,
 	},
+	slide: {
+		height: '400px',
+		width: '100%',
+	},
+	image: {
+		height: '100%',
+		width: '100%',
+	},
 }));
+
+function Copyright() {
+	return (
+		<Typography variant='body2' color='textSecondary' align='center'>
+			{'Copyright © '}
+			<Link color='inherit' href='https://material-ui.com/'>
+				Your Website
+			</Link>{' '}
+			{new Date().getFullYear()}
+			{'.'}
+		</Typography>
+	);
+}
+
+const Slides = () => {
+	const classes = useStyles();
+	return (
+		<Carousel autoPlay={9000} infinite slidesPerPage={1} slidesPerScroll={1}>
+			{[
+				{
+					image:
+						'https://images.unsplash.com/photo-1539946309076-4daf2ea73899?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+					title: 'profile image',
+				},
+				{
+					image:
+						'https://images.unsplash.com/photo-1516540438350-9db0f4e6552f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+					title: 'profile image',
+				},
+				{
+					image:
+						'https://images.unsplash.com/photo-1539947257641-0f0e9f213528?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+					title: 'profile image',
+				},
+			].map(image => (
+				<div className={classes.slide}>
+					<img src={image.image} alt={image.title} />
+				</div>
+
+				// <CardMedia
+				//   className={classes.cardMedia}
+				//   image={image.image}
+				//   title={image.title}
+				// />
+			))}
+		</Carousel>
+	);
+};
 
 export default function ViewSupplierPage() {
 	const classes = useStyles();
@@ -106,11 +151,7 @@ export default function ViewSupplierPage() {
 							<Grid container spacing={4}>
 								<Grid item xs={12} sm={6} md={8}>
 									<Card className={classes.card} elevation={3}>
-										<CardMedia
-											className={classes.cardMedia}
-											image='https://source.unsplash.com/random'
-											title='profile image'
-										/>
+										<Slides />
 										<CardContent className={classes.cardContent}>
 											<Typography component='span'>
 												<LocationOnIcon color='primary' />
