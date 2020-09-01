@@ -14,6 +14,10 @@ import ViewSupplierPage from './pages/supplier/ViewSupplierPage';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
+// Search Result
+import Hotels from './components/client/searchResult/Hotels';
+import Cars from './components/client/searchResult/Car';
+import Tours from './components/client/searchResult/Tours';
 
 export const Routes = () => {
 	return (
@@ -26,12 +30,39 @@ export const Routes = () => {
 					<AuthRoute exact path='/client' component={clients} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewSupplierPage} />
-					<AuthRoute exact path='/account/supplier/items' component={ItemPage} />
-					<AuthRoute exact path='/account/supplier/bookings' component={BookingsPage} />
-					<AuthRoute exact path='/account/supplier/customers' component={customersPage} />
-					<AuthRoute exact path='/account/supplier/dashboard' component={DashboardPage} />
-					<AuthRoute exact path='/account/supplier/reports' component={ReportPage} />
-					<AuthRoute exact path='/account/supplier/myaccount' component={ProfilePage} />
+					<AuthRoute
+						exact
+						path='/account/supplier/items'
+						component={ItemPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/bookings'
+						component={BookingsPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/customers'
+						component={customersPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/dashboard'
+						component={DashboardPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/reports'
+						component={ReportPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/myaccount'
+						component={ProfilePage}
+					/>
+					<Route exact path='/hotels/name' component={Hotels} />
+					<Route exact path='/cars/name' component={Cars} />
+					<Route exact path='/tours/name' component={Tours} />
 				</Switch>
 			</div>
 		</Router>
