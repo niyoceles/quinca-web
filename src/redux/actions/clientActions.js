@@ -6,8 +6,11 @@ import {
 	GET_TOURS_FAILURE,
 	GET_CARS_SUCCESS,
 	GET_CARS_FAILURE,
+	BOOKING,
 } from '../types';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
 const { REACT_APP_BACKEND } = process.env;
 
 // Get my profile
@@ -67,5 +70,21 @@ export const updateMyProfile = () => dispatch => {
 				type: GET_HOTELS_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
+		});
+};
+
+// Book hotel room(s), car or destination
+export const hotelBooking = (itemId, bookingInfo) => dispatch => {
+	axios
+		.post(`${REACT_APP_BACKEND}/booking/${itemId}`, bookingInfo)
+		.then(res => {
+			dispatch({ type: BOOKING, payload: res.data.bookedItems });
+			localStorage.removeItem('bookingSummary');
+			localStorage.removeItem('totalPrice');
+			console.log(res);
+			toast.success(res.data.message);
+		})
+		.catch(err => {
+			return err;
 		});
 };
