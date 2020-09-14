@@ -16,6 +16,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { useDispatch, useSelector } from "react-redux";
 import { getHotels, getTours, getCars } from "../../redux/actions";
 import SearchSection from "../../components/client/SearchSection";
+import { Link as ReactLink } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -69,6 +70,10 @@ const useStyles = makeStyles((theme) => ({
   },
   titleFeature: {
     marginTop: -50,
+  },
+  links: {
+    textDecoration: "none",
+    color: "inherit",
   },
 }));
 
@@ -129,11 +134,7 @@ export default function LandingPage() {
               hotels.map((card) => (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <Card className={classes.card}>
-                    <Link
-                      href={`/view/${card.id}`}
-                      underline="none"
-                      color="inherit"
-                    >
+                    <ReactLink to={`/view/${card.id}`} className={classes.links}>
                       <CardMedia
                         className={classes.cardMedia}
                         image="https://source.unsplash.com/random"
@@ -159,7 +160,7 @@ export default function LandingPage() {
                           Edit
                         </Button>
                       </CardActions>
-                    </Link>
+                    </ReactLink>
                   </Card>
                 </Grid>
               ))}
@@ -182,10 +183,9 @@ export default function LandingPage() {
               tours.map((card) => (
                 <Grid item key={card} xs={12} sm={6} md={3}>
                   <Card className={classes.card} elevation={3}>
-                    <Link
-                      href={`/view/${card.id}`}
-                      underline="none"
-                      color="inherit"
+                    <ReactLink
+                      to={`/view/${card.id}`}
+                      className={classes.links}
                     >
                       <CardMedia
                         className={classes.cardMedia}
@@ -212,7 +212,7 @@ export default function LandingPage() {
                           Edit
                         </Button>
                       </CardActions>
-                    </Link>
+                    </ReactLink>
                   </Card>
                 </Grid>
               ))}
@@ -235,10 +235,9 @@ export default function LandingPage() {
               cars.map((card) => (
                 <Grid item key={card} xs={12} sm={6} md={3}>
                   <Card className={classes.card} elevation={3}>
-                    <Link
-                      href={`/view/${card.id}`}
-                      underline="none"
-                      color="inherit"
+                    <ReactLink
+                      to={`/view/${card.id}`}
+                      className={classes.links}
                     >
                       <CardMedia
                         className={classes.cardMedia}
@@ -265,7 +264,7 @@ export default function LandingPage() {
                           Edit
                         </Button>
                       </CardActions>
-                    </Link>
+                    </ReactLink>
                   </Card>
                 </Grid>
               ))}

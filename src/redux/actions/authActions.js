@@ -18,8 +18,9 @@ export const loginUser = loginData => dispatch => {
 	axios
 		.post(`${REACT_APP_BACKEND}/user/login`, loginData)
 		.then(res => {
+			console.clear();
 			setAuthorization(res.data.User.token);
-			dispatch({ type: LOGIN_SUCCESS, payload: res.data.message });
+			dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
 			dispatch({

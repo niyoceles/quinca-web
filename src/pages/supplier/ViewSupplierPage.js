@@ -27,7 +27,7 @@ import NavigationIcon from "@material-ui/icons/Navigation";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Carousel from "@brainhubeu/react-carousel";
 import "@brainhubeu/react-carousel/lib/style.css";
-
+import CancelIcon from "@material-ui/icons/Cancel";
 import { useDispatch, useSelector } from "react-redux";
 import { getSupplier } from "../../redux/actions";
 import { green } from "@material-ui/core/colors";
@@ -133,16 +133,16 @@ const Slides = () => {
             "https://images.unsplash.com/photo-1539946309076-4daf2ea73899?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
           title: "profile image 1",
         },
-        {
-          image:
-            "https://images.unsplash.com/photo-1516540438350-9db0f4e6552f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-          title: "profile image 2",
-        },
-        {
-          image:
-            "https://images.unsplash.com/photo-1539947257641-0f0e9f213528?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-          title: "profile image 3",
-        },
+        // {
+        //   image:
+        //     "https://images.unsplash.com/photo-1516540438350-9db0f4e6552f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        //   title: "profile image 2",
+        // },
+        // {
+        //   image:
+        //     "https://images.unsplash.com/photo-1539947257641-0f0e9f213528?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        //   title: "profile image 3",
+        // },
       ].map((image) => (
         <div key={image.title} className={classes.slide}>
           <img src={image.image} alt={image.title} />
@@ -153,10 +153,11 @@ const Slides = () => {
 };
 
 const ViewSupplierPage = (props) => {
-  const bookingItems = JSON.parse(localStorage.getItem("bookingSummary"));
+  const classes = useStyles();
+  const bookedItems = JSON.parse(localStorage.getItem("bookingSummary"));
   const totalPrice = (localStorage.getItem("totalPrice") || 0) * 1;
   const [location, setLocation] = useState("choose");
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment());
   const [checkInDate, setCheckInDate] = useState(moment());
   const [checkOutDate, setCheckOutDate] = useState(moment());
@@ -168,14 +169,43 @@ const ViewSupplierPage = (props) => {
     adult: 0,
     child: 0,
   });
-  const classes = useStyles();
+
   const profileSupplier = useSelector(
     (state) => state.supplier.supplier.profile
   );
-  const toggleModal = () => {
+  const handleToggleModal = () => {
     setOpen(!open);
   };
   const dispatch = useDispatch();
+
+  const [bookingSummary, setBookingSummary] = useState(
+    bookedItems !== null ? bookedItems : []
+  );
+
+  const handleAddItem = (e, item) => {
+    const tempTot = (localStorage.getItem("totalPrice") || 0) * 1;
+    const tot = tempTot + item["itemPrice"] * 1;
+    localStorage.setItem("totalPrice", tot);
+    if (tot > 0) setIsButtonDisabled(false);
+
+    const { id, itemName, itemPrice } = item;
+    const bookItem = {
+      id,
+      itemName,
+      itemPrice: itemPrice * 1,
+    };
+    const booked = bookingSummary.find((bk) => bk.id === item.id);
+    let updatedBooking = [...bookingSummary, bookItem];
+    if (booked) {
+      updatedBooking = bookingSummary.filter((bk) => bk.id !== item.id);
+      const updatedTotPrice = tempTot - item["itemPrice"] * 1;
+      localStorage.setItem("totalPrice", updatedTotPrice);
+      if (updatedTotPrice === 0) setIsButtonDisabled(true);
+    }
+    setBookingSummary(updatedBooking);
+    localStorage.setItem("bookingSummary", JSON.stringify(updatedBooking));
+  };
+
   useEffect(() => {
     const lastPath = window.location.pathname;
     const id = lastPath.split("/");
@@ -218,6 +248,12 @@ const ViewSupplierPage = (props) => {
     setOpen(!open);
   };
 
+  const handleCancelBooking = () => {
+    localStorage.removeItem("bookingSummary");
+    localStorage.removeItem("totalPrice");
+    setBookingSummary([]);
+    setOpen(!open);
+  };
   return (
     <React.Fragment>
       <CssBaseline />
@@ -243,7 +279,7 @@ const ViewSupplierPage = (props) => {
                     color="primary"
                     aria-label="add"
                     className={classes.btnBooking}
-                    onClick={toggleModal}
+                    onClick={handleToggleModal}
                   >
                     <NavigationIcon />
                     My booking summary
@@ -370,10 +406,10 @@ const ViewSupplierPage = (props) => {
               </Grid>
 
               {/* Supplier items component --------------------------------------- */}
-              <SupplierItems items={index.items} />
+              <SupplierItems items={index.items} addItem={handleAddItem} />
 
               {/* Booking summary modal ----------------------------------------------*/}
-              <ModalUi open={open} toggleModal={toggleModal}>
+              <ModalUi open={open} toggleModal={handleToggleModal}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={5} md={5}>
                     <Card className={classes.card} elevation={3}>
@@ -409,14 +445,21 @@ const ViewSupplierPage = (props) => {
                         aria-label="customized table"
                       >
                         <TableBody>
-                          {bookingItems !== null ? (
-                            bookingItems.map((item) => (
+                          {bookedItems !== null && totalPrice !== 0 ? (
+                            bookedItems.map((item) => (
                               <TableRow key={item.key}>
                                 <TableCell component="th" scope="row">
                                   {item.itemName}
                                 </TableCell>
                                 <TableCell align="right">
-                                  {item.itemPrice}
+                                  {item.itemPrice} Rwf
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Button color="secondary">
+                                    <CancelIcon
+                                      onClick={(e) => handleAddItem(e, item)}
+                                    />
+                                  </Button>
                                 </TableCell>
                               </TableRow>
                             ))
@@ -434,7 +477,7 @@ const ViewSupplierPage = (props) => {
                               Oops! You haven't booked anything yet!
                             </Typography>
                           )}
-                          {bookingItems && (
+                          {bookedItems && totalPrice !== 0 ? (
                             <TableRow>
                               <TableCell component="th" scope="row">
                                 <strong>Total</strong>
@@ -443,12 +486,12 @@ const ViewSupplierPage = (props) => {
                                 <strong>{totalPrice}</strong>
                               </TableCell>
                             </TableRow>
-                          )}
+                          ) : null}
                         </TableBody>
                       </Table>
                     </TableContainer>
                     <hr />
-                    {bookingItems && (
+                    {bookedItems && totalPrice !== 0 ? (
                       <CardActions
                         style={{ position: "relative", bottom: "0" }}
                       >
@@ -457,10 +500,11 @@ const ViewSupplierPage = (props) => {
                           size="small"
                           style={{
                             backgroundColor: "#0080003a",
-                            width: "50%",
+                            width: "33%",
                             color: "green",
                           }}
                           onClick={() => handlePayLater(index.id)}
+                          disabled={isButtonDisabled}
                         >
                           Pay later
                         </Button>
@@ -468,12 +512,22 @@ const ViewSupplierPage = (props) => {
                         <Button
                           color="primary"
                           size="small"
-                          style={{ backgroundColor: "#1976d23f", width: "50%" }}
+                          style={{ backgroundColor: "#1976d23f", width: "33%" }}
+                          disableRipple={false}
                         >
-                          Continue to checkout
+                          Checkout
+                        </Button>
+                        <Button
+                          color="secondary"
+                          size="small"
+                          variant="contained"
+                          style={{ width: "33%" }}
+                          onClick={handleCancelBooking}
+                        >
+                          Cancel
                         </Button>
                       </CardActions>
-                    )}
+                    ) : null}
                   </Grid>
                 </Grid>
               </ModalUi>
@@ -484,7 +538,7 @@ const ViewSupplierPage = (props) => {
                       variant="contained"
                       color="primary"
                       className={classes.btnSize}
-                      onClick={toggleModal}
+                      onClick={handleToggleModal}
                     >
                       Book now
                     </Button>

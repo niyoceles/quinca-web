@@ -37,34 +37,6 @@ const useStyles = makeStyles((theme) => ({
 
 const SupplierItems = (props) => {
   const classes = useStyles();
-  const bookings = JSON.parse(localStorage.getItem("bookingSummary"));
-  const [bookingSummary, setBookingSummary] = useState(
-    bookings !== null ? bookings : []
-  );
-
-  const handleAddItem = (e, item) => {
-    console.log(e.target.firstChild);
-    const tempTot = (localStorage.getItem("totalPrice") || 0) * 1;
-    const tot = tempTot + item["itemPrice"] * 1;
-    localStorage.setItem("totalPrice", tot);
-
-    const { id, itemName, itemPrice, itemType } = item;
-    const bookItem = {
-      id,
-      itemName,
-      itemPrice: itemPrice * 1,
-      itemType
-    };
-    const booked = bookingSummary.find((bk) => bk.id === item.id);
-    let updatedBooking = [...bookingSummary, bookItem];
-    if (booked) {
-      updatedBooking = bookingSummary.filter((bk) => bk.id !== item.id);
-      const updatedTotPrice = tempTot - item["itemPrice"] * 1;
-      localStorage.setItem("totalPrice", updatedTotPrice);
-    }
-    setBookingSummary(updatedBooking);
-    localStorage.setItem("bookingSummary", JSON.stringify(updatedBooking));
-  };
 
   return (
     <div>
@@ -116,11 +88,10 @@ const SupplierItems = (props) => {
                     <FormControl component="fieldset">
                       <FormGroup>
                         <FormControlLabel
-                          value="Select"
                           control={
                             <Checkbox
                               color="primary"
-                              onClick={(e) => handleAddItem(e, item)}
+                              onClick={(e) => props.addItem(e, item)}
                             />
                           }
                           label="Select"
@@ -138,7 +109,7 @@ const SupplierItems = (props) => {
                         aria-label="add"
                         className={classes.btnBooking}
                       >
-                        {item.itemPrice + "Rwf/Per night"}
+                        {item.itemPrice + "Rwf"}
                       </Fab>
                     </Typography>
                   </Grid>
