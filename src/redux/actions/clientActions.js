@@ -81,7 +81,6 @@ export const hotelBooking = (itemId, bookingInfo) => dispatch => {
 			dispatch({ type: BOOKING, payload: res.data.bookedItems });
 			localStorage.removeItem('bookingSummary');
 			localStorage.removeItem('totalPrice');
-			console.log(res);
 			toast.success(res.data.message);
 		})
 		.catch(err => {

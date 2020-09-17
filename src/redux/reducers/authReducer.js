@@ -8,6 +8,7 @@ import {
 	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
 } from '../types';
+import jwtDecode from 'jwt-decode';
 
 const initialState = {
 	signupData: null,
@@ -18,6 +19,7 @@ const initialState = {
 	signupSuccess: null,
 	authenticated: false,
 	credentials: {},
+	user: {}
 };
 
 export default function (state = initialState, action) {
@@ -49,10 +51,11 @@ export default function (state = initialState, action) {
 		case LOGIN_SUCCESS:
 			return {
 				...state,
-				loginSuccess: action.payload,
+				loginSuccess: action.payload.message,
 				loginFailure: null,
 				loginData: null,
 				authenticated: true,
+				user: {...state.user, ...jwtDecode(action.payload.User.token)}
 			};
 		case LOGIN_FAILURE:
 			return {
