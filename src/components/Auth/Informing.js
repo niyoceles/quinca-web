@@ -46,7 +46,7 @@ export default function Informing() {
 						color='textPrimary'
 						gutterBottom
 					>
-						Travels Up
+						Quinca Paradi
 					</Typography>
 					<Divider />
 					<Typography

@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import NavBar from '../../../components/Navbar';
-import { Footer } from '../../../pages/client/landingPage';
+import Footer from '../../../components/Footer';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import {
-	GET_HOTELS_SUCCESS,
-	GET_HOTELS_FAILURE,
+	GET_HOME_ITEMS_SUCCESS,
+	GET_HOME_ITEMS_FAILURE,
 	GET_TOURS_SUCCESS,
 	GET_TOURS_FAILURE,
 	GET_CARS_SUCCESS,
@@ -14,15 +14,17 @@ import { toast } from 'react-toastify';
 const { REACT_APP_BACKEND } = process.env;
 
 // Get my profile
-export const getHotels = () => dispatch => {
+export const getHomeItems = () => dispatch => {
 	axios
-		.get(`${REACT_APP_BACKEND}/supplier/hotels`)
+		.get('http://localhost:3000/api/item/home')
 		.then(res => {
-			dispatch({ type: GET_HOTELS_SUCCESS, payload: res.data });
+			console.log('hhhhhhhhhhhh', res.data);
+			dispatch({ type: GET_HOME_ITEMS_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
+			console.log('eee', err.response ? err.response.data : null);
 			dispatch({
-				type: GET_HOTELS_FAILURE,
+				type: GET_HOME_ITEMS_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
 		});
@@ -63,11 +65,11 @@ export const updateMyProfile = () => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/supplier/myprofile`)
 		.then(res => {
-			dispatch({ type: GET_HOTELS_SUCCESS, payload: res.data });
+			dispatch({ type: GET_HOME_ITEMS_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
 			dispatch({
-				type: GET_HOTELS_FAILURE,
+				type: GET_HOME_ITEMS_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
 		});

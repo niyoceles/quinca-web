@@ -1,312 +1,429 @@
-import React, { useEffect } from "react";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
-import Navbar from "../../components/Navbar";
-import Divider from "@material-ui/core/Divider";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { useDispatch, useSelector } from "react-redux";
-import { getHotels, getTours, getCars } from "../../redux/actions";
-import SearchSection from "../../components/client/SearchSection";
-import { Link as ReactLink } from "react-router-dom";
+import React, { useEffect } from 'react';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
+import Link from '@material-ui/core/Link';
+import Navbar from '../../components/Navbar';
+import Divider from '@material-ui/core/Divider';
+import { useDispatch, useSelector } from 'react-redux';
+import { getHomeItems } from '../../redux/actions';
+import { Link as ReactLink } from 'react-router-dom';
+import itemImage from '../../assets/images/bg2.unsplash.jpg';
+import Footer from '../../components/Footer';
+import { HomeSlide } from '../../components/client';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const useStyles = makeStyles((theme) => ({
-  topBodyContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-    backgroundImage: `url(${require("../../assets/images/bg2.unsplash.jpg")})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  },
-  topBodyButtons: {
-    marginTop: theme.spacing(4),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-    backgroundColor: "#f2f6fb",
-    marginBottom: 40,
-    borderRadius: "10px",
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    "&:hover": {
-      background: "#e3e5e6",
-    },
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
-  titleFeature: {
-    marginTop: -50,
-  },
-  links: {
-    textDecoration: "none",
-    color: "inherit",
-  },
+const useStyles = makeStyles(theme => ({
+	main: {
+		backgroundColor: '#fff',
+	},
+	cardGrid: {
+		paddingTop: theme.spacing(8),
+		paddingBottom: theme.spacing(8),
+		backgroundColor: '#f2f6fb',
+		marginBottom: 40,
+		borderRadius: '10px',
+	},
+	topCardGrid: {
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(2),
+		backgroundColor: '#fff',
+		borderRadius: '10px',
+	},
+	topCard: {
+		// height: '70%',
+		display: 'flex',
+		flexDirection: 'column',
+		marginBottom: 5,
+	},
+	card: {
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		'&:hover': {
+			background: '#e3e5e6',
+		},
+	},
+	cardMedia: {
+		paddingTop: '56.25%', // 16:9
+	},
+	cardContent: {
+		flexGrow: 1,
+	},
+	footer: {
+		backgroundColor: theme.palette.background.paper,
+		padding: theme.spacing(6),
+	},
+	titleFeature: {
+		marginTop: -50,
+	},
+	links: {
+		textDecoration: 'none',
+		color: 'inherit',
+	},
 }));
 
 export default function LandingPage() {
-  const classes = useStyles();
-  const hotels = useSelector((state) => state.client.hotels.allHotels);
-  const tours = useSelector((state) => state.client.tours.allTours);
-  const cars = useSelector((state) => state.client.cars.allCars);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getHotels());
-    dispatch(getTours());
-    dispatch(getCars());
-  }, [dispatch]);
+	const categories = [
+		{
+			name: 'All Categories',
+			url: '/categories',
+		},
+		{
+			name: 'Contruction materials',
+			url: '/contruction',
+		},
+		{
+			name: 'Plombing materials',
+			url: '/plombing',
+		},
+		{
+			name: 'Electricity materials',
+			url: '/electricity',
+		},
+		{
+			name: 'Contruction materials',
+			url: '/contruction',
+		},
+		{
+			name: 'Plombing materials',
+			url: '/plombing',
+		},
+		{
+			name: 'Electricity materials',
+			url: '/electricity',
+		},
+		{
+			name: 'Plombing materials',
+			url: '/plombing',
+		},
+	];
+	const classes = useStyles();
+	const constructionItems = useSelector(
+		state => state.client.homeItems.construction
+	);
+	const plombingItems = useSelector(state => state.client.homeItems.plombing);
+	const electricityItems = useSelector(
+		state => state.client.homeItems.electricity
+	);
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(getHomeItems());
+	}, [dispatch]);
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <Navbar />
-      <main>
-        {/* topBody unit */}
-        <div className={classes.topBodyContent}>
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="textPrimary"
-              gutterBottom
-            >
-              Travels Up
-            </Typography>
-            <Typography
-              variant="h3"
-              align="center"
-              style={{ fontWeight: "bold", color: "#fff" }}
-              paragraph
-            >
-              Let us help you in your Travel in Rwanda
-            </Typography>
-          </Container>
-          <SearchSection />
-        </div>
-        <Divider />
-        <Container className={classes.cardGrid} maxWidth="lg">
-          <Typography
-            component="h3"
-            variant="h5"
-            align="center"
-            color="textPrimary"
-            className={classes.titleFeature}
-            gutterBottom
-          >
-            Featured Hotels
-          </Typography>
-          <Grid container spacing={4}>
-            {hotels &&
-              hotels.map((card) => (
-                <Grid item key={card} xs={12} sm={6} md={4}>
-                  <Card className={classes.card}>
-                    <ReactLink to={`/view/${card.id}`} className={classes.links}>
-                      <CardMedia
-                        className={classes.cardMedia}
-                        image="https://source.unsplash.com/random"
-                        title="Image title"
-                      />
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {card.names}
-                        </Typography>
-                        <Typography>
-                          <LocationOnIcon color="primary" />
-                          <div style={{ marginTop: -30, marginLeft: 25 }}>
-                            {card.location}, {card.state}, {card.country} and
-                            hosted by {card.organization}
-                          </div>
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
-                        <Button size="small" color="primary">
-                          Edit
-                        </Button>
-                      </CardActions>
-                    </ReactLink>
-                  </Card>
-                </Grid>
-              ))}
-          </Grid>
-        </Container>
-        <Divider />
-        <Container className={classes.cardGrid} maxWidth="lg">
-          <Typography
-            component="h3"
-            variant="h5"
-            align="center"
-            color="textPrimary"
-            className={classes.titleFeature}
-            gutterBottom
-          >
-            Featured Tours
-          </Typography>
-          <Grid container spacing={4}>
-            {tours &&
-              tours.map((card) => (
-                <Grid item key={card} xs={12} sm={6} md={3}>
-                  <Card className={classes.card} elevation={3}>
-                    <ReactLink
-                      to={`/view/${card.id}`}
-                      className={classes.links}
-                    >
-                      <CardMedia
-                        className={classes.cardMedia}
-                        image="https://source.unsplash.com/random"
-                        title="Image title"
-                      />
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {card.names}
-                        </Typography>
-                        <Typography>
-                          <LocationOnIcon color="primary" />
-                          <div style={{ marginTop: -30, marginLeft: 25 }}>
-                            {card.location}, {card.state}, {card.country} and
-                            hosted by {card.organization}
-                          </div>
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
-                        <Button size="small" color="primary">
-                          Edit
-                        </Button>
-                      </CardActions>
-                    </ReactLink>
-                  </Card>
-                </Grid>
-              ))}
-          </Grid>
-        </Container>
-        <Divider />
-        <Container className={classes.cardGrid} maxWidth="lg">
-          <Typography
-            component="h3"
-            variant="h5"
-            align="center"
-            color="textPrimary"
-            className={classes.titleFeature}
-            gutterBottom
-          >
-            Featured Cars
-          </Typography>
-          <Grid container spacing={4}>
-            {cars &&
-              cars.map((card) => (
-                <Grid item key={card} xs={12} sm={6} md={3}>
-                  <Card className={classes.card} elevation={3}>
-                    <ReactLink
-                      to={`/view/${card.id}`}
-                      className={classes.links}
-                    >
-                      <CardMedia
-                        className={classes.cardMedia}
-                        image="https://source.unsplash.com/random"
-                        title="Image title"
-                      />
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {card.names}
-                        </Typography>
-                        <Typography>
-                          <LocationOnIcon color="primary" />
-                          <div style={{ marginTop: -30, marginLeft: 25 }}>
-                            {card.location}, {card.state}, {card.country} and
-                            hosted by {card.organization}
-                          </div>
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
-                        <Button size="small" color="primary">
-                          Edit
-                        </Button>
-                      </CardActions>
-                    </ReactLink>
-                  </Card>
-                </Grid>
-              ))}
-          </Grid>
-        </Container>
-      </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
-    </React.Fragment>
-  );
+	return (
+		<React.Fragment>
+			<CssBaseline />
+			<Navbar />
+			<main className={classes.main}>
+				<Container
+					className={[classes.topCardGrid, classes.topBodyButtons]}
+					maxWidth='lg'
+				>
+					<Grid container spacing={2}>
+						<Grid item xs={12} sm={6} md={3}>
+							<Card className={classes.topCard}>
+								<CardContent className={classes.cardContent}>
+									<Typography gutterBottom variant='h5' component='h2'>
+										Categories
+									</Typography>
+									{categories &&
+										categories.map(category => (
+											<Link
+												display='block'
+												variant='body2'
+												href={category.url}
+												key={category}
+												className={classes.links}
+											>
+												<Grid
+													container
+													direction='row'
+													spacing={1}
+													alignItems='center'
+												>
+													<Grid item>
+														<DoubleArrowRoundedIcon />
+													</Grid>
+													<Grid item>
+														{' '}
+														<Typography
+															variant='body1'
+															color='textPrimary'
+															align='center'
+														>
+															{category.name}
+														</Typography>
+													</Grid>
+												</Grid>
+											</Link>
+										))}
+								</CardContent>
+							</Card>
+						</Grid>
+						<Grid item xs={12} sm={6} md={6}>
+							<Card className={classes.topCard}>
+								<HomeSlide />
+							</Card>
+						</Grid>
+						<Grid item xs={12} sm={6} md={3}>
+							<Card className={classes.topCard}>
+								<ReactLink to='/footer' className={classes.links}>
+									<CardMedia
+										className={classes.cardMedia}
+										image={itemImage}
+										title='Image title'
+									/>
+								</ReactLink>
+							</Card>
+							<Card className={classes.topCard}>
+								<ReactLink to='/footer' className={classes.links}>
+									<CardMedia
+										className={classes.cardMedia}
+										image={itemImage}
+										title='Image title'
+									/>
+								</ReactLink>
+							</Card>
+						</Grid>
+					</Grid>
+				</Container>
+				<Divider />
+				<Container className={classes.cardGrid} maxWidth='lg'>
+					<Typography
+						component='h3'
+						variant='h5'
+						align='center'
+						color='textPrimary'
+						className={classes.titleFeature}
+						gutterBottom
+					>
+						Most Featured Materials
+					</Typography>
+					<Grid container spacing={4}>
+						{constructionItems &&
+							constructionItems.map(card => (
+								<Grid item key={card} xs={12} sm={6} md={4}>
+									<Card className={classes.card}>
+										<ReactLink
+											to={`/view/${card.id}`}
+											className={classes.links}
+										>
+											<CardMedia
+												className={classes.cardMedia}
+												image={itemImage}
+												title={card.itemName}
+											/>
+											<CardContent className={classes.cardContent}>
+												<Typography gutterBottom variant='h5' component='h2'>
+													{card.names}
+												</Typography>
+												<div style={{ marginLeft: 15 }}>
+													<Typography
+														variant='body1'
+														color='textPrimary'
+														align='left'
+														gutterBottom
+													>
+														{card.itemName}
+													</Typography>
+													<Grid
+														container
+														direction='row'
+														spacing={1}
+														alignItems='center'
+													>
+														<Grid item align='left'>
+															<Typography
+																variant='body2'
+																color='textSecondary'
+																align='left'
+																gutterBottom
+															>
+																{card.category}
+															</Typography>
+														</Grid>
+														<Grid item></Grid>
+														<Grid item align='right'>
+															{' '}
+															<Button
+																size='medium'
+																color='primary'
+																style={{ marginTop: -5 }}
+															>
+																RWF {card.itemPrice}
+															</Button>
+														</Grid>
+													</Grid>
+												</div>
+											</CardContent>
+										</ReactLink>
+									</Card>
+								</Grid>
+							))}
+					</Grid>
+				</Container>
+				<Divider />
+				<Container className={classes.cardGrid} maxWidth='lg'>
+					<Typography
+						component='h3'
+						variant='h5'
+						align='center'
+						color='textPrimary'
+						className={classes.titleFeature}
+						gutterBottom
+					>
+						Featured Tools
+					</Typography>
+					<Grid container spacing={4}>
+						{plombingItems &&
+							plombingItems.map(card => (
+								<Grid item key={card} xs={12} sm={6} md={3}>
+									<Card className={classes.card} elevation={3}>
+										<ReactLink
+											to={`/view/${card.id}`}
+											className={classes.links}
+										>
+											<CardMedia
+												className={classes.cardMedia}
+												image={itemImage}
+												title='Image title'
+											/>
+											<CardContent className={classes.cardContent}>
+												<Typography gutterBottom variant='h5' component='h2'>
+													{card.names}
+												</Typography>
+												<div style={{ marginLeft: 15 }}>
+													<Typography
+														variant='body1'
+														color='textPrimary'
+														align='left'
+														gutterBottom
+													>
+														{card.itemName}
+													</Typography>
+													<Grid
+														container
+														direction='row'
+														spacing={1}
+														alignItems='center'
+													>
+														<Grid item align='left'>
+															<Typography
+																variant='body2'
+																color='textSecondary'
+																align='left'
+																gutterBottom
+															>
+																{card.category}
+															</Typography>
+														</Grid>
+														<Grid item></Grid>
+														<Grid item align='right'>
+															{' '}
+															<Button
+																size='medium'
+																color='primary'
+																style={{ marginTop: -5 }}
+															>
+																RWF {card.itemPrice}
+															</Button>
+														</Grid>
+													</Grid>
+												</div>
+											</CardContent>
+										</ReactLink>
+									</Card>
+								</Grid>
+							))}
+					</Grid>
+				</Container>
+				<Divider />
+				<Container className={classes.cardGrid} maxWidth='lg'>
+					<Typography
+						component='h3'
+						variant='h5'
+						align='center'
+						color='textPrimary'
+						className={classes.titleFeature}
+						gutterBottom
+					>
+						Additional Material tools
+					</Typography>
+					<Grid container spacing={4}>
+						{electricityItems &&
+							electricityItems.map(card => (
+								<Grid item key={card} xs={12} sm={6} md={3}>
+									<Card className={classes.card} elevation={3}>
+										<ReactLink
+											to={`/view/${card.id}`}
+											className={classes.links}
+										>
+											<CardMedia
+												className={classes.cardMedia}
+												image={itemImage}
+												title='Image title'
+											/>
+											<CardContent className={classes.cardContent}>
+												<Typography gutterBottom variant='h5' component='h2'>
+													{card.names}
+												</Typography>
+												<div style={{ marginLeft: 15 }}>
+													<Typography
+														variant='body1'
+														color='textPrimary'
+														align='left'
+														gutterBottom
+													>
+														{card.itemName}
+													</Typography>
+													<Grid
+														container
+														direction='row'
+														spacing={1}
+														alignItems='center'
+													>
+														<Grid item align='left'>
+															<Typography
+																variant='body2'
+																color='textSecondary'
+																align='left'
+																gutterBottom
+															>
+																{card.category}
+															</Typography>
+														</Grid>
+														<Grid item></Grid>
+														<Grid item align='right'>
+															{' '}
+															<Button
+																size='medium'
+																color='primary'
+																style={{ marginTop: -5 }}
+															>
+																RWF {card.itemPrice}
+															</Button>
+														</Grid>
+													</Grid>
+												</div>
+											</CardContent>
+										</ReactLink>
+									</Card>
+								</Grid>
+							))}
+					</Grid>
+				</Container>
+				<Divider />
+			</main>
+			{/* Footer */}
+			<Footer />
+			{/* End footer */}
+		</React.Fragment>
+	);
 }
-
-export const Footer = () => {
-  const classes = useStyles();
-  return (
-    <footer className={classes.footer}>
-      <Typography variant="h6" align="center" gutterBottom>
-        Footer
-      </Typography>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        color="textSecondary"
-        component="p"
-      >
-        Something here to give the footer a purpose!
-      </Typography>
-      <Copyright />
-    </footer>
-  );
-};

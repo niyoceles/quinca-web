@@ -42,9 +42,9 @@ export const updateMyProfile = () => dispatch => {
 // Get my profile
 export const getSupplier = id => dispatch => {
 	axios
-		.get(`${REACT_APP_BACKEND}/supplier/viewsupplier/${id}`)
+		.get(`${REACT_APP_BACKEND}/item/${id}`)
 		.then(res => {
-			dispatch({ type: GET_SUPPLIER_SUCCESS, payload: res.data });
+			dispatch({ type: GET_SUPPLIER_SUCCESS, payload: res.data.item });
 		})
 		.catch(err => {
 			dispatch({

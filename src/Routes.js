@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from './pages/client/landingPage';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
-import clients from './components/client';
+import clients from './components/client/clients1';
 import ItemPage from './pages/supplier/ItemPage';
 import customersPage from './pages/supplier/CustomersPage';
 import BookingsPage from './pages/supplier/BookingsPage';
@@ -15,9 +15,8 @@ import ViewSupplierPage from './pages/supplier/ViewSupplierPage';
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
 // Search Result
-import Hotels from './components/client/searchResult/Hotels';
 import Cars from './components/client/searchResult/Car';
-import Tours from './components/client/searchResult/Tours';
+import Footer from './components/Footer';
 
 export const Routes = () => {
 	return (
@@ -60,9 +59,8 @@ export const Routes = () => {
 						path='/account/supplier/myaccount'
 						component={ProfilePage}
 					/>
-					<Route exact path='/hotels/name' component={Hotels} />
 					<Route exact path='/cars/name' component={Cars} />
-					<Route exact path='/tours/name' component={Tours} />
+					<Route exact path='/footer' component={Footer} />
 				</Switch>
 			</div>
 		</Router>

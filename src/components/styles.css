@@ -1,0 +1,10 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.MuiPaper-elevation4 {
+  top: 70px;
+}
+.MuiAppBar-positionSticky {
+  position: fixed;
+}

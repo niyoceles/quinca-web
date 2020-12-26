@@ -1,4 +1,11 @@
-import { DELETE_ITEM, POST_ITEM, SET_ITEM, UPDATE_ITEM } from '../types';
+import {
+	DELETE_ITEM,
+	POST_ITEM,
+	SET_ITEM,
+	UPDATE_ITEM,
+	GET_RELATED_FAILURE,
+	GET_RELATED_SUCCESS,
+} from '../types';
 
 const initialState = {
 	items: [],
@@ -7,6 +14,7 @@ const initialState = {
 	addItemFailure: null,
 	updateItemSuccess: null,
 	loading: false,
+	relatedItems: null,
 };
 
 export default function (state = initialState, action) {
@@ -38,6 +46,16 @@ export default function (state = initialState, action) {
 				items: [action.payload, ...state.items],
 				item: action.payload.item,
 				updateItemSuccess: action.payload.message,
+			};
+		case GET_RELATED_SUCCESS:
+			return {
+				...state,
+				relatedItems: action.payload,
+			};
+		case GET_RELATED_FAILURE:
+			return {
+				...state,
+				relatedItems: action.payload,
 			};
 		default:
 			return state;

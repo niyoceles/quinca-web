@@ -1,58 +1,58 @@
 import {
-  GET_HOTELS_SUCCESS,
-  GET_HOTELS_FAILURE,
-  GET_TOURS_SUCCESS,
-  GET_TOURS_FAILURE,
-  GET_CARS_SUCCESS,
-  GET_CARS_FAILURE,
-  BOOKING,
-} from "../types";
+	GET_HOME_ITEMS_SUCCESS,
+	GET_HOME_ITEMS_FAILURE,
+	GET_TOURS_SUCCESS,
+	GET_TOURS_FAILURE,
+	GET_CARS_SUCCESS,
+	GET_CARS_FAILURE,
+	BOOKING,
+} from '../types';
 
 const initialState = {
-  hotels: {},
-  tours: {},
-  cars: {},
-  bookedItems: [],
+	homeItems: {},
+	tours: {},
+	cars: {},
+	bookedItems: [],
 };
 
 export default function (state = initialState, action) {
-  switch (action.type) {
-    case GET_HOTELS_SUCCESS:
-      return {
-        ...state,
-        hotels: action.payload,
-      };
-    case GET_HOTELS_FAILURE:
-      return {
-        ...state,
-        hotels: action.payload,
-      };
-    case GET_TOURS_SUCCESS:
-      return {
-        ...state,
-        tours: action.payload,
-      };
-    case GET_TOURS_FAILURE:
-      return {
-        ...state,
-        tours: action.payload,
-      };
-    case GET_CARS_SUCCESS:
-      return {
-        ...state,
-        cars: action.payload,
-      };
-    case GET_CARS_FAILURE:
-      return {
-        ...state,
-        cars: action.payload,
-      };
-    case BOOKING:
-      return {
-        ...state,
-        bookedItems: [...state.bookedItems, ...action.payload],
-      };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case GET_HOME_ITEMS_SUCCESS:
+			return {
+				...state,
+				homeItems: action.payload,
+			};
+		case GET_HOME_ITEMS_FAILURE:
+			return {
+				...state,
+				homeItems: action.payload,
+			};
+		case GET_TOURS_SUCCESS:
+			return {
+				...state,
+				tours: action.payload,
+			};
+		case GET_TOURS_FAILURE:
+			return {
+				...state,
+				tours: action.payload,
+			};
+		case GET_CARS_SUCCESS:
+			return {
+				...state,
+				cars: action.payload,
+			};
+		case GET_CARS_FAILURE:
+			return {
+				...state,
+				cars: action.payload,
+			};
+		case BOOKING:
+			return {
+				...state,
+				bookedItems: [...state.bookedItems, ...action.payload],
+			};
+		default:
+			return state;
+	}
 }
