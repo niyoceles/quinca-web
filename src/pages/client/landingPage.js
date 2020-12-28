@@ -3,21 +3,19 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
 import Link from '@material-ui/core/Link';
-import Navbar from '../../components/Navbar';
 import Divider from '@material-ui/core/Divider';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHomeItems } from '../../redux/actions';
 import { Link as ReactLink } from 'react-router-dom';
 import itemImage from '../../assets/images/bg2.unsplash.jpg';
-import Footer from '../../components/Footer';
 import { HomeSlide } from '../../components/client';
+import ClientLayout from '../../layouts/ClientLayout'
 
 const useStyles = makeStyles(theme => ({
 	main: {
@@ -77,31 +75,31 @@ export default function LandingPage() {
 		},
 		{
 			name: 'Contruction materials',
-			url: '/contruction',
+			url: '/category/construction',
 		},
 		{
 			name: 'Plombing materials',
-			url: '/plombing',
+			url: '/category/plombing',
 		},
 		{
 			name: 'Electricity materials',
-			url: '/electricity',
+			url: '/category/electricity',
 		},
 		{
 			name: 'Contruction materials',
-			url: '/contruction',
+			url: '/construction',
 		},
 		{
 			name: 'Plombing materials',
-			url: '/plombing',
+			url: '/category/plombing',
 		},
 		{
 			name: 'Electricity materials',
-			url: '/electricity',
+			url: '/category/electricity',
 		},
 		{
 			name: 'Plombing materials',
-			url: '/plombing',
+			url: '/category/plombing',
 		},
 	];
 	const classes = useStyles();
@@ -118,10 +116,7 @@ export default function LandingPage() {
 	}, [dispatch]);
 
 	return (
-		<React.Fragment>
-			<CssBaseline />
-			<Navbar />
-			<main className={classes.main}>
+		<ClientLayout>
 				<Container
 					className={[classes.topCardGrid, classes.topBodyButtons]}
 					maxWidth='lg'
@@ -419,11 +414,6 @@ export default function LandingPage() {
 							))}
 					</Grid>
 				</Container>
-				<Divider />
-			</main>
-			{/* Footer */}
-			<Footer />
-			{/* End footer */}
-		</React.Fragment>
+			</ClientLayout>
 	);
 }

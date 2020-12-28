@@ -2,6 +2,8 @@ import 'dotenv/config';
 import {
 	GET_HOME_ITEMS_SUCCESS,
 	GET_HOME_ITEMS_FAILURE,
+	GET_CATEGORY_ITEMS_SUCCESS,
+	GET_CATEGORY_ITEMS_FAILURE,
 	GET_TOURS_SUCCESS,
 	GET_TOURS_FAILURE,
 	GET_CARS_SUCCESS,
@@ -18,13 +20,27 @@ export const getHomeItems = () => dispatch => {
 	axios
 		.get('http://localhost:3000/api/item/home')
 		.then(res => {
-			console.log('hhhhhhhhhhhh', res.data);
 			dispatch({ type: GET_HOME_ITEMS_SUCCESS, payload: res.data });
+		})
+		.catch(err => {
+			dispatch({
+				type: GET_HOME_ITEMS_FAILURE,
+				payload: err.response ? err.response.data.error : null,
+			});
+		});
+};
+
+export const getCategoryItems = category => dispatch => {
+	axios
+		.get(`http://localhost:3000/api/category/${category}`)
+		.then(res => {
+			console.log('hhhhhhhhhhhh', res.data);
+			dispatch({ type: GET_CATEGORY_ITEMS_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
 			console.log('eee', err.response ? err.response.data : null);
 			dispatch({
-				type: GET_HOME_ITEMS_FAILURE,
+				type: GET_CATEGORY_ITEMS_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
 		});

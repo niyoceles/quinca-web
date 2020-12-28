@@ -17,6 +17,7 @@ import SignupPage from './pages/Auth/SignupPage';
 // Search Result
 import Cars from './components/client/searchResult/Car';
 import Footer from './components/Footer';
+import CategoryItems from './pages/client/CategoryItems';
 
 export const Routes = () => {
 	return (
@@ -29,6 +30,7 @@ export const Routes = () => {
 					<AuthRoute exact path='/client' component={clients} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewSupplierPage} />
+					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute
 						exact
 						path='/account/supplier/items'

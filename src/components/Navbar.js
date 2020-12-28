@@ -64,6 +64,18 @@ const useStyles = makeStyles(theme => ({
 		// padding: '15px',
 	},
 	loginButton: {
+		background: '#f5f5f5',
+		color:'#333',
+		borderRadius: '25px',
+		padding: '6px 25px',
+
+		'&:hover': {
+			background: '#f2f6fb',
+			boxShadow: '0px 1px 1px #888888',
+			color:'#333'
+		},
+	},
+	proformaButton: {
 		background: '#e91e63',
 		color: '#fff',
 		borderRadius: '25px',
@@ -282,32 +294,32 @@ export default function ButtonAppBar() {
 				color='default'
 				style={{ backgroundColor: '#fff', backgroundSize: 'cover' }}
 				position='sticky'
-				// elevation={0}
+				elevation={2}
 			>
 				<Toolbar>
-				<div className={classes.sectionMobile}>
-					<IconButton
-						onClick={toggleDrawer('left', true)}
-						edge='start'
-						className={classes.menuButton}
-						color='inherit'
-						aria-label='menu'
-					>
-						<MenuIcon />
-					</IconButton>
-					<Drawer
-						anchor='left'
-						open={state['left']}
-						onClose={toggleDrawer('left', false)}
-					>
-						{list('left')}
-					</Drawer>
+					<div className={classes.sectionMobile}>
+						<IconButton
+							onClick={toggleDrawer('left', true)}
+							edge='start'
+							className={classes.menuButton}
+							color='inherit'
+							aria-label='menu'
+						>
+							<MenuIcon />
+						</IconButton>
+						<Drawer
+							anchor='left'
+							open={state['left']}
+							onClose={toggleDrawer('left', false)}
+						>
+							{list('left')}
+						</Drawer>
 					</div>
 					{/* <div className={classes.sectionDesktop}> */}
 					<Typography variant='h6' className={classes.title}>
 						Quinca Paradi
 					</Typography>
-					<div className={classes.search}>
+					{/* <div className={classes.search}>
 						<div className={classes.searchIcon}>
 							<SearchIcon />
 						</div>
@@ -319,7 +331,7 @@ export default function ButtonAppBar() {
 							}}
 							inputProps={{ 'aria-label': 'search' }}
 						/>
-					</div>
+					</div> */}
 					<div className={classes.sectionDesktop}>
 						<Grid
 							container
@@ -330,6 +342,16 @@ export default function ButtonAppBar() {
 							style={{ marginRight: 0 }}
 						>
 							<Grid item>
+								<Link to='/login' className={classes.links}>
+									<Button
+										color='inherit'
+										className={[classes.buttonFontSize, classes.proformaButton]}
+									>
+										Request proforma
+									</Button>
+								</Link>
+							</Grid>
+							<Grid item>
 								<img
 									width='70'
 									height='30'
@@ -338,7 +360,6 @@ export default function ButtonAppBar() {
 									className='edit-img'
 								/>
 							</Grid>
-							{/* <Grid item>Cart</Grid> */}
 							<Grid item>
 								{' '}
 								{/* <img width='70' height='30' src={accountImage} alt='' /> */}
