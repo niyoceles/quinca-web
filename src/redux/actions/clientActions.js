@@ -18,7 +18,7 @@ const { REACT_APP_BACKEND } = process.env;
 // Get my profile
 export const getHomeItems = () => dispatch => {
 	axios
-		.get('http://localhost:3000/api/item/home')
+		.get(`${REACT_APP_BACKEND}/item/home`)
 		.then(res => {
 			dispatch({ type: GET_HOME_ITEMS_SUCCESS, payload: res.data });
 		})
@@ -32,7 +32,7 @@ export const getHomeItems = () => dispatch => {
 
 export const getCategoryItems = category => dispatch => {
 	axios
-		.get(`http://localhost:3000/api/category/${category}`)
+		.get(`${REACT_APP_BACKEND}/category/${category}`)
 		.then(res => {
 			console.log('hhhhhhhhhhhh', res.data);
 			dispatch({ type: GET_CATEGORY_ITEMS_SUCCESS, payload: res.data });
