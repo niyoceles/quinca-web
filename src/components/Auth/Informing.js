@@ -62,8 +62,7 @@ export default function Informing() {
 							borderRadius: 25,
 						}}
 					>
-						Something short and leading about the collection below—its contents,
-						the creator, etc. Make it short and sweet, but not too short
+						Let us Build the world together
 					</Typography>
 					<br />
 					<br />

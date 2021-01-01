@@ -8,6 +8,8 @@ import {
 	LOADING_UI,
 	GET_RELATED_FAILURE,
 	GET_RELATED_SUCCESS,
+	GET_ALL_ITEMS_FAILURE,
+	GET_ALL_ITEMS_SUCCESS,
 } from '../types';
 import axios from 'axios';
 const { REACT_APP_BACKEND } = process.env;
@@ -74,6 +76,20 @@ export const relatedItems = itemType => dispatch => {
 		.catch(err => {
 			dispatch({
 				type: GET_RELATED_FAILURE,
+				payload: err.response ? err.response.data.error : null,
+			});
+		});
+};
+
+export const getAllItems = () => dispatch => {
+	axios
+		.get(`${REACT_APP_BACKEND}/item/all`)
+		.then(res => {
+			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data });
+		})
+		.catch(err => {
+			dispatch({
+				type: GET_ALL_ITEMS_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
 		});

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SupplierItems = (props) => {
+const ProformaItems = (props) => {
   const classes = useStyles();
   console.log('zzzzz', props.items);
 
@@ -58,8 +58,8 @@ const SupplierItems = (props) => {
               spacing={3}
               item
               xs={12}
-              sm={6}
-              md={6}
+              sm={12}
+              md={12}
               className={classes.itemBox}
             >
               <Grid container spacing={3}>
@@ -119,4 +119,4 @@ const SupplierItems = (props) => {
     </div>
   );
 };
-export default SupplierItems;
+export default ProformaItems;

@@ -12,8 +12,8 @@ function Copyright() {
   return (
     <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
-      <Link color='inherit' href='https://fortravel.com/'>
-        For Travel
+      <Link color='inherit' href='https://quincaparadi.com/'>
+        Quinca Paradi
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

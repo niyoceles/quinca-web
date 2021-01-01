@@ -105,3 +105,20 @@ export const hotelBooking = (itemId, bookingInfo) => dispatch => {
 			return err;
 		});
 };
+
+// Request proforma
+export const requestProforma = proformaInfo => dispatch => {
+	axios
+		.post(`${REACT_APP_BACKEND}/proforma`, proformaInfo)
+		.then(res => {
+			console.log('zzzzzzzzzzzzzzzzzzzzzzzzzz', res.data);
+			dispatch({ type: BOOKING, payload: res.data.bookedItems });
+			localStorage.removeItem('bookingSummary');
+			localStorage.removeItem('totalPrice');
+			toast.success(res.data.message);
+		})
+		.catch(err => {
+			console.log('zzzzzzzzzpppppp', err.response.data);
+			return err;
+		});
+};

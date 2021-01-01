@@ -3,7 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import { Link as ReactLink } from 'react-router-dom';
-import itemImage from '../../assets/images/bg2.unsplash.jpg';
+import constructionImage from '../../assets/images/home/construction1.jpg';
+import constructionImage2 from '../../assets/images/home/construction2.jpg';
+import constructionImage3 from '../../assets/images/home/construction3.jpg';
 
 const useStyles = makeStyles(theme => ({
 	slide: {
@@ -26,12 +28,17 @@ export const HomeSlide = () => {
 		<Carousel autoPlay={9000} infinite slidesPerPage={1} slidesPerScroll={1}>
 			{[
 				{
-					image: itemImage,
+					image: constructionImage,
 					title: 'profile image 1',
 					link: '/footer1',
 				},
 				{
-					image: itemImage,
+					image: constructionImage2,
+					title: 'profile image 1',
+					link: '/footer2',
+				},
+				{
+					image: constructionImage3,
 					title: 'profile image 1',
 					link: '/footer2',
 				},

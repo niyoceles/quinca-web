@@ -5,11 +5,14 @@ import {
 	UPDATE_ITEM,
 	GET_RELATED_FAILURE,
 	GET_RELATED_SUCCESS,
+	GET_ALL_ITEMS_FAILURE,
+	GET_ALL_ITEMS_SUCCESS,
 } from '../types';
 
 const initialState = {
 	items: [],
 	item: {},
+	allItems: [],
 	addItemSuccess: null,
 	addItemFailure: null,
 	updateItemSuccess: null,
@@ -19,6 +22,16 @@ const initialState = {
 
 export default function (state = initialState, action) {
 	switch (action.type) {
+		case GET_ALL_ITEMS_SUCCESS:
+			return {
+				...state,
+				allItems: action.payload,
+			};
+		case GET_ALL_ITEMS_FAILURE:
+			return {
+				...state,
+				allItems: action.payload,
+			};
 		case SET_ITEM:
 			return {
 				...state,

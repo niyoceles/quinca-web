@@ -11,6 +11,7 @@ import DashboardPage from './pages/supplier/DashboardPage';
 import ReportPage from './pages/supplier/ReportPage';
 import ProfilePage from './pages/supplier/ProfilePage';
 import ViewSupplierPage from './pages/supplier/ViewSupplierPage';
+import RequestProforma from './pages/client/RequestProforma';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
@@ -30,6 +31,7 @@ export const Routes = () => {
 					<AuthRoute exact path='/client' component={clients} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewSupplierPage} />
+					<AuthRoute exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute
 						exact
