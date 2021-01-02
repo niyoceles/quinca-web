@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMyProfile } from '../../redux/actions';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+
 // import TextField from '@material-ui/core/TextField';
 // import Link from '@material-ui/core/Link';
 // import Grid from '@material-ui/core/Grid';
 // import CircularProgress from '@material-ui/core/CircularProgress';
 // import Alert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import EditProfile from './EditProfile';
@@ -29,6 +31,15 @@ const useStyles = makeStyles(theme => ({
 	},
 	progress: {
 		position: 'absolute',
+	},
+	spin: {
+		position: 'relative',
+		top: '50%',
+		left: '45%',
+		boxSizing: 'border-box',
+		margin: 'auto',
+		width: '100px !important',
+		height: '100px !important',
 	},
 }));
 
@@ -53,7 +64,7 @@ const Profile = () => {
 
 	return (
 		<React.Fragment>
-			{profile &&
+			{profile !== undefined ? (
 				profile.map(i => (
 					<>
 						<Title>
@@ -122,7 +133,10 @@ const Profile = () => {
 							</div>
 						</ResponsiveContainer>
 					</>
-				))}
+				))
+			) : (
+				<CircularProgress className={classes.spin} />
+			)}
 		</React.Fragment>
 	);
 };

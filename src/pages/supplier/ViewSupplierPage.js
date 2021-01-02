@@ -34,6 +34,7 @@ import { green } from '@material-ui/core/colors';
 import ModalUi from '../../components/Modals/Modal';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
@@ -103,6 +104,15 @@ const useStyles = makeStyles(theme => ({
 		background: 'white',
 		position: 'fixed',
 		zIndex: 10,
+	},
+	spin: {
+		position: 'relative',
+		top: '50%',
+		left: '45%',
+		boxSizing: 'border-box',
+		margin: 'auto',
+		width: '100px !important',
+		height: '100px !important',
 	},
 }));
 
@@ -563,7 +573,9 @@ const ViewSupplierPage = props => {
 					<Divider />
 				</main>
 			) : (
-				<Spinner />
+				<div style={{ margin: 'auto', width: '70vw', height: '70vh' }}>
+					<CircularProgress className={classes.spin} />
+				</div>
 			)}
 			{/* Footer */}
 			<footer className={classes.footer}>

@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
@@ -15,7 +16,7 @@ import { getHomeItems } from '../../redux/actions';
 import { Link as ReactLink } from 'react-router-dom';
 import itemImage from '../../assets/images/bg2.unsplash.jpg';
 import { HomeSlide } from '../../components/client';
-import ClientLayout from '../../layouts/ClientLayout'
+import ClientLayout from '../../layouts/ClientLayout';
 
 const useStyles = makeStyles(theme => ({
 	main: {
@@ -64,6 +65,11 @@ const useStyles = makeStyles(theme => ({
 	links: {
 		textDecoration: 'none',
 		color: 'inherit',
+	},
+	spin: {
+		margin: '50px auto',
+		width: '50px !important',
+		height: '50px !important',
 	},
 }));
 
@@ -117,303 +123,306 @@ export default function LandingPage() {
 
 	return (
 		<ClientLayout>
-				<Container
-					className={[classes.topCardGrid, classes.topBodyButtons]}
-					maxWidth='lg'
-				>
-					<Grid container spacing={2}>
-						<Grid item xs={12} sm={6} md={3}>
-							<Card className={classes.topCard}>
-								<CardContent className={classes.cardContent}>
-									<Typography gutterBottom variant='h5' component='h2'>
-										Categories
-									</Typography>
-									{categories &&
-										categories.map(category => (
-											<Link
-												display='block'
-												variant='body2'
-												href={category.url}
-												key={category}
-												className={classes.links}
+			<Container
+				className={[classes.topCardGrid, classes.topBodyButtons]}
+				maxWidth='lg'
+			>
+				<Grid container spacing={2}>
+					<Grid item xs={12} sm={6} md={3}>
+						<Card className={classes.topCard}>
+							<CardContent className={classes.cardContent}>
+								<Typography gutterBottom variant='h5' component='h2'>
+									Categories
+								</Typography>
+								{categories !== undefined ? (
+									categories.map(category => (
+										<Link
+											display='block'
+											variant='body2'
+											href={category.url}
+											key={category}
+											className={classes.links}
+										>
+											<Grid
+												container
+												direction='row'
+												spacing={1}
+												alignItems='center'
 											>
+												<Grid item>
+													<DoubleArrowRoundedIcon />
+												</Grid>
+												<Grid item>
+													{' '}
+													<Typography
+														variant='body1'
+														color='textPrimary'
+														align='center'
+													>
+														{category.name}
+													</Typography>
+												</Grid>
+											</Grid>
+										</Link>
+									))
+								) : (
+									<CircularProgress className={classes.spin} />
+								)}
+							</CardContent>
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6} md={6}>
+						<Card className={classes.topCard}>
+							<HomeSlide />
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6} md={3}>
+						<Card className={classes.topCard}>
+							<ReactLink to='/footer' className={classes.links}>
+								<CardMedia
+									className={classes.cardMedia}
+									image={itemImage}
+									title='Image title'
+								/>
+							</ReactLink>
+						</Card>
+						<Card className={classes.topCard}>
+							<ReactLink to='/footer' className={classes.links}>
+								<CardMedia
+									className={classes.cardMedia}
+									image={itemImage}
+									title='Image title'
+								/>
+							</ReactLink>
+						</Card>
+					</Grid>
+				</Grid>
+			</Container>
+			<Divider />
+			<Container className={classes.cardGrid} maxWidth='lg'>
+				<Typography
+					component='h3'
+					variant='h5'
+					align='center'
+					color='textPrimary'
+					className={classes.titleFeature}
+					gutterBottom
+				>
+					Most Featured Materials
+				</Typography>
+				<Grid container spacing={4}>
+					{constructionItems !== undefined ? (
+						constructionItems.map(card => (
+							<Grid item key={card} xs={12} sm={6} md={4}>
+								<Card className={classes.card}>
+									<ReactLink to={`/view/${card.id}`} className={classes.links}>
+										<CardMedia
+											className={classes.cardMedia}
+											image={itemImage}
+											title={card.itemName}
+										/>
+										<CardContent className={classes.cardContent}>
+											<Typography gutterBottom variant='h5' component='h2'>
+												{card.names}
+											</Typography>
+											<div style={{ marginLeft: 15 }}>
+												<Typography
+													variant='body1'
+													color='textPrimary'
+													align='left'
+													gutterBottom
+												>
+													{card.itemName}
+												</Typography>
 												<Grid
 													container
 													direction='row'
 													spacing={1}
 													alignItems='center'
 												>
-													<Grid item>
-														<DoubleArrowRoundedIcon />
-													</Grid>
-													<Grid item>
-														{' '}
+													<Grid item align='left'>
 														<Typography
-															variant='body1'
-															color='textPrimary'
-															align='center'
+															variant='body2'
+															color='textSecondary'
+															align='left'
+															gutterBottom
 														>
-															{category.name}
+															{card.category}
 														</Typography>
 													</Grid>
+													<Grid item></Grid>
+													<Grid item align='right'>
+														{' '}
+														<Button
+															size='medium'
+															color='primary'
+															style={{ marginTop: -5 }}
+														>
+															RWF {card.itemPrice}
+														</Button>
+													</Grid>
 												</Grid>
-											</Link>
-										))}
-								</CardContent>
-							</Card>
-						</Grid>
-						<Grid item xs={12} sm={6} md={6}>
-							<Card className={classes.topCard}>
-								<HomeSlide />
-							</Card>
-						</Grid>
-						<Grid item xs={12} sm={6} md={3}>
-							<Card className={classes.topCard}>
-								<ReactLink to='/footer' className={classes.links}>
-									<CardMedia
-										className={classes.cardMedia}
-										image={itemImage}
-										title='Image title'
-									/>
-								</ReactLink>
-							</Card>
-							<Card className={classes.topCard}>
-								<ReactLink to='/footer' className={classes.links}>
-									<CardMedia
-										className={classes.cardMedia}
-										image={itemImage}
-										title='Image title'
-									/>
-								</ReactLink>
-							</Card>
-						</Grid>
-					</Grid>
-				</Container>
-				<Divider />
-				<Container className={classes.cardGrid} maxWidth='lg'>
-					<Typography
-						component='h3'
-						variant='h5'
-						align='center'
-						color='textPrimary'
-						className={classes.titleFeature}
-						gutterBottom
-					>
-						Most Featured Materials
-					</Typography>
-					<Grid container spacing={4}>
-						{constructionItems &&
-							constructionItems.map(card => (
-								<Grid item key={card} xs={12} sm={6} md={4}>
-									<Card className={classes.card}>
-										<ReactLink
-											to={`/view/${card.id}`}
-											className={classes.links}
-										>
-											<CardMedia
-												className={classes.cardMedia}
-												image={itemImage}
-												title={card.itemName}
-											/>
-											<CardContent className={classes.cardContent}>
-												<Typography gutterBottom variant='h5' component='h2'>
-													{card.names}
+											</div>
+										</CardContent>
+									</ReactLink>
+								</Card>
+							</Grid>
+						))
+					) : (
+						<CircularProgress className={classes.spin} />
+					)}
+				</Grid>
+			</Container>
+			<Divider />
+			<Container className={classes.cardGrid} maxWidth='lg'>
+				<Typography
+					component='h3'
+					variant='h5'
+					align='center'
+					color='textPrimary'
+					className={classes.titleFeature}
+					gutterBottom
+				>
+					Featured Tools
+				</Typography>
+				<Grid container spacing={4}>
+					{plombingItems !== undefined ? (
+						plombingItems.map(card => (
+							<Grid item key={card} xs={12} sm={6} md={3}>
+								<Card className={classes.card} elevation={3}>
+									<ReactLink to={`/view/${card.id}`} className={classes.links}>
+										<CardMedia
+											className={classes.cardMedia}
+											image={itemImage}
+											title='Image title'
+										/>
+										<CardContent className={classes.cardContent}>
+											<Typography gutterBottom variant='h5' component='h2'>
+												{card.names}
+											</Typography>
+											<div style={{ marginLeft: 15 }}>
+												<Typography
+													variant='body1'
+													color='textPrimary'
+													align='left'
+													gutterBottom
+												>
+													{card.itemName}
 												</Typography>
-												<div style={{ marginLeft: 15 }}>
-													<Typography
-														variant='body1'
-														color='textPrimary'
-														align='left'
-														gutterBottom
-													>
-														{card.itemName}
-													</Typography>
-													<Grid
-														container
-														direction='row'
-														spacing={1}
-														alignItems='center'
-													>
-														<Grid item align='left'>
-															<Typography
-																variant='body2'
-																color='textSecondary'
-																align='left'
-																gutterBottom
-															>
-																{card.category}
-															</Typography>
-														</Grid>
-														<Grid item></Grid>
-														<Grid item align='right'>
-															{' '}
-															<Button
-																size='medium'
-																color='primary'
-																style={{ marginTop: -5 }}
-															>
-																RWF {card.itemPrice}
-															</Button>
-														</Grid>
+												<Grid
+													container
+													direction='row'
+													spacing={1}
+													alignItems='center'
+												>
+													<Grid item align='left'>
+														<Typography
+															variant='body2'
+															color='textSecondary'
+															align='left'
+															gutterBottom
+														>
+															{card.category}
+														</Typography>
 													</Grid>
-												</div>
-											</CardContent>
-										</ReactLink>
-									</Card>
-								</Grid>
-							))}
-					</Grid>
-				</Container>
-				<Divider />
-				<Container className={classes.cardGrid} maxWidth='lg'>
-					<Typography
-						component='h3'
-						variant='h5'
-						align='center'
-						color='textPrimary'
-						className={classes.titleFeature}
-						gutterBottom
-					>
-						Featured Tools
-					</Typography>
-					<Grid container spacing={4}>
-						{plombingItems &&
-							plombingItems.map(card => (
-								<Grid item key={card} xs={12} sm={6} md={3}>
-									<Card className={classes.card} elevation={3}>
-										<ReactLink
-											to={`/view/${card.id}`}
-											className={classes.links}
-										>
-											<CardMedia
-												className={classes.cardMedia}
-												image={itemImage}
-												title='Image title'
-											/>
-											<CardContent className={classes.cardContent}>
-												<Typography gutterBottom variant='h5' component='h2'>
-													{card.names}
+													<Grid item></Grid>
+													<Grid item align='right'>
+														{' '}
+														<Button
+															size='medium'
+															color='primary'
+															style={{ marginTop: -5 }}
+														>
+															RWF {card.itemPrice}
+														</Button>
+													</Grid>
+												</Grid>
+											</div>
+										</CardContent>
+									</ReactLink>
+								</Card>
+							</Grid>
+						))
+					) : (
+						<CircularProgress className={classes.spin} />
+					)}
+				</Grid>
+			</Container>
+			<Divider />
+			<Container className={classes.cardGrid} maxWidth='lg'>
+				<Typography
+					component='h3'
+					variant='h5'
+					align='center'
+					color='textPrimary'
+					className={classes.titleFeature}
+					gutterBottom
+				>
+					Additional Material tools
+				</Typography>
+				<Grid container spacing={4}>
+					{electricityItems !== undefined ? (
+						electricityItems.map(card => (
+							<Grid item key={card} xs={12} sm={6} md={3}>
+								<Card className={classes.card} elevation={3}>
+									<ReactLink to={`/view/${card.id}`} className={classes.links}>
+										<CardMedia
+											className={classes.cardMedia}
+											image={itemImage}
+											title='Image title'
+										/>
+										<CardContent className={classes.cardContent}>
+											<Typography gutterBottom variant='h5' component='h2'>
+												{card.names}
+											</Typography>
+											<div style={{ marginLeft: 15 }}>
+												<Typography
+													variant='body1'
+													color='textPrimary'
+													align='left'
+													gutterBottom
+												>
+													{card.itemName}
 												</Typography>
-												<div style={{ marginLeft: 15 }}>
-													<Typography
-														variant='body1'
-														color='textPrimary'
-														align='left'
-														gutterBottom
-													>
-														{card.itemName}
-													</Typography>
-													<Grid
-														container
-														direction='row'
-														spacing={1}
-														alignItems='center'
-													>
-														<Grid item align='left'>
-															<Typography
-																variant='body2'
-																color='textSecondary'
-																align='left'
-																gutterBottom
-															>
-																{card.category}
-															</Typography>
-														</Grid>
-														<Grid item></Grid>
-														<Grid item align='right'>
-															{' '}
-															<Button
-																size='medium'
-																color='primary'
-																style={{ marginTop: -5 }}
-															>
-																RWF {card.itemPrice}
-															</Button>
-														</Grid>
+												<Grid
+													container
+													direction='row'
+													spacing={1}
+													alignItems='center'
+												>
+													<Grid item align='left'>
+														<Typography
+															variant='body2'
+															color='textSecondary'
+															align='left'
+															gutterBottom
+														>
+															{card.category}
+														</Typography>
 													</Grid>
-												</div>
-											</CardContent>
-										</ReactLink>
-									</Card>
-								</Grid>
-							))}
-					</Grid>
-				</Container>
-				<Divider />
-				<Container className={classes.cardGrid} maxWidth='lg'>
-					<Typography
-						component='h3'
-						variant='h5'
-						align='center'
-						color='textPrimary'
-						className={classes.titleFeature}
-						gutterBottom
-					>
-						Additional Material tools
-					</Typography>
-					<Grid container spacing={4}>
-						{electricityItems &&
-							electricityItems.map(card => (
-								<Grid item key={card} xs={12} sm={6} md={3}>
-									<Card className={classes.card} elevation={3}>
-										<ReactLink
-											to={`/view/${card.id}`}
-											className={classes.links}
-										>
-											<CardMedia
-												className={classes.cardMedia}
-												image={itemImage}
-												title='Image title'
-											/>
-											<CardContent className={classes.cardContent}>
-												<Typography gutterBottom variant='h5' component='h2'>
-													{card.names}
-												</Typography>
-												<div style={{ marginLeft: 15 }}>
-													<Typography
-														variant='body1'
-														color='textPrimary'
-														align='left'
-														gutterBottom
-													>
-														{card.itemName}
-													</Typography>
-													<Grid
-														container
-														direction='row'
-														spacing={1}
-														alignItems='center'
-													>
-														<Grid item align='left'>
-															<Typography
-																variant='body2'
-																color='textSecondary'
-																align='left'
-																gutterBottom
-															>
-																{card.category}
-															</Typography>
-														</Grid>
-														<Grid item></Grid>
-														<Grid item align='right'>
-															{' '}
-															<Button
-																size='medium'
-																color='primary'
-																style={{ marginTop: -5 }}
-															>
-																RWF {card.itemPrice}
-															</Button>
-														</Grid>
+													<Grid item></Grid>
+													<Grid item align='right'>
+														{' '}
+														<Button
+															size='medium'
+															color='primary'
+															style={{ marginTop: -5 }}
+														>
+															RWF {card.itemPrice}
+														</Button>
 													</Grid>
-												</div>
-											</CardContent>
-										</ReactLink>
-									</Card>
-								</Grid>
-							))}
-					</Grid>
-				</Container>
-			</ClientLayout>
+												</Grid>
+											</div>
+										</CardContent>
+									</ReactLink>
+								</Card>
+							</Grid>
+						))
+					) : (
+						<CircularProgress className={classes.spin} />
+					)}
+				</Grid>
+			</Container>
+		</ClientLayout>
 	);
 }

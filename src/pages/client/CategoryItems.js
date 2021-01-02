@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoryItems } from '../../redux/actions';
@@ -76,7 +76,6 @@ export default function CategoryItems(props) {
 		dispatch(getCategoryItems(category));
 	}, [category, dispatch]);
 
-	// console.log('dthis')
 	return (
 		<ClientLayout>
 			<br />

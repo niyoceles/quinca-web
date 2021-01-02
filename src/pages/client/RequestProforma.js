@@ -2,17 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Navbar from '../../components/Navbar';
 import Divider from '@material-ui/core/Divider';
 import ProformaItems from '../../components/client/ProformaItems';
 import Fab from '@material-ui/core/Fab';
@@ -22,7 +15,7 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllItems } from '../../redux/actions';
+import { getAllItems, requestProforma } from '../../redux/actions';
 import { green } from '@material-ui/core/colors';
 import ModalUi from '../../components/Modals/Modal';
 import Table from '@material-ui/core/Table';
@@ -32,9 +25,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Spinner from '../../components/Ui/Spinner/Spinner';
 import moment from 'moment';
-import { requestProforma } from '../../redux/actions/clientActions';
-import { connect } from 'react-redux';
-import HotelWidget from '../../components/SidebarWidget/HotelWidget';
+import DateWidget from '../../components/SidebarWidget/DateWidget';
 import itemImage from '../../assets/images/bg2.unsplash.jpg';
 import ClientLayout from '../../layouts/ClientLayout';
 
@@ -129,7 +120,6 @@ const RequestProforma = props => {
 	const classes = useStyles();
 	const bookedItems = JSON.parse(localStorage.getItem('bookingSummary'));
 	const totalPrice = (localStorage.getItem('totalPrice') || 0) * 1;
-	const [location, setLocation] = useState('choose');
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(moment());
 	const [checkInDate, setCheckInDate] = useState(moment());
@@ -141,7 +131,6 @@ const RequestProforma = props => {
 		deadline: selectedDate,
 	});
 	const items = useSelector(state => state.item.allItems);
-	console.log('ddddddddddddd', items);
 	// const metadata = useSelector(state => stateallItemsItems);
 	// const cont = useSelector(state => state.item.relatedItems);
 
@@ -182,8 +171,6 @@ const RequestProforma = props => {
 		dispatch(getAllItems());
 	}, [dispatch]);
 
-	console.log('dddddddddddddddddd', items.allitems);
-
 	const handleOnChange = e => {
 		const updatedBookingInfo = { ...bookingInfo };
 		updatedBookingInfo[e.target.name] = e.target.value;
@@ -215,7 +202,7 @@ const RequestProforma = props => {
 			...tempBookingEtras,
 			itemsArray: items,
 		};
-		await props.requestProforma(bookInfo);
+		await dispatch(requestProforma(bookInfo));
 		setOpen(!open);
 	};
 
@@ -261,7 +248,7 @@ const RequestProforma = props => {
 								/>
 							</Grid>
 							<Grid item xs={4} sm={3} md={4}>
-								<HotelWidget
+								<DateWidget
 									selectedDate={selectedDate}
 									checkInDate={checkInDate}
 									checkOutDate={checkOutDate}
@@ -338,7 +325,7 @@ const RequestProforma = props => {
 														align='center'
 														style={{ marginTop: '20px' }}
 													>
-														Oops! You haven't booked anything yet!
+														Oops! You haven't requested anything yet!
 													</Typography>
 												)}
 												{bookedItems && totalPrice !== 0 ? (
@@ -402,7 +389,7 @@ const RequestProforma = props => {
 										className={classes.btnSize}
 										onClick={handleToggleModal}
 									>
-										Book now
+										Request Now
 									</Button>
 								</ThemeProvider>
 							</Grid>
@@ -417,4 +404,4 @@ const RequestProforma = props => {
 	);
 };
 
-export default connect(null, { getAllItems, requestProforma })(RequestProforma);
+export default RequestProforma;

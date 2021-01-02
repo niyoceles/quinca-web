@@ -8,7 +8,11 @@ import {
 	GET_CARS_SUCCESS,
 	GET_CARS_FAILURE,
 	BOOKING,
-
+	GET_CLIENT_BOOKINGS,
+	GET_MY_PROFORMA_SUCCESS,
+	GET_MY_PROFORMA_FAILURE,
+	GET_SINGLE_PROFORMA_SUCCESS,
+	GET_SINGLE_PROFORMA_FAILURE,
 } from '../types';
 
 const initialState = {
@@ -17,6 +21,8 @@ const initialState = {
 	tours: {},
 	cars: {},
 	bookedItems: [],
+	proformaItems: [],
+	proformaItem: [],
 };
 
 export default function (state = initialState, action) {
@@ -65,6 +71,31 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				bookedItems: [...state.bookedItems, ...action.payload],
+			};
+		case GET_CLIENT_BOOKINGS:
+			return {
+				...state,
+				bookedItems: [...state.bookedItems, ...action.payload],
+			};
+		case GET_MY_PROFORMA_SUCCESS:
+			return {
+				...state,
+				proformaItems: action.payload,
+			};
+		case GET_MY_PROFORMA_FAILURE:
+			return {
+				...state,
+				proformaItems: action.payload,
+			};
+		case GET_SINGLE_PROFORMA_SUCCESS:
+			return {
+				...state,
+				proformaItem: action.payload,
+			};
+		case GET_SINGLE_PROFORMA_FAILURE:
+			return {
+				...state,
+				proformaItem: action.payload,
 			};
 		default:
 			return state;

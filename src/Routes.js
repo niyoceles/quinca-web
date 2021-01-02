@@ -12,6 +12,11 @@ import ReportPage from './pages/supplier/ReportPage';
 import ProfilePage from './pages/supplier/ProfilePage';
 import ViewSupplierPage from './pages/supplier/ViewSupplierPage';
 import RequestProforma from './pages/client/RequestProforma';
+//
+import Bookings from './pages/client/Bookings';
+import MyProforma from './pages/client/MyProforma';
+import SingleProformaPage from './pages/client/SingleProformaPage';
+import MyProfile from './components/client/MyProfile';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
@@ -33,6 +38,14 @@ export const Routes = () => {
 					<Route exact path='/view/:id' component={ViewSupplierPage} />
 					<AuthRoute exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
+					<AuthRoute exact path='/my-proforma' component={MyProforma} />
+					<AuthRoute
+						exact
+						path='/my-proforma/:id'
+						component={SingleProformaPage}
+					/>
+					<AuthRoute exact path='/bookings' component={Bookings} />
+					<AuthRoute exact path='/me' component={MyProfile} />
 					<AuthRoute
 						exact
 						path='/account/supplier/items'
