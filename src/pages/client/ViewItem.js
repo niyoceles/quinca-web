@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +11,6 @@ import Link from '@material-ui/core/Link';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Navbar from '../../components/Navbar';
 import Divider from '@material-ui/core/Divider';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -21,7 +19,7 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import EmailIcon from '@material-ui/icons/Email';
-import SupplierItems from '../../components/supplier/SupplierItems';
+import RelatedItems from '../../components/supplier/RelatedItems';
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -29,7 +27,7 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSupplier, relatedItems } from '../../redux/actions';
+import { viewItem, relatedItems, hotelBooking } from '../../redux/actions';
 import { green } from '@material-ui/core/colors';
 import ModalUi from '../../components/Modals/Modal';
 import Table from '@material-ui/core/Table';
@@ -39,10 +37,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
-import { hotelBooking } from '../../redux/actions/clientActions';
 import { connect } from 'react-redux';
 import HotelWidget from '../../components/SidebarWidget/HotelWidget';
 import itemImage from '../../assets/images/bg2.unsplash.jpg';
+import ClientLayout from '../../layouts/ClientLayout';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -159,11 +157,10 @@ export const Slides = () => {
 	);
 };
 
-const ViewSupplierPage = props => {
+const ViewItem = props => {
 	const classes = useStyles();
 	const bookedItems = JSON.parse(localStorage.getItem('bookingSummary'));
 	const totalPrice = (localStorage.getItem('totalPrice') || 0) * 1;
-	const [location, setLocation] = useState('choose');
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(moment());
 	const [checkInDate, setCheckInDate] = useState(moment());
@@ -184,9 +181,6 @@ const ViewSupplierPage = props => {
 	// const metadata = useSelector(state => state.item.relatedItems);
 	// const cont = useSelector(state => state.item.relatedItems);
 
-	if (related) {
-		console.log('vvvssss', related.relatedItems);
-	}
 	const handleToggleModal = () => {
 		setOpen(!open);
 	};
@@ -223,14 +217,12 @@ const ViewSupplierPage = props => {
 	useEffect(() => {
 		const lastPath = window.location.pathname;
 		const id = lastPath.split('/');
-		dispatch(getSupplier(id[2]));
+		dispatch(viewItem(id[2]));
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (profileSupplier1.itemType) {
-			dispatch(relatedItems(profileSupplier1.itemType));
-		}
-	}, [dispatch, profileSupplier1.itemType]);
+		dispatch(relatedItems(profileSupplier1.category));
+	}, [dispatch, profileSupplier1.category]);
 
 	const handleOnChange = e => {
 		const updatedBookingInfo = { ...bookingInfo };
@@ -277,9 +269,7 @@ const ViewSupplierPage = props => {
 	};
 
 	return (
-		<React.Fragment>
-			<CssBaseline />
-			<Navbar />
+		<ClientLayout>
 			{profileSupplier1.id ? (
 				<main key={profileSupplier1.id} container>
 					{/* topBody unit */}
@@ -316,10 +306,10 @@ const ViewSupplierPage = props => {
 
 						<Grid container spacing={3}>
 							<Grid item xs={12} sm={6} md={8}>
-								<Card className={classes.card} elevation={3}>
+								<Card className={classes.card} elevation={1}>
 									<Slides />
 									<CardContent className={classes.cardContent}>
-										<Card style={{ marginTop: 10 }} elevation={3}>
+										<Card style={{ marginTop: 10 }} elevation={0}>
 											<CardHeader
 												avatar={<VerifiedUserIcon color='primary' />}
 												action={
@@ -330,12 +320,16 @@ const ViewSupplierPage = props => {
 												subheader={'FOR ONE ITEM'}
 												title={`${profileSupplier1.itemPrice} RWF`}
 											/>
-											<CardActions>
-												<Button size='large'>
-													More about {profileSupplier1.itemName}
-												</Button>
-											</CardActions>
 											<CardContent>
+												<Typography
+													component='h3'
+													variant='h6'
+													align='left'
+													color='textPrimary'
+												>
+													Product description
+												</Typography>
+												<br />
 												<Typography
 													variant='body1'
 													color='textSecondary'
@@ -349,17 +343,13 @@ const ViewSupplierPage = props => {
 													mussels, if you like. This impressive paella is a
 													perfect party dish and a fun meal to cook together
 													with your guests. Add 1 cup of frozen peas along with
-													the mussels, if you like. This impressive paella is a
-													perfect party dish and a fun meal to cook together
-													with your guests. Add 1 cup of frozen peas along with
-													the mussels, if you like. This impressive paella is a
-													perfect party dish and a fun meal to cook together
-													with your guests. Add 1 cup of frozen peas along with
 													the mussels, if you like.
 												</Typography>
 											</CardContent>
 										</Card>
+										<hr />
 									</CardContent>
+
 									<CardActions>
 										<Button size='large' color='primary'>
 											Share on Social media
@@ -405,12 +395,26 @@ const ViewSupplierPage = props => {
 								</Card>
 							</Grid>
 						</Grid>
-
-						{/* Supplier items component --------------------------------------- */}
-						<SupplierItems
-							items={related ? related.relatedItems : null}
-							addItem={handleAddItem}
-						/>
+						<br />
+						<br />
+						<Grid container spacing={4}>
+							<Divider />
+							<Grid item xs={12} sm={12} md={12}>
+								<Typography
+									component='h3'
+									variant='h6'
+									align='left'
+									color='textPrimary'
+								>
+									Related material item
+								</Typography>
+								{/* Supplier items component --------------------------------------- */}
+								<RelatedItems
+									items={related ? related.relatedItems : null}
+									addItem={handleAddItem}
+								/>
+							</Grid>
+						</Grid>
 
 						{/* Booking summary modal ----------------------------------------------*/}
 						<ModalUi open={open} toggleModal={handleToggleModal}>
@@ -555,24 +559,8 @@ const ViewSupplierPage = props => {
 					<CircularProgress className={classes.spin} />
 				</div>
 			)}
-			{/* Footer */}
-			<footer className={classes.footer}>
-				<Typography variant='h6' align='center' gutterBottom>
-					Footer
-				</Typography>
-				<Typography
-					variant='subtitle1'
-					align='center'
-					color='textSecondary'
-					component='p'
-				>
-					Something here to give the footer a purpose!
-				</Typography>
-				<Copyright />
-			</footer>
-			{/* End footer */}
-		</React.Fragment>
+		</ClientLayout>
 	);
 };
 
-export default connect(null, { hotelBooking, relatedItems })(ViewSupplierPage);
+export default ViewItem;

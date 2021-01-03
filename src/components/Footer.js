@@ -28,6 +28,11 @@ const useStyles = makeStyles(theme => ({
 	paymentImage: {
 		padding: 5,
 	},
+	links: {
+		textDecoration: 'none !important',
+		color: 'inherit',
+		padding: 2,
+	},
 }));
 
 function Copyright() {
@@ -222,6 +227,7 @@ const Footer = () => {
 								href={category.url}
 								key={category}
 								align='center'
+								className={classes.links}
 							>
 								<Typography
 									variant='body2'
@@ -250,6 +256,7 @@ const Footer = () => {
 							href={network.url}
 							key={network}
 							align='center'
+							className={classes.links}
 						>
 							<Typography
 								variant='body2'
@@ -278,6 +285,7 @@ const Footer = () => {
 							href={network.url}
 							key={network}
 							align='center'
+							className={classes.links}
 						>
 							<Grid container direction='row' spacing={1} alignItems='center'>
 								<Grid item>

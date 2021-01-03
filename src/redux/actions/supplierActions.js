@@ -40,7 +40,7 @@ export const updateMyProfile = () => dispatch => {
 };
 
 // Get my profile
-export const getSupplier = id => dispatch => {
+export const viewItem = id => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/item/${id}`)
 		.then(res => {

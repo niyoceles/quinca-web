@@ -10,7 +10,6 @@ import BookingsPage from './pages/supplier/BookingsPage';
 import DashboardPage from './pages/supplier/DashboardPage';
 import ReportPage from './pages/supplier/ReportPage';
 import ProfilePage from './pages/supplier/ProfilePage';
-import ViewSupplierPage from './pages/supplier/ViewSupplierPage';
 import RequestProforma from './pages/client/RequestProforma';
 //
 import Bookings from './pages/client/Bookings';
@@ -24,6 +23,7 @@ import SignupPage from './pages/Auth/SignupPage';
 import Cars from './components/client/searchResult/Car';
 import Footer from './components/Footer';
 import CategoryItems from './pages/client/CategoryItems';
+import ViewItem from './pages/client/ViewItem';
 
 export const Routes = () => {
 	return (
@@ -35,7 +35,7 @@ export const Routes = () => {
 					<Route exact path='/signup' component={SignupPage} />
 					<AuthRoute exact path='/client' component={clients} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
-					<Route exact path='/view/:id' component={ViewSupplierPage} />
+					<Route exact path='/view/:id' component={ViewItem} />
 					<AuthRoute exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />
