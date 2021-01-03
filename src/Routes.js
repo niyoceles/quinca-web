@@ -16,7 +16,7 @@ import RequestProforma from './pages/client/RequestProforma';
 import Bookings from './pages/client/Bookings';
 import MyProforma from './pages/client/MyProforma';
 import SingleProformaPage from './pages/client/SingleProformaPage';
-import MyProfile from './components/client/MyProfile';
+import MyProfile from './pages/client/MyProfile';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';

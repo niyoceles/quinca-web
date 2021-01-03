@@ -31,7 +31,7 @@ import ClientLayout from '../../layouts/ClientLayout';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
-		paddingTop: theme.spacing(16),
+		paddingTop: theme.spacing(1),
 		paddingBottom: theme.spacing(2),
 		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
@@ -54,15 +54,6 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(6),
 		position: 'sticky',
 		zIndex: '100',
-	},
-	titleOrganization: {
-		marginTop: -50,
-		marginLeft: 10,
-		display: 'flex',
-	},
-	areaStyle: {
-		marginTop: -30,
-		marginLeft: 25,
 	},
 	slide: {
 		height: '340px',
@@ -215,188 +206,113 @@ const RequestProforma = props => {
 
 	return (
 		<ClientLayout>
+			<br />
 			{items.allitems ? (
-				<main key={items.allitems} container>
-					<Container item className={classes.cardGrid} maxWidth='lg'>
-						<Typography
-							component='h2'
-							variant='h4'
-							color='textPrimary'
-							className={classes.titleOrganization}
-							gutterBottom
-						>
-							<span style={{ flex: 1 }}>
-								<Fab
-									variant='extended'
-									size='medium'
-									color='primary'
-									aria-label='add'
-									className={classes.btnBooking}
-									onClick={handleToggleModal}
-								>
-									<NavigationIcon />
-									My proforma summary
-								</Fab>
-							</span>
-						</Typography>
-
-						<Grid container spacing={1}>
-							<Grid item xs={4} sm={4} md={8}>
-								<ProformaItems
-									items={items.allitems ? items.allitems : null}
-									addItem={handleAddItem}
-								/>
-							</Grid>
-							<Grid item xs={4} sm={3} md={4}>
-								<DateWidget
-									selectedDate={selectedDate}
-									checkInDate={checkInDate}
-									checkOutDate={checkOutDate}
-									onDateChange={onDateChange}
-									handleOnChange={handleOnChange}
-								/>
-							</Grid>
+				<Container item className={classes.cardGrid} maxWidth='lg'>
+					<Grid container spacing={2}>
+						<Grid item xs={4} sm={4} md={8}>
+							<ProformaItems
+								items={items.allitems ? items.allitems : null}
+								addItem={handleAddItem}
+							/>
 						</Grid>
-						{/* Supplier items component --------------------------------------- */}
-
-						{/* Booking summary modal ----------------------------------------------*/}
-						<ModalUi open={open} toggleModal={handleToggleModal}>
-							<Grid container spacing={3}>
-								<Grid item xs={12} sm={5} md={5}>
-									<Card className={classes.card} elevation={3}>
-										<Typography
-											component='h1'
-											variant='h3'
-											color='textPrimary'
-											gutterBottom
-											item
-											md={12}
-											align='center'
-											style={{ margin: '30px' }}
+						<Grid item xs={4} sm={3} md={4}>
+							<Typography
+								component='h2'
+								variant='h4'
+								color='textPrimary'
+								gutterBottom
+								item
+								md={12}
+								align='center'
+							>
+							Your	Proforma summary
+							</Typography>
+							<TableContainer>
+								<Table className={classes.table} aria-label='customized table'>
+									<TableBody>
+										{bookedItems !== null && totalPrice !== 0 ? (
+											bookedItems.map(item => (
+												<TableRow key={item.key}>
+													<TableCell component='th' scope='row'>
+														{item.itemName}
+													</TableCell>
+													<TableCell align='right'>
+														{item.itemPrice} Rwf
+													</TableCell>
+													<TableCell align='right'>
+														<Button color='secondary'>
+															<CancelIcon
+																onClick={e => handleAddItem(e, item)}
+															/>
+														</Button>
+													</TableCell>
+												</TableRow>
+											))
+										) : (
+											<Typography
+												component='h6'
+												variant='body1'
+												color='textPrimary'
+												gutterBottom
+												item
+												md={12}
+												align='center'
+												style={{ marginTop: '20px' }}
+											>
+												Oops! You haven't requested anything yet!,
+												<br /> Please check/select the product item
+											</Typography>
+										)}
+										{bookedItems && totalPrice !== 0 ? (
+											<TableRow>
+												<TableCell component='th' scope='row'>
+													<strong>Total</strong>
+												</TableCell>
+												<TableCell align='right'>
+													<strong>{totalPrice}</strong>
+												</TableCell>
+											</TableRow>
+										) : null}
+									</TableBody>
+								</Table>
+							</TableContainer>
+							<hr />
+							<DateWidget
+								selectedDate={selectedDate}
+								checkInDate={checkInDate}
+								checkOutDate={checkOutDate}
+								onDateChange={onDateChange}
+								handleOnChange={handleOnChange}
+							/>
+							<hr />
+							{bookedItems && totalPrice !== 0 ? (
+								<CardActions style={{ position: 'relative', bottom: '0' }}>
+									<ThemeProvider theme={theme}>
+										<Button
+											color='primary'
+											variant='contained'
+											className={classes.btnSize}
+											onClick={() => handlePayLater()}
+											disabled={isButtonDisabled}
 										>
-											{/* {profileSupplier1.organization} */}
-										</Typography>
-									</Card>
-								</Grid>
-								<Grid item xs={12} sm={7} md={7}>
-									<Typography
-										component='h2'
-										variant='h4'
-										color='textPrimary'
-										gutterBottom
-										item
-										md={12}
-										align='center'
-									>
-										Your booking summary
-									</Typography>
-									<TableContainer>
-										<Table
-											className={classes.table}
-											aria-label='customized table'
-										>
-											<TableBody>
-												{bookedItems !== null && totalPrice !== 0 ? (
-													bookedItems.map(item => (
-														<TableRow key={item.key}>
-															<TableCell component='th' scope='row'>
-																{item.itemName}
-															</TableCell>
-															<TableCell align='right'>
-																{item.itemPrice} Rwf
-															</TableCell>
-															<TableCell align='right'>
-																<Button color='secondary'>
-																	<CancelIcon
-																		onClick={e => handleAddItem(e, item)}
-																	/>
-																</Button>
-															</TableCell>
-														</TableRow>
-													))
-												) : (
-													<Typography
-														component='h4'
-														variant='h6'
-														color='textPrimary'
-														gutterBottom
-														item
-														md={12}
-														align='center'
-														style={{ marginTop: '20px' }}
-													>
-														Oops! You haven't requested anything yet!
-													</Typography>
-												)}
-												{bookedItems && totalPrice !== 0 ? (
-													<TableRow>
-														<TableCell component='th' scope='row'>
-															<strong>Total</strong>
-														</TableCell>
-														<TableCell align='right'>
-															<strong>{totalPrice}</strong>
-														</TableCell>
-													</TableRow>
-												) : null}
-											</TableBody>
-										</Table>
-									</TableContainer>
-									<hr />
-									{bookedItems && totalPrice !== 0 ? (
-										<CardActions style={{ position: 'relative', bottom: '0' }}>
-											<Button
-												color='primary'
-												size='small'
-												style={{
-													backgroundColor: '#0080003a',
-													width: '33%',
-													color: 'green',
-												}}
-												onClick={() => handlePayLater()}
-												disabled={isButtonDisabled}
-											>
-												Pay later
-											</Button>
-
-											<Button
-												color='primary'
-												size='small'
-												style={{ backgroundColor: '#1976d23f', width: '33%' }}
-												disableRipple={false}
-											>
-												Checkout
-											</Button>
-											<Button
-												color='secondary'
-												size='small'
-												variant='contained'
-												style={{ width: '33%' }}
-												onClick={handleCancelBooking}
-											>
-												Cancel
-											</Button>
-										</CardActions>
-									) : null}
-								</Grid>
-							</Grid>
-						</ModalUi>
-						{items ? (
-							<Grid item xs={12} sm={8} md={8}>
-								<ThemeProvider theme={theme}>
+											Request Now
+										</Button>
+									</ThemeProvider>
 									<Button
+										color='secondary'
+										size='small'
 										variant='contained'
-										color='primary'
-										className={classes.btnSize}
-										onClick={handleToggleModal}
+										style={{ width: '33%' }}
+										onClick={handleCancelBooking}
 									>
-										Request Now
+										Cancel
 									</Button>
-								</ThemeProvider>
-							</Grid>
-						) : null}
-					</Container>
-					<Divider />
-				</main>
+								</CardActions>
+							) : null}
+						</Grid>
+					</Grid>
+				</Container>
 			) : (
 				<Spinner />
 			)}

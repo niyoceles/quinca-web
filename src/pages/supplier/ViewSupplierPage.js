@@ -38,13 +38,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
-import Spinner from '../../components/Ui/Spinner/Spinner';
 import moment from 'moment';
 import { hotelBooking } from '../../redux/actions/clientActions';
 import { connect } from 'react-redux';
 import HotelWidget from '../../components/SidebarWidget/HotelWidget';
-import TourWidget from '../../components/SidebarWidget/TourWidget';
-import CarWidget from '../../components/SidebarWidget/CarWidget';
 import itemImage from '../../assets/images/bg2.unsplash.jpg';
 
 const useStyles = makeStyles(theme => ({
@@ -398,32 +395,13 @@ const ViewSupplierPage = props => {
 									}}
 								>
 									{/* sidebar widgets -------------------------------------------- */}
-									{profileSupplier[0].supplierType === 'Hotel' ? (
-										<HotelWidget
-											selectedDate={selectedDate}
-											checkInDate={checkInDate}
-											checkOutDate={checkOutDate}
-											onDateChange={onDateChange}
-											handleOnChange={handleOnChange}
-										/>
-									) : profileSupplier[0].supplierType === 'Tour' ? (
-										<TourWidget
-											selectedDate={selectedDate}
-											checkInDate={checkInDate}
-											checkOutDate={checkOutDate}
-											onDateChange={onDateChange}
-											handleOnChange={handleOnChange}
-										/>
-									) : (
-										<CarWidget
-											selectedDate={selectedDate}
-											checkInDate={checkInDate}
-											checkOutDate={checkOutDate}
-											onDateChange={onDateChange}
-											handleOnChange={handleOnChange}
-											location={location}
-										/>
-									)}
+									<HotelWidget
+										selectedDate={selectedDate}
+										checkInDate={checkInDate}
+										checkOutDate={checkOutDate}
+										onDateChange={onDateChange}
+										handleOnChange={handleOnChange}
+									/>
 								</Card>
 							</Grid>
 						</Grid>

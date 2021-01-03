@@ -9,15 +9,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CallIcon from '@material-ui/icons/Call';
+import EmailIcon from '@material-ui/icons/Email';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Avatar from '@material-ui/core/Avatar';
-import Hidden from '@material-ui/core/Hidden';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
@@ -29,6 +30,7 @@ import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import cartImage from '../assets/images/cart.svg';
+import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 // import accountImage from '../assets/images/account.svg';
 
@@ -48,7 +50,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	avatar: {
 		display: 'inline-flex',
-		margin: 7,
+		margin: 0,
+		width: 20,
+		height: 20,
 	},
 	username: {
 		display: 'inline-block',
@@ -59,20 +63,19 @@ const useStyles = makeStyles(theme => ({
 		paddingLeft: '5px',
 	},
 	buttonFontSize: {
-		fontSize: '12px',
+		fontSize: '11px',
 		color: '#a1a1a1',
-		// padding: '15px',
 	},
 	loginButton: {
 		background: '#f5f5f5',
-		color:'#333',
+		color: '#333',
 		borderRadius: '25px',
-		padding: '6px 25px',
+		padding: '4px 20px',
 
 		'&:hover': {
 			background: '#f2f6fb',
 			boxShadow: '0px 1px 1px #888888',
-			color:'#333'
+			color: '#333',
 		},
 	},
 	proformaButton: {
@@ -146,8 +149,8 @@ const useStyles = makeStyles(theme => ({
 export default function ButtonAppBar() {
 	const classes = useStyles();
 	const isAuthenticated = useSelector(state => state.auth.authenticated);
-	const user = useSelector(state => state.auth.user);
-
+	// const user = useSelector(state => state.auth.user);
+	const userinformation = JSON.parse(localStorage.getItem('userInfo'));
 	const [state, setState] = React.useState({
 		top: false,
 		left: false,
@@ -165,6 +168,8 @@ export default function ButtonAppBar() {
 
 		setState({ ...state, [anchor]: open });
 	};
+
+	// const token = localStorage.IdToken;
 
 	const dispatch = useDispatch();
 
@@ -197,6 +202,13 @@ export default function ButtonAppBar() {
 						: null,
 					isAuthenticated
 						? {
+								title: 'My Proforma',
+								path: '/my-proforma',
+								icon: <FeaturedPlayListIcon />,
+						  }
+						: null,
+					isAuthenticated
+						? {
 								title: 'My Bookings',
 								path: '/bookings',
 								icon: <FeaturedPlayListIcon />,
@@ -226,6 +238,17 @@ export default function ButtonAppBar() {
 		</div>
 	);
 
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	function handleClick(event) {
+		if (anchorEl !== event.currentTarget) {
+			setAnchorEl(event.currentTarget);
+		}
+	}
+
+	function handleClose() {
+		setAnchorEl(null);
+	}
 	return (
 		<Fragment>
 			<AppBar
@@ -233,13 +256,15 @@ export default function ButtonAppBar() {
 				color='default'
 				position='sticky'
 				indicatorColor='primary'
-				style={{ backgroundColor: '#fff', backgroundSize: 'cover' }}
+				style={{ backgroundColor: '#fff', backgroundSize: 'cover', height: 40 }}
 				elevation={0}
 			>
-				<Toolbar>
-					<Typography variant='body2' color='textSecondary' align='center'>
-						<CallIcon style={{ marginBottom: -5 }} /> +250 784 051 366
-					</Typography>{' '}
+				<Toolbar style={{ marginTop: -15 }}>
+					<Link to='/' className={classes.links}>
+						<Typography variant='body2' color='textSecondary' align='center'>
+							Home
+						</Typography>
+					</Link>
 					<Typography
 						variant='body1'
 						color='textPrimary'
@@ -253,19 +278,45 @@ export default function ButtonAppBar() {
 							Help
 						</Typography>
 					</Link>
+					<Typography
+						variant='body1'
+						color='textPrimary'
+						align='center'
+						style={{ paddingLeft: 5, paddingRight: 5 }}
+					>
+						|
+					</Typography>{' '}
+					<Typography variant='body2' color='textSecondary' align='center'>
+						<CallIcon style={{ marginBottom: -8 }} /> +250 784 051 366
+					</Typography>{' '}
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
 						{isAuthenticated ? (
-							<Hidden>
-								<Avatar
-									className={classes.avatar}
-									alt={user.names}
-									src='/static/images/avatar/1.jpg'
-								/>
-								<Hidden xsDown>
-									<h4 className={classes.username}>{user.names}</h4>
-								</Hidden>
-							</Hidden>
+							<>
+								<Typography
+									variant='body2'
+									color='textSecondary'
+									align='center'
+								>
+									<EmailIcon style={{ marginBottom: -8 }} />{' '}
+									{userinformation.email}
+								</Typography>
+								<Typography
+									variant='body1'
+									color='textPrimary'
+									align='center'
+									style={{ paddingLeft: 5, paddingRight: 5 }}
+								>
+									|
+								</Typography>{' '}
+								<Typography
+									variant='body2'
+									color='textSecondary'
+									align='center'
+								>
+									{userinformation.names}
+								</Typography>
+							</>
 						) : (
 							<>
 								<Link to='/login' className={classes.links}>
@@ -316,8 +367,11 @@ export default function ButtonAppBar() {
 						</Drawer>
 					</div>
 					{/* <div className={classes.sectionDesktop}> */}
+
 					<Typography variant='h6' className={classes.title}>
-						Quinca Paradi
+						<Link to='/' className={classes.links}>
+							Quinca Paradi
+						</Link>
 					</Typography>
 					{/* <div className={classes.search}>
 						<div className={classes.searchIcon}>
@@ -353,21 +407,95 @@ export default function ButtonAppBar() {
 							</Grid>
 							<Grid item>
 								<img
-									width='70'
-									height='30'
+									width='50'
+									height='25'
 									src={cartImage}
 									alt=''
 									className='edit-img'
 								/>
 							</Grid>
 							<Grid item>
-								{' '}
-								{/* <img width='70' height='30' src={accountImage} alt='' /> */}
-								<Link to='/login' className={classes.links}>
-									<Button color='inherit' className={classes.buttonFontSize}>
+								<div>
+									<Button
+										aria-owns={anchorEl ? 'simple-menu' : undefined}
+										aria-haspopup='true'
+										onClick={handleClick}
+										onMouseOver={handleClick}
+										className={classes.buttonFontSize}
+										color='inherit'
+										style={{ marginTop: -5 }}
+									>
+										<img
+											width='50'
+											height='25'
+											src={userImage}
+											alt=''
+											className='edit-img'
+										/>
 										My Account
 									</Button>
-								</Link>
+									<Menu
+										id='simple-menu'
+										anchorEl={anchorEl}
+										open={Boolean(anchorEl)}
+										onClose={handleClose}
+										MenuListProps={{ onMouseLeave: handleClose }}
+									>
+										<MenuItem
+											onClick={handleClose}
+											style={{ backgroundColor: '#fff' }}
+										></MenuItem>
+										<List>
+											{[
+												isAuthenticated
+													? {
+															title: 'my profile',
+															path: '/me',
+															icon: <AccountBoxIcon />,
+													  }
+													: null,
+												isAuthenticated
+													? {
+															title: 'My Proforma',
+															path: '/my-proforma',
+															icon: <FeaturedPlayListIcon />,
+													  }
+													: null,
+												isAuthenticated
+													? {
+															title: 'My Bookings',
+															path: '/bookings',
+															icon: <FeaturedPlayListIcon />,
+													  }
+													: null,
+												// {
+												// 	title: 'Contact Us',
+												// 	path: '/',
+												// 	icon: <ContactPhoneIcon />,
+												// },
+												// { title: 'About Us', path: '/', icon: <InfoIcon /> },
+											]
+												.filter(e => e !== null)
+												.map(link => (
+													<ListItem button key={link.title}>
+														<ListItemIcon>{link.icon}</ListItemIcon>
+														<Link to={link.path} className={classes.links}>
+															<ListItemText primary={link.title} />
+														</Link>
+													</ListItem>
+												))}
+
+											{isAuthenticated ? (
+												<ListItem button onClick={handleLogout}>
+													{/* <ListItemIcon> */}
+													<ExitToAppIcon />
+													{/* </ListItemIcon> */}{' '}
+													<ListItemText primary='Logout' />
+												</ListItem>
+											) : null}
+										</List>
+									</Menu>
+								</div>
 							</Grid>
 						</Grid>
 					</div>

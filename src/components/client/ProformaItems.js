@@ -36,8 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ProformaItems = (props) => {
   const classes = useStyles();
-  console.log('zzzzz', props.items);
-
   return (
     <div>
       <Typography
@@ -46,7 +44,7 @@ const ProformaItems = (props) => {
         align="left"
         color="textPrimary"
       >
-        Availability for proforma
+        Availability items for proforma
       </Typography>
 
       <div>

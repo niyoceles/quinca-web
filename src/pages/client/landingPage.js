@@ -124,7 +124,7 @@ export default function LandingPage() {
 	return (
 		<ClientLayout>
 			<Container
-				className={[classes.topCardGrid, classes.topBodyButtons]}
+				className={classes.topCardGrid}
 				maxWidth='lg'
 			>
 				<Grid container spacing={2}>

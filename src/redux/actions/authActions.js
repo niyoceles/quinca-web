@@ -9,6 +9,7 @@ import {
 	SET_UNAUTHENTICATED,
 } from '../types';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 const { REACT_APP_BACKEND } = process.env;
 
@@ -45,7 +46,9 @@ export const signupUser = newUserData => dispatch => {
 
 export const setAuthorization = token => {
 	const IdToken = `Bearer ${token}`;
+	const userInfo = jwtDecode(token);
 	localStorage.setItem('IdToken', IdToken);
+	localStorage.setItem('userInfo', JSON.stringify(userInfo));
 	//seting authorization to the header axios
 	axios.defaults.headers.common['Authorization'] = IdToken;
 };
@@ -53,6 +56,7 @@ export const setAuthorization = token => {
 export const logoutUser = () => dispatch => {
 	// set logout on backend later
 	localStorage.removeItem('IdToken');
+	localStorage.removeItem('userInfo');
 	delete axios.defaults.headers.common['Authorization'];
 	dispatch({ type: SET_UNAUTHENTICATED });
 };
