@@ -14,7 +14,8 @@ import Divider from '@material-ui/core/Divider';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHomeItems } from '../../redux/actions';
 import { Link as ReactLink } from 'react-router-dom';
-import itemImage from '../../assets/images/bg2.unsplash.jpg';
+import itemImage from '../../assets/images/home/construction.jpeg';
+import materials from '../../assets/images/home/material.jpeg';
 import { HomeSlide } from '../../components/client';
 import ClientLayout from '../../layouts/ClientLayout';
 
@@ -54,6 +55,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	cardContent: {
 		flexGrow: 1,
+	},
+	divContent: {
+		marginLeft: 15,
+		marginTop: -10,
 	},
 	footer: {
 		backgroundColor: theme.palette.background.paper,
@@ -123,10 +128,7 @@ export default function LandingPage() {
 
 	return (
 		<ClientLayout>
-			<Container
-				className={classes.topCardGrid}
-				maxWidth='lg'
-			>
+			<Container className={classes.topCardGrid} maxWidth='lg'>
 				<Grid container spacing={2}>
 					<Grid item xs={12} sm={6} md={3}>
 						<Card className={classes.topCard}>
@@ -178,20 +180,20 @@ export default function LandingPage() {
 					</Grid>
 					<Grid item xs={12} sm={6} md={3}>
 						<Card className={classes.topCard}>
-							<ReactLink to='/footer' className={classes.links}>
+							<ReactLink to='/category/construction' className={classes.links}>
 								<CardMedia
 									className={classes.cardMedia}
 									image={itemImage}
-									title='Image title'
+									title='Construction materials'
 								/>
 							</ReactLink>
 						</Card>
 						<Card className={classes.topCard}>
-							<ReactLink to='/footer' className={classes.links}>
+							<ReactLink to='/category/plombing' className={classes.links}>
 								<CardMedia
 									className={classes.cardMedia}
-									image={itemImage}
-									title='Image title'
+									image={materials}
+									title='Plombing materials'
 								/>
 							</ReactLink>
 						</Card>
@@ -218,14 +220,14 @@ export default function LandingPage() {
 									<ReactLink to={`/view/${card.id}`} className={classes.links}>
 										<CardMedia
 											className={classes.cardMedia}
-											image={itemImage}
+											image={card.itemImage}
 											title={card.itemName}
 										/>
-										<CardContent className={classes.cardContent}>
-											<Typography gutterBottom variant='h5' component='h2'>
-												{card.names}
-											</Typography>
-											<div style={{ marginLeft: 15 }}>
+										<CardContent
+											className={classes.cardContent}
+											style={{ height: 70 }}
+										>
+											<div className={classes.divContent}>
 												<Typography
 													variant='body1'
 													color='textPrimary'
@@ -293,14 +295,11 @@ export default function LandingPage() {
 									<ReactLink to={`/view/${card.id}`} className={classes.links}>
 										<CardMedia
 											className={classes.cardMedia}
-											image={itemImage}
+											image={card.itemImage}
 											title='Image title'
 										/>
-										<CardContent className={classes.cardContent}>
-											<Typography gutterBottom variant='h5' component='h2'>
-												{card.names}
-											</Typography>
-											<div style={{ marginLeft: 15 }}>
+										<CardContent className={classes.cardContent} style={{ height: 70 }}>
+											<div className={classes.divContent}>
 												<Typography
 													variant='body1'
 													color='textPrimary'
@@ -368,14 +367,11 @@ export default function LandingPage() {
 									<ReactLink to={`/view/${card.id}`} className={classes.links}>
 										<CardMedia
 											className={classes.cardMedia}
-											image={itemImage}
+											image={card.itemImage}
 											title='Image title'
 										/>
-										<CardContent className={classes.cardContent}>
-											<Typography gutterBottom variant='h5' component='h2'>
-												{card.names}
-											</Typography>
-											<div style={{ marginLeft: 15 }}>
+										<CardContent className={classes.cardContent} style={{ height: 70 }}>
+											<div className={classes.divContent}>
 												<Typography
 													variant='body1'
 													color='textPrimary'

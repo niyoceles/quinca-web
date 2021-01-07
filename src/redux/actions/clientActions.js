@@ -118,6 +118,7 @@ export const requestProforma = proformaInfo => dispatch => {
 	axios
 		.post(`${REACT_APP_BACKEND}/proforma`, proformaInfo)
 		.then(res => {
+			console.log(res.data);
 			dispatch({ type: REQUEST_PROFORMA_SUCCESS, payload: res.data });
 			localStorage.removeItem('bookingSummary');
 			localStorage.removeItem('totalPrice');
@@ -177,5 +178,25 @@ export const getBookings = () => dispatch => {
 		.catch(err => {
 			console.log('\n\n\n\n Bookings:', err);
 			return err;
+		});
+};
+
+// Request proforma
+export const createOrder = orderInfo => dispatch => {
+	axios
+		.post(`${REACT_APP_BACKEND}/order`, orderInfo)
+		.then(res => {
+			console.log('order data', res.data);
+			dispatch({ type: REQUEST_PROFORMA_SUCCESS, payload: res.data });
+			localStorage.removeItem('orderSummary');
+			localStorage.removeItem('totalPrice');
+			toast.success(res.data.message);
+		})
+		.catch(err => {
+			console.log('errrrrrrrrr', err.response ? err.response.data.error : null);
+			dispatch({
+				type: REQUEST_PROFORMA_FAILURE,
+				payload: err.response ? err.response.data.error : null,
+			});
 		});
 };

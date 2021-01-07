@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,7 +28,7 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
-import { viewItem, relatedItems, hotelBooking } from '../../redux/actions';
+import { viewItem, relatedItems, createOrder } from '../../redux/actions';
 import { green } from '@material-ui/core/colors';
 import ModalUi from '../../components/Modals/Modal';
 import Table from '@material-ui/core/Table';
@@ -37,10 +38,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import HotelWidget from '../../components/SidebarWidget/HotelWidget';
 import itemImage from '../../assets/images/bg2.unsplash.jpg';
 import ClientLayout from '../../layouts/ClientLayout';
+import DateWidget from '../../components/SidebarWidget/DateWidget';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
 		width: '98%',
 		color: 'white',
 	},
-	btnBooking: {
+	btnOrder: {
 		color: '#1976D2',
 		border: '1px solid #eee',
 		background: 'white',
@@ -116,18 +116,6 @@ const theme = createMuiTheme({
 		primary: green,
 	},
 });
-function Copyright() {
-	return (
-		<Typography variant='body2' color='textSecondary' align='center'>
-			{'Copyright © '}
-			<Link color='inherit' href='https://material-ui.com/'>
-				Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
 
 export const Slides = () => {
 	const classes = useStyles();
@@ -159,7 +147,7 @@ export const Slides = () => {
 
 const ViewItem = props => {
 	const classes = useStyles();
-	const bookedItems = JSON.parse(localStorage.getItem('bookingSummary'));
+	const bookedItems = JSON.parse(localStorage.getItem('orderSummary'));
 	const totalPrice = (localStorage.getItem('totalPrice') || 0) * 1;
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(moment());
@@ -167,11 +155,10 @@ const ViewItem = props => {
 	const [checkOutDate, setCheckOutDate] = useState(moment());
 
 	const [open, setOpen] = useState(false);
-	const [bookingInfo, setBookingInfo] = useState({
-		startDate: selectedDate,
-		endDate: selectedDate,
+	const [orderInfo, setOrderInfo] = useState({
+		needDate: selectedDate,
+		deadline: selectedDate,
 		adult: 0,
-		child: 0,
 	});
 
 	const profileSupplier1 = useSelector(state => state.supplier.supplier);
@@ -186,11 +173,11 @@ const ViewItem = props => {
 	};
 	const dispatch = useDispatch();
 
-	const [bookingSummary, setBookingSummary] = useState(
+	const [orderSummary, setOrderSummary] = useState(
 		bookedItems !== null ? bookedItems : []
 	);
 
-	const handleAddItem = (e, item) => {
+	const handleAddItem = (e, item, itemNumber) => {
 		const tempTot = (localStorage.getItem('totalPrice') || 0) * 1;
 		const tot = tempTot + item['itemPrice'] * 1;
 		localStorage.setItem('totalPrice', tot);
@@ -201,17 +188,18 @@ const ViewItem = props => {
 			id,
 			itemName,
 			itemPrice: itemPrice * 1,
+			itemNumber,
 		};
-		const booked = bookingSummary.find(bk => bk.id === item.id);
-		let updatedBooking = [...bookingSummary, bookItem];
+		const booked = orderSummary.find(bk => bk.id === item.id);
+		let updatedOrder = [...orderSummary, bookItem];
 		if (booked) {
-			updatedBooking = bookingSummary.filter(bk => bk.id !== item.id);
+			updatedOrder = orderSummary.filter(bk => bk.id !== item.id);
 			const updatedTotPrice = tempTot - item['itemPrice'] * 1;
 			localStorage.setItem('totalPrice', updatedTotPrice);
 			if (updatedTotPrice === 0) setIsButtonDisabled(true);
 		}
-		setBookingSummary(updatedBooking);
-		localStorage.setItem('bookingSummary', JSON.stringify(updatedBooking));
+		setOrderSummary(updatedOrder);
+		localStorage.setItem('orderSummary', JSON.stringify(updatedOrder));
 	};
 
 	useEffect(() => {
@@ -225,46 +213,46 @@ const ViewItem = props => {
 	}, [dispatch, profileSupplier1.category]);
 
 	const handleOnChange = e => {
-		const updatedBookingInfo = { ...bookingInfo };
-		updatedBookingInfo[e.target.name] = e.target.value;
-		setBookingInfo(updatedBookingInfo);
+		const updatedOrderInfo = { ...orderInfo };
+		updatedOrderInfo[e.target.name] = e.target.value;
+		setOrderInfo(updatedOrderInfo);
 	};
 
 	const onDateChange = (name, dateValue) => {
-		name === 'startDate'
+		name === 'needDate'
 			? setCheckInDate(dateValue)
 			: setCheckOutDate(dateValue);
 
-		const updatedBookingInfo = { ...bookingInfo };
+		const updatedOrderInfo = { ...orderInfo };
 		const realDate = moment(dateValue).format('YYYY-MM-DD HH:mm:ss');
-		updatedBookingInfo[name] = realDate;
-		setBookingInfo(updatedBookingInfo);
+		updatedOrderInfo[name] = realDate;
+		setOrderInfo(updatedOrderInfo);
 		return;
 	};
 
 	useEffect(() => {
-		localStorage.setItem('bookingExtras', JSON.stringify(bookingInfo));
-	}, [bookingInfo]);
+		localStorage.setItem('orderExtras', JSON.stringify(orderInfo));
+	}, [orderInfo]);
 
-	const handlePayLater = async itemId => {
-		const tempBookingInfo = JSON.parse(localStorage.getItem('bookingSummary'));
-		const tempBookingEtras = JSON.parse(localStorage.getItem('bookingExtras'));
-		const items = [...tempBookingInfo.map(item => item.id)];
-		const itemType =
-			tempBookingInfo && tempBookingInfo.map(item => item.itemType).toString();
+	const handlePayLater = async () => {
+		const tempOrderInfo = JSON.parse(localStorage.getItem('orderSummary'));
+		const tempOrderEtras = JSON.parse(localStorage.getItem('orderExtras'));
+		const items = [...tempOrderInfo.map(item => item.id)];
+		const category =
+			tempOrderInfo && tempOrderInfo.map(item => item.category).toString();
 		const bookInfo = {
-			...tempBookingEtras,
+			...tempOrderEtras,
 			itemsArray: items,
-			itemType,
+			category,
 		};
-		await props.hotelBooking(itemId, bookInfo);
+		await dispatch(createOrder(bookInfo));
 		setOpen(!open);
 	};
 
-	const handleCancelBooking = () => {
-		localStorage.removeItem('bookingSummary');
+	const handleCancelOrder = () => {
+		localStorage.removeItem('orderSummary');
 		localStorage.removeItem('totalPrice');
-		setBookingSummary([]);
+		setOrderSummary([]);
 		setOpen(!open);
 	};
 
@@ -282,34 +270,44 @@ const ViewItem = props => {
 							className={classes.titleOrganization}
 							gutterBottom
 						>
-							<span style={{ flex: 4 }}>{profileSupplier1.itemName}</span>
 							<span style={{ flex: 1 }}>
 								<Fab
 									variant='extended'
 									size='medium'
 									color='primary'
 									aria-label='add'
-									className={classes.btnBooking}
+									className={classes.btnOrder}
 									onClick={handleToggleModal}
 								>
 									<NavigationIcon />
-									My booking summary
+									My order summary
 								</Fab>
 							</span>
 						</Typography>
-						<Typography component='span'>
-							<LocationOnIcon color='primary' />
-							<p className={classes.areaStyle}>
-								{profileSupplier1.owner.organization}
-							</p>
-						</Typography>
-
 						<Grid container spacing={3}>
-							<Grid item xs={12} sm={6} md={8}>
+							<Grid item xs={12} sm={6} md={6}>
 								<Card className={classes.card} elevation={1}>
-									<Slides />
+									{/* <Slides /> */}
+									<CardMedia
+										className={classes.cardMedia}
+										image={profileSupplier1.itemImage}
+										title={profileSupplier1.itemName}
+									/>
+								</Card>
+							</Grid>
+							<Grid item xs={12} sm={6} md={6}>
+								<Card className={classes.card} elevation={1}>
 									<CardContent className={classes.cardContent}>
 										<Card style={{ marginTop: 10 }} elevation={0}>
+											<Typography
+												component='h2'
+												variant='h4'
+												align='left'
+												color='textPrimary'
+											>
+												{profileSupplier1.itemName}
+											</Typography>
+
 											<CardHeader
 												avatar={<VerifiedUserIcon color='primary' />}
 												action={
@@ -317,7 +315,7 @@ const ViewItem = props => {
 														<MoreVertIcon />
 													</IconButton>
 												}
-												subheader={'FOR ONE ITEM'}
+												subheader={`From ${profileSupplier1.owner.organization}`}
 												title={`${profileSupplier1.itemPrice} RWF`}
 											/>
 											<CardContent>
@@ -349,49 +347,6 @@ const ViewItem = props => {
 										</Card>
 										<hr />
 									</CardContent>
-
-									<CardActions>
-										<Button size='large' color='primary'>
-											Share on Social media
-										</Button>
-										<Button size='small' color='primary'>
-											<FacebookIcon fontSize='large' />
-										</Button>
-										<Button size='small' color='primary'>
-											<InstagramIcon fontSize='large' />
-										</Button>
-										<Button size='small' color='primary'>
-											<LinkedInIcon fontSize='large' />
-										</Button>
-										<Button size='small' color='primary'>
-											<TwitterIcon fontSize='large' />
-										</Button>
-										<Button size='medium' color='primary'>
-											<EmailIcon fontSize='large' />
-										</Button>
-									</CardActions>
-								</Card>
-							</Grid>
-							<Grid item xs={12} sm={4} md={4}>
-								<Card
-									className={classes.card}
-									elevation={3}
-									style={{
-										top: '70',
-										bottom: '200',
-										height: '48%',
-										overflow: 'auto',
-										textAlign: 'center',
-									}}
-								>
-									{/* sidebar widgets -------------------------------------------- */}
-									<HotelWidget
-										selectedDate={selectedDate}
-										checkInDate={checkInDate}
-										checkOutDate={checkOutDate}
-										onDateChange={onDateChange}
-										handleOnChange={handleOnChange}
-									/>
 								</Card>
 							</Grid>
 						</Grid>
@@ -416,7 +371,7 @@ const ViewItem = props => {
 							</Grid>
 						</Grid>
 
-						{/* Booking summary modal ----------------------------------------------*/}
+						{/* Order summary modal ----------------------------------------------*/}
 						<ModalUi open={open} toggleModal={handleToggleModal}>
 							<Grid container spacing={3}>
 								<Grid item xs={12} sm={5} md={5}>
@@ -445,7 +400,7 @@ const ViewItem = props => {
 										md={12}
 										align='center'
 									>
-										Your booking summary
+										Your order summary
 									</Typography>
 									<TableContainer>
 										<Table
@@ -482,7 +437,7 @@ const ViewItem = props => {
 														align='center'
 														style={{ marginTop: '20px' }}
 													>
-														Oops! You haven't booked anything yet!
+														Oops! You haven't added to cart anything!
 													</Typography>
 												)}
 												{bookedItems && totalPrice !== 0 ? (
@@ -528,7 +483,7 @@ const ViewItem = props => {
 												size='small'
 												variant='contained'
 												style={{ width: '33%' }}
-												onClick={handleCancelBooking}
+												onClick={handleCancelOrder}
 											>
 												Cancel
 											</Button>

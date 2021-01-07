@@ -89,7 +89,7 @@ export default function CategoryItems(props) {
 					className={classes.titleFeature}
 					gutterBottom
 				>
-					Available material in{' '}
+					Available material in {' '}
 					{categoryitems && categoryitems.map(i => i.name)} category
 				</Typography>
 				<Grid container spacing={4}>
@@ -104,13 +104,10 @@ export default function CategoryItems(props) {
 										>
 											<CardMedia
 												className={classes.cardMedia}
-												image={itemImage}
+												image={card.itemImage}
 												title='Image title'
 											/>
 											<CardContent className={classes.cardContent}>
-												<Typography gutterBottom variant='h5' component='h2'>
-													{card.names}
-												</Typography>
 												<div style={{ marginLeft: 15 }}>
 													<Typography
 														variant='body1'

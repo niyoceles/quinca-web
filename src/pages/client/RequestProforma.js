@@ -89,24 +89,6 @@ const theme = createMuiTheme({
 	},
 });
 
-export const Slides = () => {
-	const classes = useStyles();
-	return (
-		<Carousel autoPlay={9000} infinite slidesPerPage={1} slidesPerScroll={1}>
-			{[
-				{
-					image: itemImage,
-					title: 'profile image 1',
-				},
-			].map(image => (
-				<div key={image.title} className={classes.slide}>
-					<img src={image.image} alt={image.title} />
-				</div>
-			))}
-		</Carousel>
-	);
-};
-
 const RequestProforma = props => {
 	const classes = useStyles();
 	const bookedItems = JSON.parse(localStorage.getItem('bookingSummary'));
@@ -117,24 +99,27 @@ const RequestProforma = props => {
 	const [checkOutDate, setCheckOutDate] = useState(moment());
 
 	const [open, setOpen] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
 	const [bookingInfo, setBookingInfo] = useState({
 		pickupDate: selectedDate,
 		deadline: selectedDate,
+		names: '',
+		email: '',
+		phoneNumber: '',
+		address: '',
+		location: '',
 	});
 	const items = useSelector(state => state.item.allItems);
 	// const metadata = useSelector(state => stateallItemsItems);
 	// const cont = useSelector(state => state.item.relatedItems);
-
-	const handleToggleModal = () => {
-		setOpen(!open);
-	};
+	
 	const dispatch = useDispatch();
 
 	const [bookingSummary, setBookingSummary] = useState(
 		bookedItems !== null ? bookedItems : []
 	);
 
-	const handleAddItem = (e, item) => {
+	const handleAddItem = (e, item, itemNumber) => {
 		const tempTot = (localStorage.getItem('totalPrice') || 0) * 1;
 		const tot = tempTot + item['itemPrice'] * 1;
 		localStorage.setItem('totalPrice', tot);
@@ -145,6 +130,7 @@ const RequestProforma = props => {
 			id,
 			itemName,
 			itemPrice: itemPrice * 1,
+			itemNumber,
 		};
 		const booked = bookingSummary.find(bk => bk.id === item.id);
 		let updatedBooking = [...bookingSummary, bookItem];
@@ -187,12 +173,12 @@ const RequestProforma = props => {
 	const handlePayLater = async itemId => {
 		const tempBookingInfo = JSON.parse(localStorage.getItem('bookingSummary'));
 		const tempBookingEtras = JSON.parse(localStorage.getItem('bookingExtras'));
-		const items = [...tempBookingInfo.map(item => item.id)];
 
 		const bookInfo = {
 			...tempBookingEtras,
-			itemsArray: items,
+			itemsArray: tempBookingInfo,
 		};
+		setSubmitted(true);
 		await dispatch(requestProforma(bookInfo));
 		setOpen(!open);
 	};
@@ -210,23 +196,23 @@ const RequestProforma = props => {
 			{items.allitems ? (
 				<Container item className={classes.cardGrid} maxWidth='lg'>
 					<Grid container spacing={2}>
-						<Grid item xs={4} sm={4} md={8}>
+						<Grid item xs={12} sm={12} md={8}>
 							<ProformaItems
 								items={items.allitems ? items.allitems : null}
 								addItem={handleAddItem}
 							/>
 						</Grid>
-						<Grid item xs={4} sm={3} md={4}>
+						<Grid item xs={12} sm={12} md={4}>
 							<Typography
-								component='h2'
-								variant='h4'
+								component='h3'
+								variant='h6'
 								color='textPrimary'
 								gutterBottom
 								item
 								md={12}
 								align='center'
 							>
-							Your	Proforma summary
+								Your Proforma summary
 							</Typography>
 							<TableContainer>
 								<Table className={classes.table} aria-label='customized table'>
@@ -236,6 +222,9 @@ const RequestProforma = props => {
 												<TableRow key={item.key}>
 													<TableCell component='th' scope='row'>
 														{item.itemName}
+													</TableCell>
+													<TableCell component='th' scope='row'>
+														{item.itemNumber} X
 													</TableCell>
 													<TableCell align='right'>
 														{item.itemPrice} Rwf
@@ -284,6 +273,11 @@ const RequestProforma = props => {
 								checkOutDate={checkOutDate}
 								onDateChange={onDateChange}
 								handleOnChange={handleOnChange}
+								onSubmitForm={handlePayLater}
+								checkValue={bookingInfo}
+								checkHelperText={bookingInfo}
+								checkSubmitted={submitted}
+								error={bookingInfo}
 							/>
 							<hr />
 							{bookedItems && totalPrice !== 0 ? (
@@ -295,6 +289,7 @@ const RequestProforma = props => {
 											className={classes.btnSize}
 											onClick={() => handlePayLater()}
 											disabled={isButtonDisabled}
+											onSubmit={() => handlePayLater()}
 										>
 											Request Now
 										</Button>

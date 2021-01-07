@@ -46,11 +46,11 @@ const useStyles = makeStyles(theme => ({
 }));
 const EditItem = props => {
 	const classes = useStyles();
-	const { itemName, itemType, itemDescription, itemPrice, itemId } = props;
+	const { itemName, category, itemDescription, itemPrice, itemId } = props;
 
 	const [item, setItem] = useState({
 		itemName,
-		itemType,
+		category,
 		itemDescription,
 		itemPrice,
 	});
@@ -68,12 +68,12 @@ const EditItem = props => {
 		e.preventDefault();
 
 		setSubmitted(true);
-		const { itemName, itemType, itemDescription, itemPrice } = item;
+		const { itemName, category, itemDescription, itemPrice } = item;
 		if (itemName && itemDescription && itemPrice && localStorage.imageUrl) {
 			const itemData = {
 				itemName,
 				itemImage: localStorage.imageUrl,
-				itemType,
+				category,
 				itemDescription,
 				itemPrice,
 				status: true,
@@ -147,7 +147,7 @@ const EditItem = props => {
 							name='itemName'
 							tpye='text'
 							label='item name'
-							placeholder='add room number/ car number/ package title'
+							placeholder='add item/ material'
 							helperText={submitted && !item.itemName ? isRequired : null}
 							error={submitted && !item.itemName ? 'is invalid' : null}
 							className={classes.textField}
@@ -156,20 +156,20 @@ const EditItem = props => {
 							fullWidth
 						/>
 						<FormControl className={classes.formControl}>
-							<InputLabel id='select-label'>Item type</InputLabel>
+							<InputLabel id='select-label'>Item category</InputLabel>
 							<Select
-								name='itemType'
+								name='category'
 								labelId='select-label'
 								id='select'
-								helperText={submitted && !item.itemType ? isRequired : null}
-								error={submitted && !item.itemType ? 'is invalid' : null}
-								value={item.itemType}
+								helperText={submitted && !item.category ? isRequired : null}
+								error={submitted && !item.category ? 'is invalid' : null}
+								value={item.category}
 								onChange={handleChange}
 								fullWidth
 							>
-								<MenuItem value={'hotel'}>Hotel</MenuItem>
-								<MenuItem value={'car'}>Transport car</MenuItem>
-								<MenuItem value={'tour'}>Tour package</MenuItem>
+								<MenuItem value={'construction'}>construction</MenuItem>
+								<MenuItem value={'electricity'}>electricity</MenuItem>
+								<MenuItem value={'plombing'}>plombing</MenuItem>
 							</Select>
 						</FormControl>
 						<TextField

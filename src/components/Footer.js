@@ -14,6 +14,7 @@ import deliverImage from '../assets/images/delivery.svg';
 import momoImage from '../assets/images/mtnmomo.png';
 import masterCard from '../assets/images/mastercard.svg';
 import visaImage from '../assets/images/visa.svg';
+import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 const useStyles = makeStyles(theme => ({
 	footer: {
 		backgroundColor: '#f8f8f8',
@@ -32,6 +33,10 @@ const useStyles = makeStyles(theme => ({
 		textDecoration: 'none !important',
 		color: 'inherit',
 		padding: 2,
+	},
+	logo: {
+		maxWidth: 200,
+		marginRight: '10px',
 	},
 }));
 
@@ -205,7 +210,11 @@ const Footer = () => {
 						align='left'
 						gutterBottom
 					>
-						Logo
+						<img
+							src={Quinca_logo}
+							alt='Quinca Paradi'
+							className={classes.logo}
+						/>
 					</Typography>
 					This blog post shows a few different types of content that are
 					supported and styled with Material styles. Basic typography, images

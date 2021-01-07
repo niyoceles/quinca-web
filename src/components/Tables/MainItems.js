@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
+import 'dotenv/config';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -22,6 +23,7 @@ import Title from '../../layouts/Title';
 import AddItem from '../Modals/AddItem';
 // import NavBar from '../';
 import axios from 'axios';
+const { REACT_APP_BACKEND } = process.env;
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -136,7 +138,7 @@ const MainItems = () => {
 
 	const fetchItems = async () => {
 		const response = await axios.get(
-			`https://traveller-apps.herokuapp.com/api/item`
+			`${REACT_APP_BACKEND}/item`
 		);
 
 		setItems(response.data.myitems);

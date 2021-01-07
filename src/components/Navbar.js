@@ -30,6 +30,7 @@ import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import cartImage from '../assets/images/cart.svg';
+import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 // import accountImage from '../assets/images/account.svg';
@@ -143,6 +144,10 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.up('md')]: {
 			display: 'none',
 		},
+	},
+	logo: {
+		maxWidth: 200,
+		marginRight: '10px',
 	},
 }));
 
@@ -370,7 +375,11 @@ export default function ButtonAppBar() {
 
 					<Typography variant='h6' className={classes.title}>
 						<Link to='/' className={classes.links}>
-							Quinca Paradi
+							<img
+								src={Quinca_logo}
+								alt='Quinca Paradi'
+								className={classes.logo}
+							/>
 						</Link>
 					</Typography>
 					{/* <div className={classes.search}>
@@ -415,87 +424,74 @@ export default function ButtonAppBar() {
 								/>
 							</Grid>
 							<Grid item>
-								<div>
-									<Button
-										aria-owns={anchorEl ? 'simple-menu' : undefined}
-										aria-haspopup='true'
-										onClick={handleClick}
-										onMouseOver={handleClick}
-										className={classes.buttonFontSize}
-										color='inherit'
-										style={{ marginTop: -5 }}
-									>
-										<img
-											width='50'
-											height='25'
-											src={userImage}
-											alt=''
-											className='edit-img'
-										/>
-										My Account
-									</Button>
-									<Menu
-										id='simple-menu'
-										anchorEl={anchorEl}
-										open={Boolean(anchorEl)}
-										onClose={handleClose}
-										MenuListProps={{ onMouseLeave: handleClose }}
-									>
-										<MenuItem
-											onClick={handleClose}
-											style={{ backgroundColor: '#fff' }}
-										></MenuItem>
-										<List>
-											{[
-												isAuthenticated
-													? {
-															title: 'my profile',
-															path: '/me',
-															icon: <AccountBoxIcon />,
-													  }
-													: null,
-												isAuthenticated
-													? {
-															title: 'My Proforma',
-															path: '/my-proforma',
-															icon: <FeaturedPlayListIcon />,
-													  }
-													: null,
-												isAuthenticated
-													? {
-															title: 'My Bookings',
-															path: '/bookings',
-															icon: <FeaturedPlayListIcon />,
-													  }
-													: null,
-												// {
-												// 	title: 'Contact Us',
-												// 	path: '/',
-												// 	icon: <ContactPhoneIcon />,
-												// },
-												// { title: 'About Us', path: '/', icon: <InfoIcon /> },
-											]
-												.filter(e => e !== null)
-												.map(link => (
-													<ListItem button key={link.title}>
-														<ListItemIcon>{link.icon}</ListItemIcon>
-														<Link to={link.path} className={classes.links}>
-															<ListItemText primary={link.title} />
-														</Link>
-													</ListItem>
-												))}
-
-											{isAuthenticated ? (
+								{isAuthenticated ? (
+									<div>
+										<Button
+											aria-owns={anchorEl ? 'simple-menu' : undefined}
+											aria-haspopup='true'
+											onClick={handleClick}
+											onMouseOver={handleClick}
+											className={classes.buttonFontSize}
+											color='inherit'
+											style={{ marginTop: -5 }}
+										>
+											<img
+												width='50'
+												height='25'
+												src={userImage}
+												alt=''
+												className='edit-img'
+											/>
+											My Account
+										</Button>
+										<Menu
+											id='simple-menu'
+											anchorEl={anchorEl}
+											open={Boolean(anchorEl)}
+											onClose={handleClose}
+											MenuListProps={{ onMouseLeave: handleClose }}
+										>
+											<MenuItem
+												onClick={handleClose}
+												style={{ backgroundColor: '#fff' }}
+											></MenuItem>
+											<List>
+												{[
+													{
+														title: 'my profile',
+														path: '/me',
+														icon: <AccountBoxIcon />,
+													},
+													{
+														title: 'My Proforma',
+														path: '/my-proforma',
+														icon: <FeaturedPlayListIcon />,
+													},
+													{
+														title: 'My Bookings',
+														path: '/bookings',
+														icon: <FeaturedPlayListIcon />,
+													},
+												]
+													.filter(e => e !== null)
+													.map(link => (
+														<ListItem button key={link.title}>
+															<ListItemIcon>{link.icon}</ListItemIcon>
+															<Link to={link.path} className={classes.links}>
+																<ListItemText primary={link.title} />
+															</Link>
+														</ListItem>
+													))}
 												<ListItem button onClick={handleLogout}>
 													{/* <ListItemIcon> */}
 													<ExitToAppIcon />
 													{/* </ListItemIcon> */}{' '}
 													<ListItemText primary='Logout' />
 												</ListItem>
-											) : null}
-										</List>
-									</Menu>
-								</div>
+											</List>
+										</Menu>
+									</div>
+								) : null}
 							</Grid>
 						</Grid>
 					</div>

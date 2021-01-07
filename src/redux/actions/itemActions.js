@@ -12,6 +12,7 @@ import {
 	GET_ALL_ITEMS_SUCCESS,
 } from '../types';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const { REACT_APP_BACKEND } = process.env;
 // Post a item
 export const addItem = newItem => dispatch => {
@@ -23,6 +24,7 @@ export const addItem = newItem => dispatch => {
 				type: POST_ITEM,
 				payload: res.data,
 			});
+			toast.success(res.data.message);
 			dispatch(clearErrors());
 		})
 		.catch(err => {
@@ -42,6 +44,7 @@ export const updateItem = (itemId, updateData) => dispatch => {
 				type: UPDATE_ITEM,
 				payload: res.data,
 			});
+			toast.success(res.data.message);
 			dispatch(clearErrors());
 		})
 		.catch(err => {
@@ -67,9 +70,9 @@ export const clearErrors = () => dispatch => {
 	dispatch({ type: CLEAR_ERRORS });
 };
 
-export const relatedItems = itemType => dispatch => {
+export const relatedItems = category => dispatch => {
 	axios
-		.get(`${REACT_APP_BACKEND}/item/related/${itemType}`)
+		.get(`${REACT_APP_BACKEND}/item/related/${category}`)
 		.then(res => {
 			dispatch({ type: GET_RELATED_SUCCESS, payload: res.data });
 		})
