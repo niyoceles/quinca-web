@@ -98,21 +98,6 @@ export const updateMyProfile = () => dispatch => {
 		});
 };
 
-// Book hotel room(s), car or destination
-export const hotelBooking = (itemId, bookingInfo) => dispatch => {
-	axios
-		.post(`${REACT_APP_BACKEND}/booking/${itemId}`, bookingInfo)
-		.then(res => {
-			dispatch({ type: BOOKING, payload: res.data.bookedItems });
-			localStorage.removeItem('bookingSummary');
-			localStorage.removeItem('totalPrice');
-			toast.success(res.data.message);
-		})
-		.catch(err => {
-			return err;
-		});
-};
-
 // Request proforma
 export const requestProforma = proformaInfo => dispatch => {
 	axios
@@ -120,7 +105,7 @@ export const requestProforma = proformaInfo => dispatch => {
 		.then(res => {
 			console.log(res.data);
 			dispatch({ type: REQUEST_PROFORMA_SUCCESS, payload: res.data });
-			localStorage.removeItem('bookingSummary');
+			localStorage.removeItem('proformaSummary');
 			localStorage.removeItem('totalPrice');
 			toast.success(res.data.message);
 		})

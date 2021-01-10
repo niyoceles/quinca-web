@@ -17,7 +17,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllItems, requestProforma } from '../../redux/actions';
 import { green } from '@material-ui/core/colors';
-import ModalUi from '../../components/Modals/Modal';
+// import ModalUi from '../../components/Modals/Modal';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -26,8 +26,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Spinner from '../../components/Ui/Spinner/Spinner';
 import moment from 'moment';
 import DateWidget from '../../components/SidebarWidget/DateWidget';
-import itemImage from '../../assets/images/bg2.unsplash.jpg';
-import ClientLayout from '../../layouts/ClientLayout';
+import CartLayout from '../../layouts/CartLayout';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -71,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 		width: '98%',
 		color: 'white',
 	},
-	btnBooking: {
+	btnProforma: {
 		color: '#1976D2',
 		border: '1px solid #eee',
 		background: 'white',
@@ -91,7 +90,7 @@ const theme = createMuiTheme({
 
 const RequestProforma = props => {
 	const classes = useStyles();
-	const bookedItems = JSON.parse(localStorage.getItem('bookingSummary'));
+	const requestedItems = JSON.parse(localStorage.getItem('proformaSummary'));
 	const totalPrice = (localStorage.getItem('totalPrice') || 0) * 1;
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(moment());
@@ -100,7 +99,7 @@ const RequestProforma = props => {
 
 	const [open, setOpen] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
-	const [bookingInfo, setBookingInfo] = useState({
+	const [proformaInfo, setProformaInfo] = useState({
 		pickupDate: selectedDate,
 		deadline: selectedDate,
 		names: '',
@@ -112,11 +111,11 @@ const RequestProforma = props => {
 	const items = useSelector(state => state.item.allItems);
 	// const metadata = useSelector(state => stateallItemsItems);
 	// const cont = useSelector(state => state.item.relatedItems);
-	
+
 	const dispatch = useDispatch();
 
-	const [bookingSummary, setBookingSummary] = useState(
-		bookedItems !== null ? bookedItems : []
+	const [proformaSummary, setProformaSummary] = useState(
+		requestedItems !== null ? requestedItems : []
 	);
 
 	const handleAddItem = (e, item, itemNumber) => {
@@ -126,22 +125,22 @@ const RequestProforma = props => {
 		if (tot > 0) setIsButtonDisabled(false);
 
 		const { id, itemName, itemPrice } = item;
-		const bookItem = {
+		const requestItem = {
 			id,
 			itemName,
 			itemPrice: itemPrice * 1,
 			itemNumber,
 		};
-		const booked = bookingSummary.find(bk => bk.id === item.id);
-		let updatedBooking = [...bookingSummary, bookItem];
-		if (booked) {
-			updatedBooking = bookingSummary.filter(bk => bk.id !== item.id);
+		const requested = proformaSummary.find(bk => bk.id === item.id);
+		let updatedProforma = [...proformaSummary, requestItem];
+		if (requested) {
+			updatedProforma = proformaSummary.filter(bk => bk.id !== item.id);
 			const updatedTotPrice = tempTot - item['itemPrice'] * 1;
 			localStorage.setItem('totalPrice', updatedTotPrice);
 			if (updatedTotPrice === 0) setIsButtonDisabled(true);
 		}
-		setBookingSummary(updatedBooking);
-		localStorage.setItem('bookingSummary', JSON.stringify(updatedBooking));
+		setProformaSummary(updatedProforma);
+		localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
 	};
 
 	useEffect(() => {
@@ -149,9 +148,9 @@ const RequestProforma = props => {
 	}, [dispatch]);
 
 	const handleOnChange = e => {
-		const updatedBookingInfo = { ...bookingInfo };
-		updatedBookingInfo[e.target.name] = e.target.value;
-		setBookingInfo(updatedBookingInfo);
+		const updatedProformaInfo = { ...proformaInfo };
+		updatedProformaInfo[e.target.name] = e.target.value;
+		setProformaInfo(updatedProformaInfo);
 	};
 
 	const onDateChange = (name, dateValue) => {
@@ -159,39 +158,43 @@ const RequestProforma = props => {
 			? setCheckInDate(dateValue)
 			: setCheckOutDate(dateValue);
 
-		const updatedBookingInfo = { ...bookingInfo };
+		const updatedProformaInfo = { ...proformaInfo };
 		const realDate = moment(dateValue).format('YYYY-MM-DD HH:mm:ss');
-		updatedBookingInfo[name] = realDate;
-		setBookingInfo(updatedBookingInfo);
+		updatedProformaInfo[name] = realDate;
+		setProformaInfo(updatedProformaInfo);
 		return;
 	};
 
 	useEffect(() => {
-		localStorage.setItem('bookingExtras', JSON.stringify(bookingInfo));
-	}, [bookingInfo]);
+		localStorage.setItem('proformaExtras', JSON.stringify(proformaInfo));
+	}, [proformaInfo]);
 
-	const handlePayLater = async itemId => {
-		const tempBookingInfo = JSON.parse(localStorage.getItem('bookingSummary'));
-		const tempBookingEtras = JSON.parse(localStorage.getItem('bookingExtras'));
+	const handlePayLater = async () => {
+		const tempProformaInfo = JSON.parse(
+			localStorage.getItem('proformaSummary')
+		);
+		const tempProformaEtras = JSON.parse(
+			localStorage.getItem('proformaExtras')
+		);
 
-		const bookInfo = {
-			...tempBookingEtras,
-			itemsArray: tempBookingInfo,
+		const requestInfo = {
+			...tempProformaEtras,
+			itemsArray: tempProformaInfo,
 		};
 		setSubmitted(true);
-		await dispatch(requestProforma(bookInfo));
+		await dispatch(requestProforma(requestInfo));
 		setOpen(!open);
 	};
 
-	const handleCancelBooking = () => {
-		localStorage.removeItem('bookingSummary');
+	const handleCancelProforma = () => {
+		localStorage.removeItem('proformaSummary');
 		localStorage.removeItem('totalPrice');
-		setBookingSummary([]);
+		setProformaSummary([]);
 		setOpen(!open);
 	};
 
 	return (
-		<ClientLayout>
+		<CartLayout>
 			<br />
 			{items.allitems ? (
 				<Container item className={classes.cardGrid} maxWidth='lg'>
@@ -200,6 +203,7 @@ const RequestProforma = props => {
 							<ProformaItems
 								items={items.allitems ? items.allitems : null}
 								addItem={handleAddItem}
+								checkSubmitted={submitted}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={12} md={4}>
@@ -217,8 +221,8 @@ const RequestProforma = props => {
 							<TableContainer>
 								<Table className={classes.table} aria-label='customized table'>
 									<TableBody>
-										{bookedItems !== null && totalPrice !== 0 ? (
-											bookedItems.map(item => (
+										{requestedItems !== null && totalPrice !== 0 ? (
+											requestedItems.map(item => (
 												<TableRow key={item.key}>
 													<TableCell component='th' scope='row'>
 														{item.itemName}
@@ -253,7 +257,7 @@ const RequestProforma = props => {
 												<br /> Please check/select the product item
 											</Typography>
 										)}
-										{bookedItems && totalPrice !== 0 ? (
+										{requestedItems && totalPrice !== 0 ? (
 											<TableRow>
 												<TableCell component='th' scope='row'>
 													<strong>Total</strong>
@@ -274,13 +278,13 @@ const RequestProforma = props => {
 								onDateChange={onDateChange}
 								handleOnChange={handleOnChange}
 								onSubmitForm={handlePayLater}
-								checkValue={bookingInfo}
-								checkHelperText={bookingInfo}
+								checkValue={proformaInfo}
+								checkHelperText={proformaInfo}
 								checkSubmitted={submitted}
-								error={bookingInfo}
+								error={proformaInfo}
 							/>
 							<hr />
-							{bookedItems && totalPrice !== 0 ? (
+							{requestedItems && totalPrice !== 0 ? (
 								<CardActions style={{ position: 'relative', bottom: '0' }}>
 									<ThemeProvider theme={theme}>
 										<Button
@@ -299,7 +303,7 @@ const RequestProforma = props => {
 										size='small'
 										variant='contained'
 										style={{ width: '33%' }}
-										onClick={handleCancelBooking}
+										onClick={handleCancelProforma}
 									>
 										Cancel
 									</Button>
@@ -311,7 +315,7 @@ const RequestProforma = props => {
 			) : (
 				<Spinner />
 			)}
-		</ClientLayout>
+		</CartLayout>
 	);
 };
 

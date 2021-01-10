@@ -19,11 +19,9 @@ import MyProfile from './pages/client/MyProfile';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
-// Search Result
-import Cars from './components/client/searchResult/Car';
-import Footer from './components/Footer';
 import CategoryItems from './pages/client/CategoryItems';
 import ViewItem from './pages/client/ViewItem';
+import Cart from './pages/client/Cart';
 
 export const Routes = () => {
 	return (
@@ -33,17 +31,14 @@ export const Routes = () => {
 					<Route exact path='/' component={LandingPage} />
 					<Route exact path='/login' component={LoginPage} />
 					<Route exact path='/signup' component={SignupPage} />
-					<AuthRoute exact path='/client' component={clients} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewItem} />
-					<AuthRoute exact path='/request' component={RequestProforma} />
+					<Route exact path='/cart' component={Cart} />
+					<Route exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />
-					<AuthRoute
-						exact
-						path='/my-proforma/:id'
-						component={SingleProformaPage}
-					/>
+					<Route exact path='/my-proforma/:id' component={SingleProformaPage} />
+					<AuthRoute exact path='/client' component={clients} />
 					<AuthRoute exact path='/bookings' component={Bookings} />
 					<AuthRoute exact path='/me' component={MyProfile} />
 					<AuthRoute
@@ -76,8 +71,6 @@ export const Routes = () => {
 						path='/account/supplier/myaccount'
 						component={ProfilePage}
 					/>
-					<Route exact path='/cars/name' component={Cars} />
-					<Route exact path='/footer' component={Footer} />
 				</Switch>
 			</div>
 		</Router>

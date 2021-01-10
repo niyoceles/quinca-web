@@ -4,12 +4,19 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
-import ModalUi from '../../components/Modals/Modal';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Slide from '@material-ui/core/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction='up' ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles(theme => ({
 	image: {
@@ -41,7 +48,6 @@ const ProformaItems = props => {
 	const [user, setUser] = useState({
 		quantity: '',
 	});
-	const [submitted, setSubmitted] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
 
 	const handleToggleModal = item => {
@@ -49,9 +55,8 @@ const ProformaItems = props => {
 		setSelectedItem(item);
 	};
 
-	const handleClose = item => {
-		setOpen(open);
-		setSelectedItem(item);
+	const handleClose = () => {
+		setOpen(false);
 	};
 	const handleChange = e => {
 		const { name, value } = e.target;
@@ -63,22 +68,20 @@ const ProformaItems = props => {
 			<Typography component='h3' variant='h5' align='left' color='textPrimary'>
 				Availability items for proforma
 			</Typography>
-			<ModalUi open={open} close={handleClose} toggleModal={handleToggleModal}>
-				<Grid container spacing={3}>
-					{/* {selectedItem ? (
-						<Grid item xs={12} sm={5} md={5}>
-							<Card className={classes.card} elevation={3}>
-								<img
-									className={classes.img}
-									alt='...'
-									src={selectedItem.itemImage}
-								/>
-							</Card>
-						</Grid>
-					) : null} */}
-
-					<Grid item xs={12} sm={7} md={7}>
-						<form className={classes.form} noValidate>
+			<Dialog
+				open={open}
+				TransitionComponent={Transition}
+				aria-labelledby='alert-dialog-slide-title'
+				aria-describedby='alert-dialog-slide-description'
+				keepMounted
+				close={handleClose}
+			>
+				<DialogContent>
+					<DialogContentText id='alert-dialog-slide-description'>
+						<form
+							noValidate
+							onSubmit={() => props.addItem(selectedItem, user.quantity)}
+						>
 							<TextField
 								variant='outlined'
 								margin='normal'
@@ -86,33 +89,39 @@ const ProformaItems = props => {
 								name='quantity'
 								defaultValue={10}
 								inputProps={{ min: '10' }}
-								helperText={submitted && !user.quantity ? 'is invalid' : null}
+								helperText={
+									props.checkSubmitted && !user.quantity ? 'is invalid' : null
+								}
 								value={user.quantity}
-								error={submitted && !user.quantity ? 'is-invalid' : null}
+								error={
+									props.checkSubmitted && !user.quantity ? 'is-invalid' : null
+								}
 								onChange={handleChange}
 								label='quantity'
 								type='number'
 								id='quantity'
 							/>
-							<hr />
-							<CardActions style={{ position: 'relative', bottom: '0' }}>
-								<Button
-									color='primary'
-									size='small'
-									style={{
-										backgroundColor: '#0080003a',
-										width: '33%',
-										color: 'green',
-									}}
-									onClick={e => props.addItem(e, selectedItem, user.quantity)}
-								>
-									Confirm cart
-								</Button>
-							</CardActions>
 						</form>
-					</Grid>
-				</Grid>
-			</ModalUi>
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button
+						color='primary'
+						size='small'
+						style={{
+							backgroundColor: '#0080003a',
+							width: '80%',
+							color: 'green',
+						}}
+						onClick={e => props.addItem(e, selectedItem, user.quantity)}
+					>
+						Confirm cart
+					</Button>
+					<Button onClick={handleClose} color='primary'>
+						Cancel
+					</Button>
+				</DialogActions>
+			</Dialog>
 			{/* end modal----------------------------------------------------------- */}
 			<div>
 				{props.items &&

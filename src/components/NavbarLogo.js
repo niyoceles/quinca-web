@@ -33,7 +33,6 @@ import cartImage from '../assets/images/cart.svg';
 import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
-import Box from '@material-ui/core/Box';
 // import accountImage from '../assets/images/account.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -154,7 +153,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function ButtonAppBar() {
 	const classes = useStyles();
-	const orderedItems = JSON.parse(localStorage.getItem('orderSummary'));
 	const isAuthenticated = useSelector(state => state.auth.authenticated);
 	// const user = useSelector(state => state.auth.user);
 	const userinformation = JSON.parse(localStorage.getItem('userInfo'));
@@ -375,7 +373,7 @@ export default function ButtonAppBar() {
 					</div>
 					{/* <div className={classes.sectionDesktop}> */}
 
-					<Typography variant='h6' className={classes.title}>
+					<Typography variant='h6' className={classes.title} align='center'>
 						<Link to='/' className={classes.links}>
 							<img
 								src={Quinca_logo}
@@ -384,134 +382,6 @@ export default function ButtonAppBar() {
 							/>
 						</Link>
 					</Typography>
-					<div className={classes.search}>
-						<div className={classes.searchIcon}>
-							<SearchIcon />
-						</div>
-						<InputBase
-							placeholder='Search…'
-							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput,
-							}}
-							inputProps={{ 'aria-label': 'search' }}
-						/>
-					</div>
-					<div className={classes.sectionDesktop}>
-						<Grid
-							container
-							direction='row'
-							align='left'
-							spacing={1}
-							alignItems='left'
-							style={{ marginRight: 0 }}
-						>
-							<Grid item>
-								<Link to='/request' className={classes.links}>
-									<Button
-										color='inherit'
-										className={[classes.buttonFontSize, classes.proformaButton]}
-									>
-										Request proforma
-									</Button>
-								</Link>
-							</Grid>
-							<Grid item>
-								<Link to='/cart' className={classes.links}>
-									<img
-										width='50'
-										height='25'
-										src={cartImage}
-										alt=''
-										className='edit-img'
-									/>
-									<span
-										style={{
-											marginLeft: -13,
-											backgroundColor: '#e91e63',
-											color: '#fff',
-											fontWeight: 'bold',
-											fontSize: 18,
-											padding: 5,
-											borderRadius: '25px',
-										}}
-									>
-									{orderedItems && orderedItems.length}
-									</span>
-								</Link>
-							</Grid>
-							<Grid item>
-								{isAuthenticated ? (
-									<div>
-										<Button
-											aria-owns={anchorEl ? 'simple-menu' : undefined}
-											aria-haspopup='true'
-											onClick={handleClick}
-											onMouseOver={handleClick}
-											className={classes.buttonFontSize}
-											color='inherit'
-											style={{ marginTop: -5 }}
-										>
-											<img
-												width='50'
-												height='25'
-												src={userImage}
-												alt=''
-												className='edit-img'
-											/>
-											My Account
-										</Button>
-										<Menu
-											id='simple-menu'
-											anchorEl={anchorEl}
-											open={Boolean(anchorEl)}
-											onClose={handleClose}
-											MenuListProps={{ onMouseLeave: handleClose }}
-										>
-											<MenuItem
-												onClick={handleClose}
-												style={{ backgroundColor: '#fff' }}
-											></MenuItem>
-											<List>
-												{[
-													{
-														title: 'my profile',
-														path: '/me',
-														icon: <AccountBoxIcon />,
-													},
-													{
-														title: 'My Proforma',
-														path: '/my-proforma',
-														icon: <FeaturedPlayListIcon />,
-													},
-													{
-														title: 'My Bookings',
-														path: '/bookings',
-														icon: <FeaturedPlayListIcon />,
-													},
-												]
-													.filter(e => e !== null)
-													.map(link => (
-														<ListItem button key={link.title}>
-															<ListItemIcon>{link.icon}</ListItemIcon>
-															<Link to={link.path} className={classes.links}>
-																<ListItemText primary={link.title} />
-															</Link>
-														</ListItem>
-													))}
-												<ListItem button onClick={handleLogout}>
-													{/* <ListItemIcon> */}
-													<ExitToAppIcon />
-													{/* </ListItemIcon> */}{' '}
-													<ListItemText primary='Logout' />
-												</ListItem>
-											</List>
-										</Menu>
-									</div>
-								) : null}
-							</Grid>
-						</Grid>
-					</div>
 				</Toolbar>
 			</AppBar>
 		</Fragment>

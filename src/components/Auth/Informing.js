@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 		marginTop: theme.spacing(4),
 	},
 	image: {
-		backgroundImage: `url(${require('../../assets/images/bg1.unsplash.jpg')})`,
+		backgroundImage: `url(${require('../../assets/images/construction.jpg')})`,
 		backgroundRepeat: 'no-repeat',
 		backgroundColor:
 			theme.palette.type === 'light'

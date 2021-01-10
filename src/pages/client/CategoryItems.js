@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoryItems } from '../../redux/actions';
 import { Link as ReactLink } from 'react-router-dom';
-import itemImage from '../../assets/images/bg2.unsplash.jpg';
+import itemImage from '../../assets/images/construction.jpg';
 import ClientLayout from '../../layouts/ClientLayout';
 
 const useStyles = makeStyles(theme => ({
