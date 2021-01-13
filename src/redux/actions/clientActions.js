@@ -16,6 +16,8 @@ import {
 	GET_CLIENT_BOOKINGS,
 	GET_SINGLE_PROFORMA_SUCCESS,
 	GET_SINGLE_PROFORMA_FAILURE,
+	SEARCH_SUCCESS,
+	SEARCH_FAILURE,
 } from '../types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -151,6 +153,28 @@ export const getSingleProforma = id => dispatch => {
 			});
 		});
 };
+
+export const searchItems = keyword => dispatch => {
+	console.log(keyword)
+	axios
+		.get(`${REACT_APP_BACKEND}/search/items?itemName=${keyword}`)
+		.then(res => {
+			console.log('bbbbbbbbb', res.data);
+			dispatch({
+				type: SEARCH_SUCCESS,
+				payload: res.data.results,
+			});
+			toast.success(res.data.message);
+		})
+		.catch(err => {
+			console.log('errrrr', err.response ? err.response.data.error : null);
+			dispatch({
+				type: SEARCH_FAILURE,
+				payload: err.response ? err.response.data.error : null,
+			});
+		});
+};
+
 // get client bookings
 export const getBookings = () => dispatch => {
 	axios

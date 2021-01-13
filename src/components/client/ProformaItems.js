@@ -45,9 +45,7 @@ const useStyles = makeStyles(theme => ({
 const ProformaItems = props => {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
-	const [user, setUser] = useState({
-		quantity: '',
-	});
+	const [quantity, setQuantity] = useState('');
 	const [selectedItem, setSelectedItem] = useState(null);
 
 	const handleToggleModal = item => {
@@ -57,10 +55,6 @@ const ProformaItems = props => {
 
 	const handleClose = () => {
 		setOpen(false);
-	};
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setUser(user => ({ ...user, [name]: value }));
 	};
 
 	return (
@@ -80,7 +74,7 @@ const ProformaItems = props => {
 					<DialogContentText id='alert-dialog-slide-description'>
 						<form
 							noValidate
-							onSubmit={() => props.addItem(selectedItem, user.quantity)}
+							onSubmit={() => props.addItem(selectedItem, quantity)}
 						>
 							<TextField
 								variant='outlined'
@@ -90,13 +84,13 @@ const ProformaItems = props => {
 								defaultValue={10}
 								inputProps={{ min: '10' }}
 								helperText={
-									props.checkSubmitted && !user.quantity ? 'is invalid' : null
+									props.checkSubmitted && !quantity ? 'is invalid' : null
 								}
-								value={user.quantity}
+								value={quantity}
 								error={
-									props.checkSubmitted && !user.quantity ? 'is-invalid' : null
+									props.checkSubmitted && !quantity ? 'is-invalid' : null
 								}
-								onChange={handleChange}
+								onChange={e => setQuantity(e.target.value)}
 								label='quantity'
 								type='number'
 								id='quantity'
@@ -113,7 +107,7 @@ const ProformaItems = props => {
 							width: '80%',
 							color: 'green',
 						}}
-						onClick={e => props.addItem(e, selectedItem, user.quantity)}
+						onClick={e => props.addItem(e, selectedItem, quantity)}
 					>
 						Confirm cart
 					</Button>

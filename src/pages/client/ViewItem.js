@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
@@ -9,40 +9,32 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Divider from '@material-ui/core/Divider';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import EmailIcon from '@material-ui/icons/Email';
-import RelatedItems from '../../components/supplier/RelatedItems';
-import Fab from '@material-ui/core/Fab';
-import NavigationIcon from '@material-ui/icons/Navigation';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Carousel from '@brainhubeu/react-carousel';
-import '@brainhubeu/react-carousel/lib/style.css';
-import CancelIcon from '@material-ui/icons/Cancel';
+import RelatedItems from '../../components/client/RelatedItems';
 import { useDispatch, useSelector } from 'react-redux';
-import { viewItem, relatedItems, createOrder } from '../../redux/actions';
-import { green } from '@material-ui/core/colors';
-import ModalUi from '../../components/Modals/Modal';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import { viewItem, relatedItems } from '../../redux/actions';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import moment from 'moment';
-import itemImage from '../../assets/images/construction.jpg';
 import ClientLayout from '../../layouts/ClientLayout';
-import DateWidget from '../../components/SidebarWidget/DateWidget';
+import AddCart from '../../components/client/AddCart';
+
+function Alert(props) {
+	return <MuiAlert elevation={6} variant='filled' {...props} />;
+}
 
 const useStyles = makeStyles(theme => ({
+	root: {
+		width: '100%',
+		'& > * + *': {
+			marginTop: theme.spacing(2),
+		},
+	},
 	cardGrid: {
 		paddingTop: theme.spacing(16),
 		paddingBottom: theme.spacing(2),
@@ -51,35 +43,15 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: '10px',
 	},
 	card: {
-		height: '100%',
+		height: 'auto',
 		display: 'flex',
 		flexDirection: 'column',
-		paddingBottom: theme.spacing(2),
 	},
 	cardMedia: {
-		paddingTop: '56.25%', // 16:9
+		paddingTop: '77%',
 	},
 	cardContent: {
 		flexGrow: 1,
-	},
-	footer: {
-		backgroundColor: theme.palette.background.paper,
-		padding: theme.spacing(6),
-		position: 'sticky',
-		zIndex: '100',
-	},
-	titleOrganization: {
-		marginTop: -50,
-		marginLeft: 10,
-		display: 'flex',
-	},
-	areaStyle: {
-		marginTop: -30,
-		marginLeft: 25,
-	},
-	slide: {
-		height: '340px',
-		width: '100%',
 	},
 	image: {
 		height: '100%',
@@ -116,6 +88,8 @@ const ViewItem = props => {
 	const bookedItems = JSON.parse(localStorage.getItem('orderSummary'));
 
 	const [open, setOpen] = useState(false);
+	const [snack, setSnack] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const profileSupplier1 = useSelector(state => state.supplier.supplier);
 	const related = useSelector(state => state.item.relatedItems);
@@ -129,15 +103,24 @@ const ViewItem = props => {
 	);
 
 	const handleToggleModal = item => {
+		setSubmitted(false);
 		setOpen(!open);
 		setSelectedItem(item);
 	};
 
 	const handleClose = () => {
+		setSubmitted(false);
 		setOpen(false);
 	};
 
+	const handleCloseSnack = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setSnack(false);
+	};
 	const handleAddItemCart = (e, item, itemNumber) => {
+		// setSubmitted(true);
 		const tempTot = (localStorage.getItem('totalPrice') || 0) * 1;
 		const tot = tempTot + item['itemPrice'] * 1;
 		localStorage.setItem('totalPrice', tot);
@@ -149,16 +132,19 @@ const ViewItem = props => {
 			itemPrice: itemPrice * 1,
 			itemNumber,
 		};
-		const booked = orderSummary.find(bk => bk.id === item.id);
-		let updatedOrder = [...orderSummary, bookItem];
-		if (booked) {
-			updatedOrder = orderSummary.filter(bk => bk.id !== item.id);
-			const updatedTotPrice = tempTot - item['itemPrice'] * 1;
-			localStorage.setItem('totalPrice', updatedTotPrice);
+		if (itemNumber) {
+			const booked = orderSummary.find(bk => bk.id === item.id);
+			let updatedOrder = [...orderSummary, bookItem];
+			if (booked) {
+				updatedOrder = orderSummary.filter(bk => bk.id !== item.id);
+				const updatedTotPrice = tempTot - item['itemPrice'] * 1;
+				localStorage.setItem('totalPrice', updatedTotPrice);
+			}
+			setOrderSummary(updatedOrder);
+			localStorage.setItem('orderSummary', JSON.stringify(updatedOrder));
+			setOpen(false);
+			setSnack(true);
 		}
-		setOrderSummary(updatedOrder);
-		localStorage.setItem('orderSummary', JSON.stringify(updatedOrder));
-		setOpen(false);
 	};
 
 	useEffect(() => {
@@ -174,13 +160,41 @@ const ViewItem = props => {
 		<ClientLayout>
 			{profileSupplier1.id ? (
 				<main key={profileSupplier1.id} container>
-					{/* topBody unit */}
-					<Divider />
+					<Snackbar
+						anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+						open={snack}
+						message='I love snacks'
+						autoHideDuration={3000}
+						onClose={handleCloseSnack}
+					>
+						<Alert onClose={handleCloseSnack} severity='success'>
+							Item added on cart
+						</Alert>
+					</Snackbar>
+					<Box style={{ padding: 15, marginLeft: 30 }}>
+						<Breadcrumbs aria-label='breadcrumb'>
+							<Link color='inherit' href='/'>
+								Home
+							</Link>
+							<Link
+								color='inherit'
+								href={`/category/${profileSupplier1.category}`}
+							>
+								{profileSupplier1.category}
+							</Link>
+							<Link
+								color='textPrimary'
+								href={`/view/${profileSupplier1.id}`}
+								aria-current='page'
+							>
+								{profileSupplier1.itemName}
+							</Link>
+						</Breadcrumbs>
+					</Box>
 					<Container item className={classes.cardGrid} maxWidth='lg'>
 						<Grid container spacing={3}>
 							<Grid item xs={12} sm={6} md={6}>
 								<Card className={classes.card} elevation={1}>
-									{/* <Slides /> */}
 									<CardMedia
 										className={classes.cardMedia}
 										image={profileSupplier1.itemImage}
@@ -212,6 +226,11 @@ const ViewItem = props => {
 												title={`${profileSupplier1.itemPrice} RWF`}
 											/>
 											<CardContent>
+												<AddCart
+													addItemCart1={handleAddItemCart}
+													selected1={profileSupplier1}
+													checkSubmitted1={submitted}
+												/>
 												<Typography
 													component='h3'
 													variant='h6'
@@ -230,15 +249,9 @@ const ViewItem = props => {
 													<br />
 													[removed later] This impressive paella is a perfect
 													party dish and a fun meal to cook together with your
-													guests. Add 1 cup of frozen peas along with the
-													mussels, if you like. This impressive paella is a
-													perfect party dish and a fun meal to cook together
-													with your guests. Add 1 cup of frozen peas along with
-													the mussels, if you like.
 												</Typography>
 											</CardContent>
 										</Card>
-										<hr />
 									</CardContent>
 								</Card>
 							</Grid>
@@ -256,7 +269,7 @@ const ViewItem = props => {
 								>
 									Related material item
 								</Typography>
-								{/* Supplier items component --------------------------------------- */}
+								{/* Related items component --------------------------------------- */}
 								<RelatedItems
 									items={related ? related.relatedItems : null}
 									addItemCart={handleAddItemCart}
@@ -264,6 +277,7 @@ const ViewItem = props => {
 									openDialog={handleToggleModal}
 									closeDialog={handleClose}
 									selected={selectedItem}
+									checkSubmitted={submitted}
 								/>
 							</Grid>
 						</Grid>

@@ -12,8 +12,6 @@ import '@brainhubeu/react-carousel/lib/style.css';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../redux/actions';
-import { green } from '@material-ui/core/colors';
-import ModalUi from '../../components/Modals/Modal';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import CircularProgress from '@material-ui/core/CircularProgress';

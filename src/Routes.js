@@ -21,6 +21,7 @@ import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
 import CategoryItems from './pages/client/CategoryItems';
 import ViewItem from './pages/client/ViewItem';
+import SearchItems from './pages/client/SearchItems';
 import Cart from './pages/client/Cart';
 
 export const Routes = () => {
@@ -33,6 +34,7 @@ export const Routes = () => {
 					<Route exact path='/signup' component={SignupPage} />
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewItem} />
+					<Route exact path='/search/:keyword' component={SearchItems} />
 					<Route exact path='/cart' component={Cart} />
 					<Route exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />

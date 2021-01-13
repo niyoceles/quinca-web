@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { Link as ReactLink } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import Slide from '@material-ui/core/Slide';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction='up' ref={ref} {...props} />;
-});
+import DialogQuantity from './DialogQuantity';
 
 const useStyles = makeStyles(theme => ({
 	image: {
@@ -40,75 +31,22 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: 'white',
 		borderRadius: '8px',
 	},
+	links: {
+		textDecoration: 'none',
+		color: 'inherit',
+	},
 }));
 
 const RelatedItems = props => {
 	const classes = useStyles();
-	// const [open, setOpen] = useState(false);
-	const [user, setUser] = useState({
-		quantity: '',
-	});
-
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setUser(user => ({ ...user, [name]: value }));
-	};
 	return (
 		<>
-			<Dialog
+			<DialogQuantity
 				open={props.setDialog}
-				TransitionComponent={Transition}
-				aria-labelledby='alert-dialog-slide-title'
-				aria-describedby='alert-dialog-slide-description'
-				keepMounted
 				close={props.closeDialog}
-			>
-				<DialogContent>
-					<DialogContentText id='alert-dialog-slide-description'>
-						<form
-							noValidate
-							onSubmit={() => props.addItemCart(props.selected, user.quantity)}
-						>
-							<TextField
-								variant='outlined'
-								margin='normal'
-								required
-								name='quantity'
-								defaultValue={10}
-								inputProps={{ min: '10' }}
-								helperText={
-									props.checkSubmitted && !user.quantity ? 'is invalid' : null
-								}
-								value={user.quantity}
-								error={
-									props.checkSubmitted && !user.quantity ? 'is-invalid' : null
-								}
-								onChange={handleChange}
-								label='quantity'
-								type='number'
-								id='quantity'
-							/>
-						</form>
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button
-						color='primary'
-						size='small'
-						style={{
-							backgroundColor: '#0080003a',
-							width: '80%',
-							color: 'green',
-						}}
-						onClick={e => props.addItemCart(e, props.selected, user.quantity)}
-					>
-						Confirm add cart
-					</Button>
-					<Button onClick={props.closeDialog} color='primary'>
-						Cancel
-					</Button>
-				</DialogActions>
-			</Dialog>
+				addcart={props.addItemCart}
+				selected={props.selected}
+			/>
 			{props.items &&
 				props.items.map(item => (
 					<Grid
@@ -123,9 +61,16 @@ const RelatedItems = props => {
 					>
 						<Grid container spacing={3}>
 							<Grid item xs={4} sm={3} md={4}>
-								<ButtonBase className={classes.image}>
-									<img className={classes.img} alt='...' src={item.itemImage} />
-								</ButtonBase>
+								<ReactLink to={`/view/${item.id}`} className={classes.links}>
+									{' '}
+									<ButtonBase className={classes.image}>
+										<img
+											className={classes.img}
+											alt='...'
+											src={item.itemImage}
+										/>
+									</ButtonBase>
+								</ReactLink>
 							</Grid>
 							<Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
 								<Grid item xs container direction='column' spacing={2}>
@@ -149,7 +94,7 @@ const RelatedItems = props => {
 												onClick={() => props.openDialog(item)}
 											>
 												<AddShoppingCartIcon />
-												Add cart
+												Add
 											</Fab>
 										</span>
 									</FormControl>
@@ -159,8 +104,8 @@ const RelatedItems = props => {
 										<Fab
 											variant='extended'
 											size='small'
-											color='primary'
-											aria-label='add'
+											color='tertiary'
+											aria-label='price'
 											className={classes.btnBooking}
 										>
 											{item.itemPrice + 'Rwf'}

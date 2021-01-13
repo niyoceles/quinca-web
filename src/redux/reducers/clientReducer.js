@@ -13,6 +13,8 @@ import {
 	GET_MY_PROFORMA_FAILURE,
 	GET_SINGLE_PROFORMA_SUCCESS,
 	GET_SINGLE_PROFORMA_FAILURE,
+	SEARCH_FAILURE,
+	SEARCH_SUCCESS,
 } from '../types';
 
 const initialState = {
@@ -23,10 +25,22 @@ const initialState = {
 	bookedItems: [],
 	proformaItems: [],
 	proformaItem: [],
+	searchResults: [],
 };
 
 export default function (state = initialState, action) {
 	switch (action.type) {
+		case SEARCH_SUCCESS:
+			return {
+				...state,
+				searchResults: action.payload,
+			};
+		case SEARCH_FAILURE:
+			return {
+				...state,
+				searchResults: action.payload,
+			};
+
 		case GET_HOME_ITEMS_SUCCESS:
 			return {
 				...state,

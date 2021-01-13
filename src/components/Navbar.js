@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import './styles.css';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -25,15 +25,16 @@ import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import { logoutUser } from '../redux/actions';
+import { logoutUser, searchItems } from '../redux/actions';
 import Grid from '@material-ui/core/Grid';
-import InputBase from '@material-ui/core/InputBase';
+import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import cartImage from '../assets/images/cart.svg';
 import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
+// import SearchBar from 'material-ui-search-bar';
 // import accountImage from '../assets/images/account.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -106,6 +107,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		marginRight: theme.spacing(2),
 		marginLeft: 0,
+		height: 10,
 		width: '100%',
 		[theme.breakpoints.up('sm')]: {
 			marginLeft: theme.spacing(3),
@@ -154,6 +156,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ButtonAppBar() {
 	const classes = useStyles();
+	const [openSearch, setOpenSearch] = useState(false);
 	const orderedItems = JSON.parse(localStorage.getItem('orderSummary'));
 	const isAuthenticated = useSelector(state => state.auth.authenticated);
 	// const user = useSelector(state => state.auth.user);
@@ -184,6 +187,13 @@ export default function ButtonAppBar() {
 		dispatch(logoutUser());
 	};
 
+	const handleClickOpenSearch = () => {
+		setOpenSearch(true);
+	};
+
+	const handleCloseSearch = () => {
+		setOpenSearch(false);
+	};
 	const list = anchor => (
 		<div
 			className={clsx(classes.list, {
@@ -384,18 +394,11 @@ export default function ButtonAppBar() {
 							/>
 						</Link>
 					</Typography>
-					<div className={classes.search}>
-						<div className={classes.searchIcon}>
-							<SearchIcon />
-						</div>
-						<InputBase
-							placeholder='Search…'
-							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput,
-							}}
-							inputProps={{ 'aria-label': 'search' }}
-						/>
+					<div
+						className={classes.search}
+						style={{ backgroundColor: '#333', height: '80%' }}
+					>
+						{/* search icons */}
 					</div>
 					<div className={classes.sectionDesktop}>
 						<Grid
@@ -436,7 +439,7 @@ export default function ButtonAppBar() {
 											borderRadius: '25px',
 										}}
 									>
-									{orderedItems && orderedItems.length}
+										{orderedItems && orderedItems.length}
 									</span>
 								</Link>
 							</Grid>
