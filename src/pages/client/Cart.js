@@ -268,31 +268,20 @@ const Cart = props => {
 											>
 												<Button
 													color='primary'
-													size='small'
+													size='medium'
+													variant='contained'
 													style={{
-														backgroundColor: '#0080003a',
-														width: '33%',
-														color: 'green',
+														width: '80%',
 													}}
 													onClick={() => handlePayLater()}
 													disabled={isButtonDisabled}
 												>
-													Pay later
-												</Button>
-
-												<Button
-													color='primary'
-													size='small'
-													style={{ backgroundColor: '#1976d23f', width: '33%' }}
-													disableRipple={false}
-												>
-													Checkout
+													Make order
 												</Button>
 												<Button
 													color='secondary'
-													size='small'
-													variant='contained'
-													style={{ width: '33%' }}
+													variant='outlined'
+													size='medium'
 													onClick={handleCancelOrder}
 												>
 													Cancel
@@ -325,48 +314,13 @@ const Cart = props => {
 												aria-label='customized table'
 											>
 												<TableBody>
-													{bookedItems !== null && totalPrice !== 0 ? (
-														bookedItems.map(item => (
-															<TableRow key={item.key}>
-																<TableCell component='th' scope='row'>
-																	{item.itemName}
-																</TableCell>
-																<TableCell component='th' scope='row'>
-																	{item.itemNumber}
-																</TableCell>
-																<TableCell align='right'>
-																	{item.itemPrice} Rwf
-																</TableCell>
-																<TableCell align='right'>
-																	<Button color='secondary'>
-																		<CancelIcon
-																			onClick={e => handleAddItem(e, item)}
-																		/>
-																	</Button>
-																</TableCell>
-															</TableRow>
-														))
-													) : (
-														<Typography
-															component='h4'
-															variant='h6'
-															color='textPrimary'
-															gutterBottom
-															item
-															md={12}
-															align='center'
-															style={{ marginTop: '20px' }}
-														>
-															Oops! You haven't added to cart anything!
-														</Typography>
-													)}
 													{bookedItems && totalPrice !== 0 ? (
 														<TableRow>
 															<TableCell component='th' scope='row'>
-																<strong>Total</strong>
+																<strong>Items ({bookedItems.length})</strong>
 															</TableCell>
 															<TableCell align='right'>
-																<strong>{totalPrice}</strong>
+																<strong>{bookedItems.length}</strong>
 															</TableCell>
 														</TableRow>
 													) : null}
@@ -381,31 +335,20 @@ const Cart = props => {
 											>
 												<Button
 													color='primary'
-													size='small'
-													style={{
-														backgroundColor: '#0080003a',
-														width: '33%',
-														color: 'green',
-													}}
+													variant='contained'
+													size='medium'
 													onClick={() => handlePayLater()}
 													disabled={isButtonDisabled}
+													style={{
+														width: '70%',
+													}}
 												>
-													Pay later
-												</Button>
-
-												<Button
-													color='primary'
-													size='small'
-													style={{ backgroundColor: '#1976d23f', width: '33%' }}
-													disableRipple={false}
-												>
-													Checkout
+													Make order
 												</Button>
 												<Button
 													color='secondary'
-													size='small'
-													variant='contained'
-													style={{ width: '33%' }}
+													variant='outlined'
+													size='medium'
 													onClick={handleCancelOrder}
 												>
 													Cancel

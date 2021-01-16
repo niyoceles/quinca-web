@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -60,6 +61,7 @@ const AddCart = props => {
 				style={{ width: '40%' }}
 				className={classes.submit}
 				onClick={e => props.addItemCart1(e, props.selected1, quantity)}
+				startIcon={<AddShoppingCartIcon />}
 			>
 				Add Cart
 			</Button>

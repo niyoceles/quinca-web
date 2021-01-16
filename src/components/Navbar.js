@@ -34,7 +34,7 @@ import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
-// import SearchBar from 'material-ui-search-bar';
+import SearchItems from '../pages/client/SearchItems';
 // import accountImage from '../assets/images/account.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -394,11 +394,13 @@ export default function ButtonAppBar() {
 							/>
 						</Link>
 					</Typography>
-					<div
-						className={classes.search}
-						style={{ backgroundColor: '#333', height: '80%' }}
-					>
+					<div className={classes.search}>
 						{/* search icons */}
+						<SearchItems
+							handleOpenSearch={handleClickOpenSearch}
+							openSearch={openSearch}
+							closeSearch={handleCloseSearch}
+						/>
 					</div>
 					<div className={classes.sectionDesktop}>
 						<Grid

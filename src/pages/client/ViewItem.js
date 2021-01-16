@@ -29,14 +29,8 @@ function Alert(props) {
 }
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		width: '100%',
-		'& > * + *': {
-			marginTop: theme.spacing(2),
-		},
-	},
 	cardGrid: {
-		paddingTop: theme.spacing(16),
+		paddingTop: theme.spacing(6),
 		paddingBottom: theme.spacing(2),
 		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
@@ -166,6 +160,7 @@ const ViewItem = props => {
 						message='I love snacks'
 						autoHideDuration={3000}
 						onClose={handleCloseSnack}
+						style={{ marginTop: 80 }}
 					>
 						<Alert onClose={handleCloseSnack} severity='success'>
 							Item added on cart

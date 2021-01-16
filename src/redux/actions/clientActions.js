@@ -155,9 +155,9 @@ export const getSingleProforma = id => dispatch => {
 };
 
 export const searchItems = keyword => dispatch => {
-	console.log(keyword)
+	console.log('cccccccccccccccccc:', keyword);
 	axios
-		.get(`${REACT_APP_BACKEND}/search/items?itemName=${keyword}`)
+		.post(`${REACT_APP_BACKEND}/item/search`, keyword)
 		.then(res => {
 			console.log('bbbbbbbbb', res.data);
 			dispatch({

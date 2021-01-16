@@ -25,7 +25,7 @@ const initialState = {
 	bookedItems: [],
 	proformaItems: [],
 	proformaItem: [],
-	searchResults: [],
+	searchResults: null,
 };
 
 export default function (state = initialState, action) {

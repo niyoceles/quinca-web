@@ -8,21 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
-import Link from '@material-ui/core/Link';
-import Divider from '@material-ui/core/Divider';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchItems } from '../../redux/actions';
 import { Link as ReactLink } from 'react-router-dom';
-import itemImage from '../../assets/images/home/construction.jpeg';
-import materials from '../../assets/images/home/material.jpeg';
-import { HomeSlide } from '../../components/client';
-import ClientLayout from '../../layouts/ClientLayout';
 
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -38,6 +28,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const useStyles = makeStyles(theme => ({
 	appBar: {
 		position: 'relative',
+		alignItems: 'center',
+		backgroundColor: '#fff',
+		backgroundSize: 'cover',
+		height: 60,
 	},
 	title: {
 		marginLeft: theme.spacing(2),
@@ -99,127 +93,119 @@ const useStyles = makeStyles(theme => ({
 		width: '50px !important',
 		height: '50px !important',
 	},
-	form:{
-		width: '60%'
-	}
+	form: {
+		width: '60%',
+	},
 }));
 
-export default function SearchItems() {
+export default function SearchItems(props) {
 	const classes = useStyles();
-
-	const [open, setOpen] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
 	const [searchValue, setSearchValue] = React.useState('');
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
 
 	const results = useSelector(state => state.client.searchResults);
 	const dispatch = useDispatch();
 	const doSomethingWith = e => {
-		console.log('Search is working!');
 		e.preventDefault();
-
 		setSubmitted(true);
 		if (searchValue) {
-			dispatch(searchItems(searchValue));
+			dispatch(searchItems({ search: searchValue }));
 		}
 	};
 
 	return (
-		<ClientLayout>
-			<Button variant='outlined' color='primary' onClick={handleClickOpen}>
-				Open full-screen dialog
+		<>
+			<Button
+				color='inherit'
+				className={[classes.buttonFontSize, classes.proformaButton]}
+				onClick={props.handleOpenSearch}
+				style={{ marginTop: -15 }}
+			>
+				<SearchIcon />
+				{'Search'}
 			</Button>
 			<Dialog
 				fullScreen
-				open={open}
-				onClose={handleClose}
+				open={props.openSearch}
+				onClose={props.closeSearch}
 				TransitionComponent={Transition}
 			>
-				<AppBar className={classes.appBar}>
+				<AppBar
+					className={classes.appBar}
+					color='default'
+					position='sticky'
+					indicatorColor='primary'
+					elevation={2}
+				>
 					<Toolbar>
-						<IconButton
-							edge='start'
-							color='inherit'
-							onClick={handleClose}
-							aria-label='close'
-						>
-							<CloseIcon />
-						</IconButton>
-						{/* <Grid item>
-							<SearchBar
-								value={searchValue}
-								onChange={newValue => setSearchValue(newValue)}
-								onRequestSearch={() => doSomethingWith(searchValue)}
-							/>
+						<Grid container spacing={4} align='center' alignItems='center'>
+							<IconButton
+								edge='start'
+								color='inherit'
+								onClick={props.closeSearch}
+								aria-label='close'
+							>
+								<CloseIcon />
+							</IconButton>
+							<Grid item style={{ width: 400 }} align='center'>
+								<form
+									className={classes.form}
+									style={{ width: '90%' }}
+									noValidate
+									onSubmit={doSomethingWith}
+								>
+									<TextField
+										margin='normal'
+										required
+										fullWidth
+										id='searchValue'
+										label='search item'
+										name='searchValue'
+										onChange={e => setSearchValue(e.target.value)}
+										autoComplete='searchValue'
+										autoFocus
+									/>
+								</form>
+							</Grid>
+							<Grid item>
+								<Button color='inherit' onClick={doSomethingWith}>
+									<SearchIcon />
+									{'Search'}
+								</Button>
+							</Grid>
 						</Grid>
-						<Grid item>
-							<Button
-								color='inherit'
-								className={[classes.buttonFontSize, classes.proformaButton]}
-								onClick={() => doSomethingWith(searchValue)}
-							>
-								<SearchIcon />
-								{'Search'}
-							</Button>
-						</Grid> */}
-						<form
-							className={classes.form}
-							noValidate
-							onSubmit={doSomethingWith}
-						>
-							<TextField
-								variant='outlined'
-								margin='normal'
-								required
-								fullWidth
-								id='searchValue'
-								label='search item'
-								name='searchValue'
-								onChange={e => setSearchValue(e.target.value)}
-								autoComplete='searchValue'
-								autoFocus
-							/>
-							<Button
-								type='submit'
-								color='inherit'
-								className={[classes.buttonFontSize, classes.proformaButton]}
-								onClick={doSomethingWith}
-								style={{ marginTop: 25 }}
-							>
-								<SearchIcon />
-								{'Search'}
-							</Button>
-						</form>
-						<Button autoFocus color='secondary' onClick={handleClose}>
-							Cancel
-						</Button>
 					</Toolbar>
 				</AppBar>
 				<Container className={classes.cardGrid} maxWidth='lg'>
-					{submitted && results === undefined ? (
-						<CircularProgress className={classes.spin} />
+					{submitted && !results ? (
+						<CircularProgress />
 					) : (
 						<Grid container spacing={4}>
-							<Typography
-								component='h3'
-								variant='h5'
-								align='center'
-								color='textPrimary'
-								className={classes.titleFeature}
-								gutterBottom
-							>
-								search results for {searchValue}
-							</Typography>
-							{results !== undefined ? (
+							{results && results === 'No Item found' ? (
+								<Typography
+									component='h3'
+									variant='h5'
+									align='center'
+									color='textPrimary'
+									className={classes.titleFeature}
+									gutterBottom
+								>
+									your search results {results && results}
+								</Typography>
+							) : (
+								results &&
 								results.map(card => (
 									<Grid item key={card} xs={12} sm={6} md={3}>
+										<Typography
+											component='h3'
+											variant='h5'
+											align='center'
+											color='textPrimary'
+											className={classes.titleFeature}
+											gutterBottom
+										>
+											Your search found
+										</Typography>
 										<Card className={classes.card} elevation={3}>
 											<ReactLink
 												to={`/view/${card.id}`}
@@ -267,7 +253,10 @@ export default function SearchItems() {
 																	color='primary'
 																	style={{ marginTop: -5 }}
 																>
-																	RWF {card.itemPrice}
+																	RWF{' '}
+																	{card.itemPrice || card.itemPrice !== 0
+																		? card.itemPrice
+																		: 'Negociable'}
 																</Button>
 															</Grid>
 														</Grid>
@@ -277,13 +266,11 @@ export default function SearchItems() {
 										</Card>
 									</Grid>
 								))
-							) : (
-								<CircularProgress className={classes.spin} />
 							)}
 						</Grid>
 					)}
 				</Container>
 			</Dialog>
-		</ClientLayout>
+		</>
 	);
 }
