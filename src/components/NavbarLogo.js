@@ -12,8 +12,6 @@ import CallIcon from '@material-ui/icons/Call';
 import EmailIcon from '@material-ui/icons/Email';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -292,7 +290,7 @@ export default function ButtonAppBar() {
 						|
 					</Typography>{' '}
 					<Typography variant='body2' color='textSecondary' align='center'>
-						<CallIcon style={{ marginBottom: -8 }} /> +250 784 051 366
+						<CallIcon style={{ marginBottom: -8 }} /> +250 788 550 184
 					</Typography>{' '}
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>

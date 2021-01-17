@@ -1,11 +1,9 @@
 import React from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Slides from '../../components/Slides';
 import SupplierLayout from '../../layouts/SupplierLayout';
-import { Typography } from '@material-ui/core';
+import AllOrders from '../../components/Tables/AllOrders';
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -16,31 +14,17 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const BookingsPage = () => {
+const OrdersPage = () => {
 	const classes = useStyles();
-	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
 	return (
 		<SupplierLayout>
-			{/* Slides */}
-			<Grid item xs={12} md={8} lg={9}>
-				<Paper className={fixedHeightPaper}>
-					<Slides />
-				</Paper>
-			</Grid>
-			{/* Recent Deposits */}
-			<Grid item xs={12} md={4} lg={3}>
-				<Paper className={fixedHeightPaper}>
-					<Slides />
-				</Paper>
-			</Grid>
 			{/* Recent Features */}
 			<Grid item xs={12}>
 				<Paper className={classes.paper}>
-					<Typography>Booking page</Typography>
+					<AllOrders />
 				</Paper>
 			</Grid>
 		</SupplierLayout>
 	);
 };
-export default BookingsPage;
+export default OrdersPage;

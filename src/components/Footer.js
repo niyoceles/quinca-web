@@ -34,6 +34,16 @@ const useStyles = makeStyles(theme => ({
 		color: 'inherit',
 		padding: 2,
 	},
+	contactLink: {
+		textDecoration: 'none !important',
+		color: 'inherit',
+		padding: 2,
+		'&:hover': {
+			boxShadow: '0px 1px 1px #888888',
+			// color: '#333',
+			textDecoration: 'none !important',
+		},
+	},
 	logo: {
 		maxWidth: 200,
 		marginRight: '10px',
@@ -138,7 +148,16 @@ const Footer = () => {
 						Help 24/7
 					</Typography>
 					<Typography variant='body2' color='textSecondary' align='center'>
-						Got a question? Browse our FAQs or contact us.
+						Got a question? please{' '}
+						<Link
+							display='inline'
+							variant='body2'
+							href='/contact-us'
+							align='center'
+							className={classes.contactLink}
+						>
+							Contact us
+						</Link>
 					</Typography>
 				</Grid>
 				<Grid item xs={6} sm={3}>
@@ -258,25 +277,54 @@ const Footer = () => {
 					>
 						Company
 					</Typography>
-					{social.map(network => (
-						<Link
-							display='block'
+					<Link
+						display='block'
+						variant='body2'
+						href='/contact-us'
+						align='center'
+						className={classes.links}
+					>
+						<Typography
 							variant='body2'
-							href={network.url}
-							key={network}
-							align='center'
-							className={classes.links}
+							color='textSecondary'
+							align='left'
+							gutterBottom
 						>
-							<Typography
-								variant='body2'
-								color='textSecondary'
-								align='left'
-								gutterBottom
-							>
-								category link
-							</Typography>
-						</Link>
-					))}
+							Contact us
+						</Typography>
+					</Link>
+					<Link
+						display='block'
+						variant='body2'
+						href='/contact-us'
+						align='center'
+						className={classes.links}
+					>
+						<Typography
+							variant='body2'
+							color='textSecondary'
+							align='left'
+							gutterBottom
+						>
+							About us
+						</Typography>
+					</Link>
+					<Link
+						display='block'
+						variant='body2'
+						href='/'
+						align='center'
+						className={classes.links}
+					>
+						<Typography
+							variant='body2'
+							color='textSecondary'
+							align='left'
+							gutterBottom
+						>
+							How we work
+						</Typography>
+					</Link>
 				</Grid>
 				<Grid item xs={6} sm={3}>
 					<Typography

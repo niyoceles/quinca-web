@@ -46,6 +46,7 @@ const ProformaItems = props => {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [quantity, setQuantity] = useState('');
+	const [submitted, setSubmitted] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
 
 	const handleToggleModal = item => {
@@ -55,6 +56,14 @@ const ProformaItems = props => {
 
 	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const handleSubmit = e => {
+		e.preventDefault();
+		setSubmitted(true);
+		if (quantity) {
+			setOpen(false);
+		}
 	};
 
 	return (
@@ -72,10 +81,7 @@ const ProformaItems = props => {
 			>
 				<DialogContent>
 					<DialogContentText id='alert-dialog-slide-description'>
-						<form
-							noValidate
-							onSubmit={() => props.addItem(selectedItem, quantity)}
-						>
+						<form noValidate onSubmit={handleSubmit}>
 							<TextField
 								variant='outlined'
 								margin='normal'
@@ -83,38 +89,34 @@ const ProformaItems = props => {
 								name='quantity'
 								defaultValue={10}
 								inputProps={{ min: '10' }}
-								helperText={
-									props.checkSubmitted && !quantity ? 'is invalid' : null
-								}
+								helperText={submitted && !quantity ? 'is invalid' : null}
 								value={quantity}
-								error={
-									props.checkSubmitted && !quantity ? 'is-invalid' : null
-								}
+								error={submitted && !quantity ? 'is-invalid' : null}
 								onChange={e => setQuantity(e.target.value)}
 								label='quantity'
 								type='number'
 								id='quantity'
 							/>
+							<Button
+								type='submit'
+								color='primary'
+								size='small'
+								style={{
+									backgroundColor: '#0080003a',
+									width: '80%',
+									color: 'green',
+								}}
+								onClick={e => props.addItem(e, selectedItem, quantity)}
+							>
+								Confirm cart
+							</Button>
+							<Button onClick={handleClose} color='primary'>
+								Cancel
+							</Button>
 						</form>
 					</DialogContentText>
 				</DialogContent>
-				<DialogActions>
-					<Button
-						color='primary'
-						size='small'
-						style={{
-							backgroundColor: '#0080003a',
-							width: '80%',
-							color: 'green',
-						}}
-						onClick={e => props.addItem(e, selectedItem, quantity)}
-					>
-						Confirm cart
-					</Button>
-					<Button onClick={handleClose} color='primary'>
-						Cancel
-					</Button>
-				</DialogActions>
+				<DialogActions></DialogActions>
 			</Dialog>
 			{/* end modal----------------------------------------------------------- */}
 			<div>

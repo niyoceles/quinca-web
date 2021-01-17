@@ -5,8 +5,8 @@ import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
 import clients from './components/client/clients1';
 import ItemPage from './pages/supplier/ItemPage';
+import ProformaPage from './pages/supplier/ProformaPage';
 import customersPage from './pages/supplier/CustomersPage';
-import BookingsPage from './pages/supplier/BookingsPage';
 import DashboardPage from './pages/supplier/DashboardPage';
 import ReportPage from './pages/supplier/ReportPage';
 import ProfilePage from './pages/supplier/ProfilePage';
@@ -22,6 +22,9 @@ import SignupPage from './pages/Auth/SignupPage';
 import CategoryItems from './pages/client/CategoryItems';
 import ViewItem from './pages/client/ViewItem';
 import Cart from './pages/client/Cart';
+import OrdersPage from './pages/supplier/OrdersPage';
+import ContactForm from './components/client/ContactForm';
+import ContactUs from './pages/client/ContactUs';
 
 export const Routes = () => {
 	return (
@@ -34,6 +37,7 @@ export const Routes = () => {
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewItem} />
 					<Route exact path='/cart' component={Cart} />
+					<Route exact path='/contact-us' component={ContactUs} />
 					<Route exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />
@@ -43,13 +47,18 @@ export const Routes = () => {
 					<AuthRoute exact path='/me' component={MyProfile} />
 					<AuthRoute
 						exact
+						path='/account/supplier/proforma'
+						component={ProformaPage}
+					/>
+					<AuthRoute
+						exact
 						path='/account/supplier/items'
 						component={ItemPage}
 					/>
 					<AuthRoute
 						exact
-						path='/account/supplier/bookings'
-						component={BookingsPage}
+						path='/account/supplier/orders'
+						component={OrdersPage}
 					/>
 					<AuthRoute
 						exact

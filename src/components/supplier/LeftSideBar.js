@@ -21,12 +21,12 @@ export const mainActionButtons = (
 				<ListItemText primary='Dashboard' />
 			</ListItem>
 		</Link>
-		<Link variant='body2' href='/account/supplier/bookings'>
+		<Link variant='body2' href='/account/supplier/orders'>
 			<ListItem button>
 				<ListItemIcon>
 					<ShoppingCartIcon />
 				</ListItemIcon>
-				<ListItemText primary='Bookings' />
+				<ListItemText primary='Orders' />
 			</ListItem>
 		</Link>
 		<Link variant='body2' href='/account/supplier/customers'>
@@ -35,6 +35,14 @@ export const mainActionButtons = (
 					<PeopleIcon />
 				</ListItemIcon>
 				<ListItemText primary='Customers' />
+			</ListItem>
+		</Link>
+		<Link variant='body2' href='/account/supplier/proforma'>
+			<ListItem button>
+				<ListItemIcon>
+					<LayersIcon />
+				</ListItemIcon>
+				<ListItemText primary='Proforma' />
 			</ListItem>
 		</Link>
 		<Link variant='body2' href='/account/supplier/items'>

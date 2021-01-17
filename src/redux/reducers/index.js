@@ -4,6 +4,7 @@ import item from './itemReducer';
 import supplier from './supplierReducer';
 import client from './clientReducer';
 import ui from './uiReducer';
+import contact from './contactReducer';
 
 export default combineReducers({
 	auth,
@@ -11,4 +12,5 @@ export default combineReducers({
 	ui,
 	supplier,
 	client,
+	contact,
 });

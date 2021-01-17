@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
 import Divider from '@material-ui/core/Divider';
 import ProformaItems from '../../components/client/ProformaItems';
 import Fab from '@material-ui/core/Fab';
@@ -21,12 +22,17 @@ import { green } from '@material-ui/core/colors';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import MuiAlert from '@material-ui/lab/Alert';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Spinner from '../../components/Ui/Spinner/Spinner';
 import moment from 'moment';
 import DateWidget from '../../components/SidebarWidget/DateWidget';
 import CartLayout from '../../layouts/CartLayout';
+
+function Alert(props) {
+	return <MuiAlert elevation={6} variant='filled' {...props} />;
+}
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -97,7 +103,9 @@ const RequestProforma = props => {
 	const [checkInDate, setCheckInDate] = useState(moment());
 	const [checkOutDate, setCheckOutDate] = useState(moment());
 
-	const [open, setOpen] = useState(false);
+	// const [open, setOpen] = useState(false);
+	const [snack, setSnack] = useState(false);
+	const [selectedItem, setSelectedItem] = useState(null);
 	const [submitted, setSubmitted] = useState(false);
 	const [proformaInfo, setProformaInfo] = useState({
 		pickupDate: selectedDate,
@@ -131,16 +139,20 @@ const RequestProforma = props => {
 			itemPrice: itemPrice * 1,
 			itemNumber,
 		};
-		const requested = proformaSummary.find(bk => bk.id === item.id);
-		let updatedProforma = [...proformaSummary, requestItem];
-		if (requested) {
-			updatedProforma = proformaSummary.filter(bk => bk.id !== item.id);
-			const updatedTotPrice = tempTot - item['itemPrice'] * 1;
-			localStorage.setItem('totalPrice', updatedTotPrice);
-			if (updatedTotPrice === 0) setIsButtonDisabled(true);
+		if (itemNumber) {
+			const requested = proformaSummary.find(bk => bk.id === item.id);
+			let updatedProforma = [...proformaSummary, requestItem];
+			if (requested) {
+				updatedProforma = proformaSummary.filter(bk => bk.id !== item.id);
+				const updatedTotPrice = tempTot - item['itemPrice'] * 1;
+				localStorage.setItem('totalPrice', updatedTotPrice);
+				if (updatedTotPrice === 0) setIsButtonDisabled(true);
+			}
+			setProformaSummary(updatedProforma);
+			localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
+			// setOpen(false);
+			setSnack(true);
 		}
-		setProformaSummary(updatedProforma);
-		localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
 	};
 
 	useEffect(() => {
@@ -183,18 +195,48 @@ const RequestProforma = props => {
 		};
 		setSubmitted(true);
 		await dispatch(requestProforma(requestInfo));
-		setOpen(!open);
+		// setOpen(!open);
 	};
 
 	const handleCancelProforma = () => {
 		localStorage.removeItem('proformaSummary');
 		localStorage.removeItem('totalPrice');
 		setProformaSummary([]);
-		setOpen(!open);
+		// setOpen(!open);
 	};
 
+	const handleCloseSnack = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setSnack(false);
+	};
+
+	const handleToggleModal = item => {
+		setSubmitted(false);
+		// setOpen(!open);
+		setSelectedItem(item);
+	};
+
+	const handleClose = () => {
+		setSubmitted(false);
+		// setOpen(false);
+	};
+	
 	return (
 		<CartLayout>
+			<Snackbar
+				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+				open={snack}
+				message='I love snacks'
+				autoHideDuration={3000}
+				onClose={handleCloseSnack}
+				style={{ marginTop: 80 }}
+			>
+				<Alert onClose={handleCloseSnack} severity='success'>
+					Item added on cart
+				</Alert>
+			</Snackbar>
 			<br />
 			{items.allitems ? (
 				<Container item className={classes.cardGrid} maxWidth='lg'>
@@ -203,6 +245,9 @@ const RequestProforma = props => {
 							<ProformaItems
 								items={items.allitems ? items.allitems : null}
 								addItem={handleAddItem}
+								openDialog={handleToggleModal}
+								closeDialog={handleClose}
+								selected={selectedItem}
 								checkSubmitted={submitted}
 							/>
 						</Grid>

@@ -25,15 +25,12 @@ import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import { logoutUser, searchItems } from '../redux/actions';
+import { logoutUser } from '../redux/actions';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
 import cartImage from '../assets/images/cart.svg';
 import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
-import Box from '@material-ui/core/Box';
 import SearchItems from '../pages/client/SearchItems';
 // import accountImage from '../assets/images/account.svg';
 
@@ -266,6 +263,7 @@ export default function ButtonAppBar() {
 	function handleClose() {
 		setAnchorEl(null);
 	}
+	
 	return (
 		<Fragment>
 			<AppBar
@@ -290,7 +288,7 @@ export default function ButtonAppBar() {
 					>
 						|
 					</Typography>{' '}
-					<Link to='/login' className={classes.links}>
+					<Link to='/contact-us' className={classes.links}>
 						<Typography variant='body2' color='textSecondary' align='center'>
 							Help
 						</Typography>
@@ -304,7 +302,7 @@ export default function ButtonAppBar() {
 						|
 					</Typography>{' '}
 					<Typography variant='body2' color='textSecondary' align='center'>
-						<CallIcon style={{ marginBottom: -8 }} /> +250 784 051 366
+						<CallIcon style={{ marginBottom: -8 }} /> +250 788 550 184
 					</Typography>{' '}
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>

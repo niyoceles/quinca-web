@@ -2,23 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+// import MyButton from '../../utils/MyButton';
+//MUI Styles
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteItem from '../Modals/DeleteItem';
 import EditItem from '../Modals/EditItem';
-const Items = props => {
+
+const Requested = props => {
 	dayjs.extend(relativeTime);
 	const {
-		item: {
+		oneRequest: {
 			id,
-			itemName,
+			client: { names, email, phoneNumber, address, location },
+			clientEmail,
 			itemImage,
 			itemImage2,
 			category,
 			// itemOwnerId,
 			itemDescription,
 			status,
-			itemPrice,
 			createdAt,
 		},
 	} = props;
@@ -26,33 +29,26 @@ const Items = props => {
 	return (
 		<TableRow key={id}>
 			<TableCell component='th' scope='row' size='small'>
-				{itemName}
+				{names}
 			</TableCell>
 			<TableCell align='right' size='small'>
-				<img
-					width='100'
-					height='60'
-					src={itemImage}
-					alt=''
-					className='edit-img'
-				/>
+				{phoneNumber}
 			</TableCell>
 			<TableCell align='right' size='small'>
-				{category}
+				{email}
 			</TableCell>
 			<TableCell align='right' size='small'>
-				{itemPrice}
+				{location}
 			</TableCell>
 			<TableCell align='right' size='small'>
 				{dayjs(createdAt).fromNow()}
 			</TableCell>
 			<TableCell align='right' size='small'>
-				<DeleteItem itemId={id} itemName={itemName} itemPrice={itemPrice} />
+				<DeleteItem itemId={id} itemName={id} />
 				<EditItem
 					itemId={id}
-					itemName={itemName}
+					itemName={id}
 					category={category}
-					itemPrice={itemPrice}
 					itemImage={itemImage}
 					itemImage2={itemImage2}
 					itemDescription={itemDescription}
@@ -63,9 +59,9 @@ const Items = props => {
 	);
 };
 
-Items.propTypes = {
+Requested.propTypes = {
 	user: PropTypes.object.isRequired,
 	openDialog: PropTypes.bool,
 };
 
-export default Items;
+export default Requested;
