@@ -5,10 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import Link from '@material-ui/core/Link';
 
 export const mainActionButtons = (
@@ -29,14 +26,6 @@ export const mainActionButtons = (
 				<ListItemText primary='Orders' />
 			</ListItem>
 		</Link>
-		<Link variant='body2' href='/account/supplier/customers'>
-			<ListItem button>
-				<ListItemIcon>
-					<PeopleIcon />
-				</ListItemIcon>
-				<ListItemText primary='Customers' />
-			</ListItem>
-		</Link>
 		<Link variant='body2' href='/account/supplier/proforma'>
 			<ListItem button>
 				<ListItemIcon>
@@ -53,21 +42,21 @@ export const mainActionButtons = (
 				<ListItemText primary='Items' />
 			</ListItem>
 		</Link>
-		<Link variant='body2' href='/account/supplier/reports'>
+		{/* <Link variant='body2' href='/account/supplier/reports'>
 			<ListItem button>
 				<ListItemIcon>
 					<BarChartIcon />
 				</ListItemIcon>
 				<ListItemText primary='Reports' />
 			</ListItem>
-		</Link>
+		</Link> */}
 	</div>
 );
 
 export const secondaryActionButtons = (
 	<div>
-		<ListSubheader inset>Saved reports</ListSubheader>
-		<ListItem button>
+		<ListSubheader inset>...</ListSubheader>
+		{/* <ListItem button>
 			<ListItemIcon>
 				<AssignmentIcon />
 			</ListItemIcon>
@@ -84,6 +73,6 @@ export const secondaryActionButtons = (
 				<AssignmentIcon />
 			</ListItemIcon>
 			<ListItemText primary='Help & Support' />
-		</ListItem>
+		</ListItem> */}
 	</div>
 );

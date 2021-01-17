@@ -182,12 +182,12 @@ const AllProforma = () => {
 						<Table stickyHeader aria-label='sticky table'>
 							<TableHead>
 								<TableRow>
-									<StyledTableCell>Customer Names</StyledTableCell>
-									<StyledTableCell align='left'>Email</StyledTableCell>
-									<StyledTableCell align='right'>Phone</StyledTableCell>
-									<StyledTableCell align='right'>Item Price</StyledTableCell>
-									<StyledTableCell align='right'>Created Time</StyledTableCell>
+									<StyledTableCell>Names</StyledTableCell>
+									<StyledTableCell align='left'>Phone</StyledTableCell>
+									<StyledTableCell align='right'>Email</StyledTableCell>
+									<StyledTableCell align='right'>No items</StyledTableCell>
 									<StyledTableCell align='right'>Actions</StyledTableCell>
+									<StyledTableCell align='right'>Created Time</StyledTableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>

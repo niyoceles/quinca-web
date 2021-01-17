@@ -10,11 +10,10 @@ import Divider from '@material-ui/core/Divider';
 
 import '@brainhubeu/react-carousel/lib/style.css';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createOrder } from '../../redux/actions';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';

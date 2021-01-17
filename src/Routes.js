@@ -25,6 +25,7 @@ import Cart from './pages/client/Cart';
 import OrdersPage from './pages/supplier/OrdersPage';
 import ContactForm from './components/client/ContactForm';
 import ContactUs from './pages/client/ContactUs';
+import ViewProforma from './pages/supplier/ViewProforma';
 
 export const Routes = () => {
 	return (
@@ -42,6 +43,7 @@ export const Routes = () => {
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />
 					<Route exact path='/my-proforma/:id' component={SingleProformaPage} />
+					<Route exact path='/proforma/:id' component={ViewProforma} />
 					<AuthRoute exact path='/client' component={clients} />
 					<AuthRoute exact path='/bookings' component={Bookings} />
 					<AuthRoute exact path='/me' component={MyProfile} />

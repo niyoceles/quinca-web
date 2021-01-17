@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import CardActions from '@material-ui/core/CardActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleProforma } from '../../redux/actions';
-import ClientLayout from '../../layouts/ClientLayout';
+import CartLayout from '../../layouts/CartLayout';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -50,9 +50,6 @@ const useStyles = makeStyles(theme => ({
 
 const SingleProforma = props => {
 	const classes = useStyles();
-
-	// const { id } = props.match.params;
-
 	const myprofroma = useSelector(
 		state => state.client.proformaItem.oneproforma
 	);
@@ -66,7 +63,7 @@ const SingleProforma = props => {
 	}, [dispatch]);
 
 	return (
-		<ClientLayout>
+		<CartLayout>
 			<Container
 				className={[classes.topCardGrid, classes.topBodyButtons]}
 				maxWidth='lg'
@@ -83,23 +80,22 @@ const SingleProforma = props => {
 				>
 					View proforma
 				</Typography>
+				<hr />
 				<Grid container spacing={2}>
 					<Grid item xs={10} sm={5} md={4}>
 						{myprofroma !== undefined ? (
-							// <img
-							// 	style={{
-							// 		width: '80%',
-							// 		height: '40vh',
-							// 		margin: 'auto',
-							// 		borderRadius: 10,
-							// 	}}
-							// 	alt='item image'
-							// 	src={Imagebanner}
-							// />
 							<List className={classes.listItem}>
 								<ListItem>
-									<ListItemText primary='id' />
-									<ListItemText primary={myprofroma.id} />
+									<ListItemText primary='Names' />
+									<ListItemText primary={myprofroma.client.names} />
+								</ListItem>
+								<ListItem>
+									<ListItemText primary='Phone' />
+									<ListItemText primary={myprofroma.client.phoneNumber} />
+								</ListItem>
+								<ListItem>
+									<ListItemText primary='Email' />
+									<ListItemText primary={myprofroma.client.email} />
 								</ListItem>
 								<Divider variant='inset' component='li' />
 
@@ -118,7 +114,7 @@ const SingleProforma = props => {
 									<ListItemText primary={myprofroma.status} />
 								</ListItem>
 								<Divider variant='inset' component='li' />
-
+								<Divider />
 								<ListItem>
 									{!myprofroma.isPaid ? (
 										<CardActions
@@ -145,7 +141,7 @@ const SingleProforma = props => {
 													color: 'green',
 												}}
 											>
-												Pay
+												Approve
 											</Button>
 										</CardActions>
 									) : null}
@@ -159,13 +155,17 @@ const SingleProforma = props => {
 								<TableBody>
 									{items !== undefined ? (
 										items &&
-										items.map(item => (
+										myprofroma.itemsArray.map(item => (
 											<TableRow key={item.key}>
 												<TableCell component='th' scope='row'>
-													{item.itemDetails.itemName}
+													{item.itemName}
 												</TableCell>
 												<TableCell align='right'>
-													{item.itemDetails.itemPrice} Rwf
+													{item.itemPrice} Rwf
+												</TableCell>
+												<TableCell align='right'>{item.itemNumber}</TableCell>
+												<TableCell align='right'>
+													<b>{item.itemNumber * item.itemPrice}</b>
 												</TableCell>
 											</TableRow>
 										))
@@ -188,16 +188,32 @@ const SingleProforma = props => {
 											<strong>Total</strong>
 										</TableCell>
 										<TableCell align='right'>
-											<strong>2</strong>
+											{/* <strong>
+												{items &&
+													myprofroma.itemsArray.map(
+														item => (item.itemNumber) * (item.itemPrice)
+													)}
+											</strong> */}
 										</TableCell>
 									</TableRow>
 								</TableBody>
 							</Table>
 						</TableContainer>
+						<Button
+							color='primary'
+							size='medium'
+							style={{
+								backgroundColor: '#0080003a',
+								width: '100%',
+								color: 'green',
+							}}
+						>
+							Back
+						</Button>
 					</Grid>
 				</Grid>
 			</Container>
-		</ClientLayout>
+		</CartLayout>
 	);
 };
 
