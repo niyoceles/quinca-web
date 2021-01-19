@@ -36,49 +36,10 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
-	card: {
-		height: '100%',
-		display: 'flex',
-		flexDirection: 'column',
-		paddingBottom: theme.spacing(2),
-	},
-	cardMedia: {
-		paddingTop: '56.25%', // 16:9
-	},
-	cardContent: {
-		flexGrow: 1,
-	},
-	footer: {
-		backgroundColor: theme.palette.background.paper,
-		padding: theme.spacing(6),
-		position: 'sticky',
-		zIndex: '100',
-	},
-	slide: {
-		height: '340px',
-		width: '100%',
-	},
-	image: {
-		height: '100%',
-		width: '100%',
-	},
-	sticky: {
-		display: 'fixed',
-	},
 	btnSize: {
 		margin: theme.spacing(1),
 		width: '98%',
 		color: 'white',
-	},
-	btnProforma: {
-		color: '#1976D2',
-		border: '1px solid #eee',
-		background: 'white',
-		position: 'fixed',
-		zIndex: 10,
-		alignItems: 'right',
-		right: 35,
-		// top:90,
 	},
 }));
 
@@ -92,7 +53,6 @@ const RequestProforma = props => {
 	const classes = useStyles();
 	const requestedItems = JSON.parse(localStorage.getItem('proformaSummary'));
 	const totalPrice = (localStorage.getItem('totalPrice') || 0) * 1;
-	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(moment());
 	const [checkInDate, setCheckInDate] = useState(moment());
 	const [checkOutDate, setCheckOutDate] = useState(moment());
@@ -113,6 +73,7 @@ const RequestProforma = props => {
 	const items = useSelector(state => state.item.allItems);
 	// const metadata = useSelector(state => stateallItemsItems);
 	// const cont = useSelector(state => state.item.relatedItems);
+	console.log(items);
 
 	const dispatch = useDispatch();
 
@@ -121,11 +82,6 @@ const RequestProforma = props => {
 	);
 
 	const handleAddItem = (e, item, itemNumber) => {
-		const tempTot = (localStorage.getItem('totalPrice') || 0) * 1;
-		const tot = tempTot + item['itemPrice'] * 1;
-		localStorage.setItem('totalPrice', tot);
-		if (tot > 0) setIsButtonDisabled(false);
-
 		const { id, itemName, itemPrice } = item;
 		const requestItem = {
 			id,
@@ -137,15 +93,23 @@ const RequestProforma = props => {
 			const requested = proformaSummary.find(bk => bk.id === item.id);
 			let updatedProforma = [...proformaSummary, requestItem];
 			if (requested) {
-				updatedProforma = proformaSummary.filter(bk => bk.id !== item.id);
-				const updatedTotPrice = tempTot - item['itemPrice'] * 1;
-				localStorage.setItem('totalPrice', updatedTotPrice);
-				if (updatedTotPrice === 0) setIsButtonDisabled(true);
+				updatedProforma = proformaSummary.filter(bk => bk.id === item.id);
 			}
 			setProformaSummary(updatedProforma);
 			localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
-			// setOpen(false);
 			setSnack(true);
+		}
+	};
+
+	const handleRemoveItem = (e, item) => {
+		if (item) {
+			const requested = proformaSummary.find(bk => bk.id === item);
+			let updatedProforma = [...proformaSummary, item];
+			if (requested) {
+				updatedProforma = proformaSummary.filter(bk => bk.id !== item);
+			}
+			setProformaSummary(updatedProforma);
+			localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
 		}
 	};
 
@@ -189,14 +153,11 @@ const RequestProforma = props => {
 		};
 		setSubmitted(true);
 		await dispatch(requestProforma(requestInfo));
-		// setOpen(!open);
 	};
 
 	const handleCancelProforma = () => {
 		localStorage.removeItem('proformaSummary');
-		localStorage.removeItem('totalPrice');
 		setProformaSummary([]);
-		// setOpen(!open);
 	};
 
 	const handleCloseSnack = (event, reason) => {
@@ -208,15 +169,13 @@ const RequestProforma = props => {
 
 	const handleToggleModal = item => {
 		setSubmitted(false);
-		// setOpen(!open);
 		setSelectedItem(item);
 	};
 
 	const handleClose = () => {
 		setSubmitted(false);
-		// setOpen(false);
 	};
-	
+
 	return (
 		<CartLayout>
 			<Snackbar
@@ -232,12 +191,12 @@ const RequestProforma = props => {
 				</Alert>
 			</Snackbar>
 			<br />
-			{items.allitems ? (
+			{items && items.length ? (
 				<Container item className={classes.cardGrid} maxWidth='lg'>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={12} md={8}>
 							<ProformaItems
-								items={items.allitems ? items.allitems : null}
+								items={items ? items : null}
 								addItem={handleAddItem}
 								openDialog={handleToggleModal}
 								closeDialog={handleClose}
@@ -275,7 +234,7 @@ const RequestProforma = props => {
 													<TableCell align='right'>
 														<Button color='secondary'>
 															<CancelIcon
-																onClick={e => handleAddItem(e, item)}
+																onClick={e => handleRemoveItem(e, item.id)}
 															/>
 														</Button>
 													</TableCell>
@@ -293,19 +252,9 @@ const RequestProforma = props => {
 												style={{ marginTop: '20px' }}
 											>
 												Oops! You haven't requested anything yet!,
-												<br /> Please check/select the product item
+												<br /> Please add product item
 											</Typography>
 										)}
-										{requestedItems && totalPrice !== 0 ? (
-											<TableRow>
-												<TableCell component='th' scope='row'>
-													<strong>Total</strong>
-												</TableCell>
-												<TableCell align='right'>
-													<strong>{totalPrice}</strong>
-												</TableCell>
-											</TableRow>
-										) : null}
 									</TableBody>
 								</Table>
 							</TableContainer>
@@ -331,7 +280,6 @@ const RequestProforma = props => {
 											variant='contained'
 											className={classes.btnSize}
 											onClick={() => handlePayLater()}
-											disabled={isButtonDisabled}
 											onSubmit={() => handlePayLater()}
 										>
 											Request Now
