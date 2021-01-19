@@ -63,9 +63,7 @@ export const deleteItem = itemId => dispatch => {
 		})
 		.catch(err => console.log(err.response.data));
 };
-// http://localhost:3000/api/item/ecb9e576-f430-4cab-94cf-e985917a4f29
-// http://localhost:3000/api/item/b38e7ed8-64da-46fe-bc3b-f7f715e19273/activate
-// http://localhost:3000/api/item/suspend/ecb9e576-f430-4cab-94cf-e985917a4f29
+
 export const clearErrors = () => dispatch => {
 	dispatch({ type: CLEAR_ERRORS });
 };
@@ -88,7 +86,7 @@ export const getAllItems = () => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/item/all`)
 		.then(res => {
-			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data });
+			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data.allitems });
 		})
 		.catch(err => {
 			dispatch({

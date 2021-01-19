@@ -5,6 +5,9 @@ import supplier from './supplierReducer';
 import client from './clientReducer';
 import ui from './uiReducer';
 import contact from './contactReducer';
+import order from './orderReducer';
+import proforma from './proformaReducer';
+
 
 export default combineReducers({
 	auth,
@@ -13,4 +16,6 @@ export default combineReducers({
 	supplier,
 	client,
 	contact,
+	order,
+	proforma
 });

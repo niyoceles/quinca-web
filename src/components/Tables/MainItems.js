@@ -18,6 +18,8 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
+import { getAllItems } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import Item from './Item';
 import Title from '../../layouts/Title';
 import AddItem from '../Modals/AddItem';
@@ -58,13 +60,15 @@ function TablePaginationActions(props) {
 			<IconButton
 				onClick={handleFirstPageButtonClick}
 				disabled={page === 0}
-				aria-label='first page'>
+				aria-label='first page'
+			>
 				{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
 			</IconButton>
 			<IconButton
 				onClick={handleBackButtonClick}
 				disabled={page === 0}
-				aria-label='previous page'>
+				aria-label='previous page'
+			>
 				{theme.direction === 'rtl' ? (
 					<KeyboardArrowRight />
 				) : (
@@ -74,7 +78,8 @@ function TablePaginationActions(props) {
 			<IconButton
 				onClick={handleNextButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label='next page'>
+				aria-label='next page'
+			>
 				{theme.direction === 'rtl' ? (
 					<KeyboardArrowLeft />
 				) : (
@@ -84,7 +89,8 @@ function TablePaginationActions(props) {
 			<IconButton
 				onClick={handleLastPageButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label='last page'>
+				aria-label='last page'
+			>
 				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
 			</IconButton>
 		</div>
@@ -134,19 +140,13 @@ const MainItems = () => {
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const [items, setItems] = useState([]);
+	const items = useSelector(state => state.item.allItems);
 
-	const fetchItems = async () => {
-		const response = await axios.get(
-			`${REACT_APP_BACKEND}/item`
-		);
-
-		setItems(response.data.myitems);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		fetchItems(items);
-	}, [items]);
+		dispatch(getAllItems());
+	}, [dispatch]);
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);

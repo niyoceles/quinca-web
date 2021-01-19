@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import 'dotenv/config';
 import PropTypes from 'prop-types';
@@ -20,10 +20,8 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
 import Requested from './Requested';
 import Title from '../../layouts/Title';
-import AddItem from '../Modals/AddItem';
-// import NavBar from '../';
-import axios from 'axios';
-const { REACT_APP_BACKEND } = process.env;
+import { getAllProforma } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -138,20 +136,16 @@ const AllProforma = () => {
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const [items, setItems] = useState([]);
+	const proformas = useSelector(state => state.proforma.allProforma);
 
-	const fetchItems = async () => {
-		const response = await axios.get(`${REACT_APP_BACKEND}/proforma`);
-
-		setItems(response.data.allproforma);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		fetchItems(items);
-	}, [items]);
+		dispatch(getAllProforma());
+	}, [dispatch]);
 
 	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
+		rowsPerPage - Math.min(rowsPerPage, proformas.length - page * rowsPerPage);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -172,11 +166,6 @@ const AllProforma = () => {
 								<Title>Requested Proforma</Title>
 							</Paper>
 						</Grid>
-						<Grid item xs={12} md={3} lg={3}>
-							<Paper className={classes.paper}>
-								<AddItem />
-							</Paper>
-						</Grid>
 					</Grid>
 					<TableContainer className={classes.container}>
 						<Table stickyHeader aria-label='sticky table'>
@@ -185,18 +174,18 @@ const AllProforma = () => {
 									<StyledTableCell>Names</StyledTableCell>
 									<StyledTableCell align='left'>Phone</StyledTableCell>
 									<StyledTableCell align='right'>Email</StyledTableCell>
-									<StyledTableCell align='right'>No items</StyledTableCell>
+									<StyledTableCell align='right'>No proformas</StyledTableCell>
 									<StyledTableCell align='right'>Actions</StyledTableCell>
 									<StyledTableCell align='right'>Created Time</StyledTableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								{(rowsPerPage > 0
-									? items.slice(
+									? proformas.slice(
 											page * rowsPerPage,
 											page * rowsPerPage + rowsPerPage
 									  )
-									: items
+									: proformas
 								).map(item => (
 									<Requested key={item.id} oneRequest={item} />
 								))}
@@ -217,7 +206,7 @@ const AllProforma = () => {
 											{ label: 'All', value: -1 },
 										]}
 										colSpan={3}
-										count={items.length}
+										count={proformas.length}
 										rowsPerPage={rowsPerPage}
 										page={page}
 										SelectProps={{

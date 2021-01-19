@@ -11,6 +11,8 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import Grid from '@material-ui/core/Grid';
 import TableRow from '@material-ui/core/TableRow';
+import { getAllOrders } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -20,10 +22,6 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
 import Requested from './Requested';
 import Title from '../../layouts/Title';
-import AddItem from '../Modals/AddItem';
-// import NavBar from '../';
-import axios from 'axios';
-const { REACT_APP_BACKEND } = process.env;
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -138,20 +136,16 @@ const AllOrders = () => {
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const [items, setItems] = useState([]);
+	const orders = useSelector(state => state.order.allOrders);
 
-	const fetchItems = async () => {
-		const response = await axios.get(`${REACT_APP_BACKEND}/order`);
-
-		setItems(response.data.allorders);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		fetchItems(items);
-	}, [items]);
+		dispatch(getAllOrders());
+	}, [dispatch]);
 
 	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
+		rowsPerPage - Math.min(rowsPerPage, orders.length - page * rowsPerPage);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -172,31 +166,26 @@ const AllOrders = () => {
 								<Title>Requested Proforma</Title>
 							</Paper>
 						</Grid>
-						<Grid item xs={12} md={3} lg={3}>
-							<Paper className={classes.paper}>
-								<AddItem />
-							</Paper>
-						</Grid>
 					</Grid>
 					<TableContainer className={classes.container}>
 						<Table stickyHeader aria-label='sticky table'>
 							<TableHead>
 								<TableRow>
-									<StyledTableCell>Customer Names</StyledTableCell>
-									<StyledTableCell align='left'>Email</StyledTableCell>
-									<StyledTableCell align='right'>Phone</StyledTableCell>
-									<StyledTableCell align='right'>Item Price</StyledTableCell>
-									<StyledTableCell align='right'>Created Time</StyledTableCell>
+									<StyledTableCell>Names</StyledTableCell>
+									<StyledTableCell align='left'>Phone</StyledTableCell>
+									<StyledTableCell align='right'>Email</StyledTableCell>
+									<StyledTableCell align='right'>No orders</StyledTableCell>
 									<StyledTableCell align='right'>Actions</StyledTableCell>
+									<StyledTableCell align='right'>Created Time</StyledTableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								{(rowsPerPage > 0
-									? items.slice(
+									? orders.slice(
 											page * rowsPerPage,
 											page * rowsPerPage + rowsPerPage
 									  )
-									: items
+									: orders
 								).map(item => (
 									<Requested key={item.id} oneRequest={item} />
 								))}
@@ -217,7 +206,7 @@ const AllOrders = () => {
 											{ label: 'All', value: -1 },
 										]}
 										colSpan={3}
-										count={items.length}
+										count={orders.length}
 										rowsPerPage={rowsPerPage}
 										page={page}
 										SelectProps={{
