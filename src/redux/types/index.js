@@ -6,3 +6,4 @@ export * from './clientTypes';
 export * from './contactTypes';
 export * from './orderTypes';
 export * from './proformaTypes';
+export * from './categoryTypes';

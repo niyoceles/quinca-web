@@ -26,6 +26,7 @@ import OrdersPage from './pages/supplier/OrdersPage';
 import ContactForm from './components/client/ContactForm';
 import ContactUs from './pages/client/ContactUs';
 import ViewProforma from './pages/supplier/ViewProforma';
+import CategoryPage from './pages/supplier/CategoryPage';
 
 export const Routes = () => {
 	return (
@@ -56,6 +57,11 @@ export const Routes = () => {
 						exact
 						path='/account/supplier/items'
 						component={ItemPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/categories'
+						component={CategoryPage}
 					/>
 					<AuthRoute
 						exact

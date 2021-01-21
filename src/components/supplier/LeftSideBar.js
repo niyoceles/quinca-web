@@ -42,6 +42,14 @@ export const mainActionButtons = (
 				<ListItemText primary='Items' />
 			</ListItem>
 		</Link>
+		<Link variant='body2' href='/account/supplier/categories'>
+			<ListItem button>
+				<ListItemIcon>
+					<LayersIcon />
+				</ListItemIcon>
+				<ListItemText primary='Categories' />
+			</ListItem>
+		</Link>
 		{/* <Link variant='body2' href='/account/supplier/reports'>
 			<ListItem button>
 				<ListItemIcon>

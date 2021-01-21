@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import AllItems from '../../components/Tables/AllItems';
 import SupplierLayout from '../../layouts/SupplierLayout';
+import AllCategories from '../../components/Tables/AllCategories';
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -14,17 +14,16 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ItemPage = () => {
+const CategoryPage = () => {
 	const classes = useStyles();
 	return (
 		<SupplierLayout>
-			{/* Recent Features */}
 			<Grid item xs={12}>
 				<Paper className={classes.paper}>
-					<AllItems />
+					<AllCategories />
 				</Paper>
 			</Grid>
 		</SupplierLayout>
 	);
 };
-export default ItemPage;
+export default CategoryPage;

@@ -7,7 +7,7 @@ import ui from './uiReducer';
 import contact from './contactReducer';
 import order from './orderReducer';
 import proforma from './proformaReducer';
-
+import category from './categoryReducer';
 
 export default combineReducers({
 	auth,
@@ -17,5 +17,6 @@ export default combineReducers({
 	client,
 	contact,
 	order,
-	proforma
+	proforma,
+	category,
 });

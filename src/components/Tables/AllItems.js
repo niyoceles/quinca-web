@@ -135,7 +135,7 @@ const StyledTableCell = withStyles(theme => ({
 	},
 }))(TableCell);
 
-const MainItems = () => {
+const AllItems = () => {
 	const classes = useStyles2();
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 	const [page, setPage] = React.useState(0);
@@ -236,4 +236,4 @@ const MainItems = () => {
 	);
 };
 
-export default MainItems;
+export default AllItems;
