@@ -89,8 +89,8 @@ const Footer = () => {
 			url: '/contruction',
 		},
 		{
-			name: 'Plombing materials',
-			url: '/plombing',
+			name: 'Plumbing materials',
+			url: '/plumbing',
 		},
 		{
 			name: 'Electricity materials',

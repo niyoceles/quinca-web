@@ -263,7 +263,7 @@ export default function ButtonAppBar() {
 	function handleClose() {
 		setAnchorEl(null);
 	}
-	
+
 	return (
 		<Fragment>
 			<AppBar
@@ -306,7 +306,7 @@ export default function ButtonAppBar() {
 					</Typography>{' '}
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
-						{isAuthenticated ? (
+						{isAuthenticated && userinformation ? (
 							<>
 								<Typography
 									variant='body2'

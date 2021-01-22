@@ -89,8 +89,8 @@ export default function LandingPage() {
 			url: '/category/construction',
 		},
 		{
-			name: 'Plombing materials',
-			url: '/category/plombing',
+			name: 'Plumbing materials',
+			url: '/category/plumbing',
 		},
 		{
 			name: 'Electricity materials',
@@ -101,23 +101,25 @@ export default function LandingPage() {
 			url: '/construction',
 		},
 		{
-			name: 'Plombing materials',
-			url: '/category/plombing',
+			name: 'Plumbing materials',
+			url: '/category/plumbing',
 		},
 		{
 			name: 'Electricity materials',
 			url: '/category/electricity',
 		},
 		{
-			name: 'Plombing materials',
-			url: '/category/plombing',
+			name: 'Plumbing materials',
+			url: '/category/plumbing',
 		},
 	];
 	const classes = useStyles();
 	const constructionItems = useSelector(
 		state => state.client.homeItems.construction
 	);
-	const plombingItems = useSelector(state => state.client.homeItems.plombing);
+	console.log('cvcvcvc', constructionItems);
+	
+	const plumbingItems = useSelector(state => state.client.homeItems.plumbing);
 	const electricityItems = useSelector(
 		state => state.client.homeItems.electricity
 	);
@@ -189,11 +191,11 @@ export default function LandingPage() {
 							</ReactLink>
 						</Card>
 						<Card className={classes.topCard}>
-							<ReactLink to='/category/plombing' className={classes.links}>
+							<ReactLink to='/category/plumbing' className={classes.links}>
 								<CardMedia
 									className={classes.cardMedia}
 									image={materials}
-									title='Plombing materials'
+									title='Plumbing materials'
 								/>
 							</ReactLink>
 						</Card>
@@ -288,8 +290,8 @@ export default function LandingPage() {
 					Featured Tools
 				</Typography>
 				<Grid container spacing={4}>
-					{plombingItems !== undefined ? (
-						plombingItems.map(card => (
+					{plumbingItems !== undefined ? (
+						plumbingItems.map(card => (
 							<Grid item key={card} xs={12} sm={6} md={3}>
 								<Card className={classes.card} elevation={3}>
 									<ReactLink to={`/view/${card.id}`} className={classes.links}>
@@ -298,7 +300,10 @@ export default function LandingPage() {
 											image={card.itemImage}
 											title='Image title'
 										/>
-										<CardContent className={classes.cardContent} style={{ height: 70 }}>
+										<CardContent
+											className={classes.cardContent}
+											style={{ height: 70 }}
+										>
 											<div className={classes.divContent}>
 												<Typography
 													variant='body1'
@@ -370,7 +375,10 @@ export default function LandingPage() {
 											image={card.itemImage}
 											title='Image title'
 										/>
-										<CardContent className={classes.cardContent} style={{ height: 70 }}>
+										<CardContent
+											className={classes.cardContent}
+											style={{ height: 70 }}
+										>
 											<div className={classes.divContent}>
 												<Typography
 													variant='body1'

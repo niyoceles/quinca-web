@@ -169,7 +169,7 @@ const EditItem = props => {
 							>
 								<MenuItem value={'construction'}>construction</MenuItem>
 								<MenuItem value={'electricity'}>electricity</MenuItem>
-								<MenuItem value={'plombing'}>plombing</MenuItem>
+								<MenuItem value={'plumbing'}>plumbing</MenuItem>
 							</Select>
 						</FormControl>
 						<TextField
