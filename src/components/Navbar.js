@@ -157,6 +157,7 @@ export default function ButtonAppBar() {
 	const orderedItems = JSON.parse(localStorage.getItem('orderSummary'));
 	const isAuthenticated = useSelector(state => state.auth.authenticated);
 	// const user = useSelector(state => state.auth.user);
+	console.log('check order:', orderedItems);
 	const userinformation = JSON.parse(localStorage.getItem('userInfo'));
 	const [state, setState] = React.useState({
 		top: false,
@@ -439,7 +440,9 @@ export default function ButtonAppBar() {
 											borderRadius: '25px',
 										}}
 									>
-										{orderedItems && orderedItems.length}
+										{orderedItems && orderedItems.length
+											? orderedItems.length
+											: '0'}
 									</span>
 								</Link>
 							</Grid>

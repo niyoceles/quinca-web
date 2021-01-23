@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,13 +13,6 @@ import Divider from '@material-ui/core/Divider';
 import CardActions from '@material-ui/core/CardActions';
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		width: '75%',
-		margin: '100px auto',
-	},
-	container: {
-		maxHeight: 240,
-	},
 	row: {
 		cursor: 'pointer',
 		'&:hover': {
@@ -38,8 +30,6 @@ const useStyles = makeStyles(theme => ({
 
 const SingleBookings = props => {
 	const classes = useStyles();
-	const theme = useTheme();
-
 	return (
 		<>
 			<Dialog
@@ -56,7 +46,6 @@ const SingleBookings = props => {
 				<Grid container spacing={1}>
 					<Grid item xs={10} sm={5} md={5}>
 						<DialogContent>
-							{/* <DialogContentText> */}
 							{props.details.items !== undefined ? (
 								<img
 									style={{
@@ -69,7 +58,6 @@ const SingleBookings = props => {
 									src={props.details.items.itemImage}
 								/>
 							) : null}
-							{/* </DialogContentText> */}
 						</DialogContent>
 					</Grid>
 					<Grid item xs={10} sm={7} md={7}>

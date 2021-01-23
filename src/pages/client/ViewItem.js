@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ViewItem = props => {
+const ViewItem = () => {
 	const classes = useStyles();
 	const bookedItems = JSON.parse(localStorage.getItem('orderSummary'));
 
@@ -241,9 +241,6 @@ const ViewItem = props => {
 													component='p'
 												>
 													{profileSupplier1.itemDescription}
-													<br />
-													[removed later] This impressive paella is a perfect
-													party dish and a fun meal to cook together with your
 												</Typography>
 											</CardContent>
 										</Card>

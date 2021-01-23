@@ -4,14 +4,11 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import DeleteItem from '../Modals/DeleteItem';
-import EditItem from '../Modals/EditItem';
 import EditCategory from '../Modals/EditCategory';
-import DeleteCategory from '../Modals/DeleteCategory';
 const Categories = props => {
 	dayjs.extend(relativeTime);
 	const {
-		category: { id, name, status, itemPrice, createdAt },
+		category: { id, name, status, createdAt },
 	} = props;
 
 	return (

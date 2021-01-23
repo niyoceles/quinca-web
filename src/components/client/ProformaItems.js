@@ -143,7 +143,7 @@ const ProformaItems = props => {
 									direction='column'
 									spacing={2}
 								>
-									<Typography gutterBottom variant='h5'>
+									<Typography gutterBottom variant='h6'>
 										{item.itemName}
 									</Typography>
 									<Typography variant='body2'>

@@ -176,11 +176,23 @@ export default function SearchItems(props) {
 						</Grid>
 					</Toolbar>
 				</AppBar>
-				<Container className={classes.cardGrid} maxWidth='lg'>
+				<Container
+					className={classes.cardGrid}
+					maxWidth='lg'
+					style={{
+						textAlign: 'center',
+					}}
+				>
 					{submitted && !results ? (
 						<CircularProgress />
 					) : (
-						<Grid container spacing={4}>
+						<Grid
+							container
+							spacing={4}
+							style={{
+								alignItems: 'center',
+							}}
+						>
 							{results && results === 'No Item found' ? (
 								<Typography
 									component='h3'
@@ -190,7 +202,7 @@ export default function SearchItems(props) {
 									className={classes.titleFeature}
 									gutterBottom
 								>
-									your search results {results && results}
+									Your search results {results && results}
 								</Typography>
 							) : (
 								results &&

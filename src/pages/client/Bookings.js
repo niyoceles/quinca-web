@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import Navbar from '../../components/Navbar';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBookings } from '../../redux/actions/clientActions';
 import Container from '@material-ui/core/Container';
 import moment from 'moment';
-import { useTheme } from '@material-ui/core/styles';
 import SingleBooking from './SingleBooking';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ClientLayout from '../../layouts/ClientLayout';
@@ -76,7 +73,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const Bookings = props => {
+const Bookings = () => {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 	const [bookingDetails, setBookingDetails] = React.useState({});
@@ -93,7 +90,6 @@ const Bookings = props => {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const myBookings = useSelector(state => state.client.bookedItems);
-	const theme = useTheme();
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getBookings());

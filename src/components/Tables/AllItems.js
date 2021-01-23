@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import 'dotenv/config';
 import PropTypes from 'prop-types';
@@ -23,9 +23,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Item from './Item';
 import Title from '../../layouts/Title';
 import AddItem from '../Modals/AddItem';
-// import NavBar from '../';
-import axios from 'axios';
-const { REACT_APP_BACKEND } = process.env;
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
