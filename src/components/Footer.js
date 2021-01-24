@@ -86,15 +86,15 @@ const Footer = () => {
 		},
 		{
 			name: 'Contruction materials',
-			url: '/contruction',
+			url: '/category/construction',
 		},
 		{
 			name: 'Plumbing materials',
-			url: '/plumbing',
+			url: '/category/plumbing',
 		},
 		{
 			name: 'Electricity materials',
-			url: '/electricity',
+			url: '/category/electricity',
 		},
 	];
 	return (

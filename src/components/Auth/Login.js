@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
+import Quinca_logo from '../../assets/images/quinca-logo.jpeg';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { loginUser } from '../../redux/actions';
@@ -32,6 +33,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
+	},
+	logo: {
+		maxWidth: 200,
+		marginRight: '10px',
 	},
 }));
 
@@ -70,13 +75,15 @@ const Login = () => {
 
 	return (
 		<div className={classes.paper}>
-			<Avatar className={classes.avatar}>
-				<LockOutlinedIcon />
-			</Avatar>
+			<Link to='/'>
+				<img src={Quinca_logo} alt='Quinca Paradi' className={classes.logo} />
+			</Link>
 			<Typography component='h1' variant='h5'>
 				Sign in
 			</Typography>
-
+			<Avatar className={classes.avatar}>
+				<LockOutlinedIcon />
+			</Avatar>
 			<form className={classes.form} noValidate onSubmit={handleSubmit}>
 				<TextField
 					variant='outlined'
@@ -126,8 +133,8 @@ const Login = () => {
 				</Button>
 				<Grid container>
 					<Grid item xs>
-						<Link href='#' variant='body2'>
-							Forgot password?
+						<Link href='/' variant='body2'>
+							back Home
 						</Link>
 					</Grid>
 					<Grid item>

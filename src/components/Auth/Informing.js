@@ -45,8 +45,11 @@ export default function Informing() {
 						align='center'
 						color='textPrimary'
 						gutterBottom
+						style={{
+							fontSize: '48 !important',
+						}}
 					>
-						Quinca Paradi
+						<b>Quinca Paradi</b>
 					</Typography>
 					<Divider />
 					<Typography

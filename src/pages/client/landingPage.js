@@ -227,7 +227,7 @@ export default function LandingPage() {
 										/>
 										<CardContent
 											className={classes.cardContent}
-											style={{ height: 70 }}
+											style={{ height: 90 }}
 										>
 											<div className={classes.divContent}>
 												<Typography
@@ -302,7 +302,7 @@ export default function LandingPage() {
 										/>
 										<CardContent
 											className={classes.cardContent}
-											style={{ height: 70 }}
+											style={{ height: 90 }}
 										>
 											<div className={classes.divContent}>
 												<Typography
@@ -377,7 +377,7 @@ export default function LandingPage() {
 										/>
 										<CardContent
 											className={classes.cardContent}
-											style={{ height: 70 }}
+											style={{ height: 90 }}
 										>
 											<div className={classes.divContent}>
 												<Typography
