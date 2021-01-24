@@ -59,7 +59,8 @@ export const deleteItem = itemId => dispatch => {
 	axios
 		.delete(`${REACT_APP_BACKEND}/item/delete/${itemId}`)
 		.then(res => {
-			dispatch({ type: DELETE_ITEM, payload: itemId });
+			dispatch({ type: DELETE_ITEM, payload: res.data });
+			toast.success(res.data.message);
 		})
 		.catch(err => console.log(err.response.data));
 };

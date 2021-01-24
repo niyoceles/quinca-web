@@ -177,10 +177,10 @@ const AllCategories = () => {
 						<Table stickyHeader aria-label='sticky table'>
 							<TableHead>
 								<TableRow>
-									<StyledTableCell>Names</StyledTableCell>
+									<StyledTableCell>Name</StyledTableCell>
 									<StyledTableCell align='left'>Status</StyledTableCell>
 									<StyledTableCell align='right'>Created Time</StyledTableCell>
-									<StyledTableCell align='right'>Actions</StyledTableCell>
+									{/* <StyledTableCell align='right'>Actions</StyledTableCell> */}
 								</TableRow>
 							</TableHead>
 							<TableBody>

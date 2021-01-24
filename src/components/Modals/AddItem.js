@@ -87,6 +87,7 @@ const AddItem = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		window.location.reload();
 	};
 
 	if (itemSubmitted) {
@@ -103,6 +104,7 @@ const AddItem = () => {
 		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
 		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
 		data.append('timestamp', (Date.now() / 1000) | 0);
+		data.append('folder', 'QUINCAPARADI/ITEMS');
 
 		const options = {
 			onUploadProgress: progressEvent => {
@@ -142,7 +144,7 @@ const AddItem = () => {
 							name='itemName'
 							tpye='text'
 							label='item name'
-							placeholder='add room number/ car number/ package title'
+							placeholder='add item name'
 							helperText={submitted && !item.itemName ? isRequired : null}
 							error={submitted && !item.itemName ? 'is invalid' : null}
 							className={classes.textField}

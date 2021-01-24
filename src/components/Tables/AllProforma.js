@@ -180,20 +180,30 @@ const AllProforma = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{(rowsPerPage > 0
-									? proformas.slice(
-											page * rowsPerPage,
-											page * rowsPerPage + rowsPerPage
-									  )
-									: proformas
-								).map(item => (
-									<Requested key={item.id} oneRequest={item} />
-								))}
-
-								{emptyRows > 0 && (
-									<TableRow style={{ height: 53 * emptyRows }}>
-										<TableCell colSpan={6} />
+								{proformas === 'No proforma found' ? (
+									<TableRow>
+										<TableCell colSpan={6} align='center' size='small'>
+											{proformas}
+										</TableCell>
 									</TableRow>
+								) : (
+									<>
+										{(rowsPerPage > 0
+											? proformas.slice(
+													page * rowsPerPage,
+													page * rowsPerPage + rowsPerPage
+											  )
+											: proformas
+										).map(item => (
+											<Requested key={item.id} oneRequest={item} />
+										))}
+
+										{emptyRows > 0 && (
+											<TableRow style={{ height: 53 * emptyRows }}>
+												<TableCell colSpan={6} />
+											</TableRow>
+										)}
+									</>
 								)}
 							</TableBody>
 							<TableFooter>

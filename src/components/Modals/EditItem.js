@@ -105,6 +105,7 @@ const EditItem = props => {
 		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
 		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
 		data.append('timestamp', (Date.now() / 1000) | 0);
+		data.append('folder', 'QUINCAPARADI/ITEMS');
 
 		const options = {
 			onUploadProgress: progressEvent => {

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import EditCategory from '../Modals/EditCategory';
+// import EditCategory from '../Modals/EditCategory';
 const Categories = props => {
 	dayjs.extend(relativeTime);
 	const {
@@ -22,10 +22,10 @@ const Categories = props => {
 			<TableCell align='right' size='small'>
 				{dayjs(createdAt).fromNow()}
 			</TableCell>
-			<TableCell align='right' size='small'>
-				{/* <DeleteCategory itemId={id} name={name} itemPrice={itemPrice} /> */}
+			{/* <TableCell align='right' size='small'>
+				<DeleteCategory itemId={id} name={name} />
 				<EditCategory itemId={id} name={name} status={status} />
-			</TableCell>
+			</TableCell> */}
 		</TableRow>
 	);
 };

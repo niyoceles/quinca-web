@@ -18,12 +18,11 @@ import SingleProformaPage from './pages/client/SingleProformaPage';
 import MyProfile from './pages/client/MyProfile';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
-import SignupPage from './pages/Auth/SignupPage';
+// import SignupPage from './pages/Auth/SignupPage';
 import CategoryItems from './pages/client/CategoryItems';
 import ViewItem from './pages/client/ViewItem';
 import Cart from './pages/client/Cart';
 import OrdersPage from './pages/supplier/OrdersPage';
-import ContactForm from './components/client/ContactForm';
 import ContactUs from './pages/client/ContactUs';
 import ViewProforma from './pages/supplier/ViewProforma';
 import CategoryPage from './pages/supplier/CategoryPage';
@@ -35,7 +34,7 @@ export const Routes = () => {
 				<Switch>
 					<Route exact path='/' component={LandingPage} />
 					<Route exact path='/login' component={LoginPage} />
-					<Route exact path='/signup' component={SignupPage} />
+					{/* <Route exact path='/signup' component={SignupPage} /> */}
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewItem} />
 					<Route exact path='/cart' component={Cart} />

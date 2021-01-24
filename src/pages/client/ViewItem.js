@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import CardContent from '@material-ui/core/CardContent';
@@ -85,7 +84,7 @@ const ViewItem = () => {
 	const [snack, setSnack] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
-	const profileSupplier1 = useSelector(state => state.supplier.supplier);
+	const itemDetails = useSelector(state => state.supplier.supplier);
 	const related = useSelector(state => state.item.relatedItems);
 	// const metadata = useSelector(state => state.item.relatedItems);
 	// const cont = useSelector(state => state.item.relatedItems);
@@ -148,12 +147,12 @@ const ViewItem = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		dispatch(relatedItems(profileSupplier1.category));
-	}, [dispatch, profileSupplier1.category]);
+		dispatch(relatedItems(itemDetails.category));
+	}, [dispatch, itemDetails.category]);
 	return (
 		<ClientLayout>
-			{profileSupplier1.id ? (
-				<main key={profileSupplier1.id} container>
+			{itemDetails.id ? (
+				<main key={itemDetails.id} container>
 					<Snackbar
 						anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 						open={snack}
@@ -173,16 +172,16 @@ const ViewItem = () => {
 							</Link>
 							<Link
 								color='inherit'
-								href={`/category/${profileSupplier1.category}`}
+								href={`/category/${itemDetails.category}`}
 							>
-								{profileSupplier1.category}
+								{itemDetails.category}
 							</Link>
 							<Link
 								color='textPrimary'
-								href={`/view/${profileSupplier1.id}`}
+								href={`/view/${itemDetails.id}`}
 								aria-current='page'
 							>
-								{profileSupplier1.itemName}
+								{itemDetails.itemName}
 							</Link>
 						</Breadcrumbs>
 					</Box>
@@ -192,8 +191,8 @@ const ViewItem = () => {
 								<Card className={classes.card} elevation={1}>
 									<CardMedia
 										className={classes.cardMedia}
-										image={profileSupplier1.itemImage}
-										title={profileSupplier1.itemName}
+										image={itemDetails.itemImage}
+										title={itemDetails.itemName}
 									/>
 								</Card>
 							</Grid>
@@ -207,7 +206,7 @@ const ViewItem = () => {
 												align='left'
 												color='textPrimary'
 											>
-												{profileSupplier1.itemName}
+												{itemDetails.itemName}
 											</Typography>
 
 											<CardHeader
@@ -217,13 +216,13 @@ const ViewItem = () => {
 														<MoreVertIcon />
 													</IconButton>
 												}
-												subheader={`From ${profileSupplier1.owner.organization}`}
-												title={`${profileSupplier1.itemPrice} RWF`}
+												subheader={`From ${itemDetails.owner.organization}`}
+												title={`${itemDetails.itemPrice} RWF`}
 											/>
 											<CardContent>
 												<AddCart
 													addItemCart1={handleAddItemCart}
-													selected1={profileSupplier1}
+													selected1={itemDetails}
 													checkSubmitted1={submitted}
 												/>
 												<Typography
@@ -240,7 +239,7 @@ const ViewItem = () => {
 													color='textSecondary'
 													component='p'
 												>
-													{profileSupplier1.itemDescription}
+													{itemDetails.itemDescription}
 												</Typography>
 											</CardContent>
 										</Card>

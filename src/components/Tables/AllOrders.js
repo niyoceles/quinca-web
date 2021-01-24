@@ -156,6 +156,7 @@ const AllOrders = () => {
 		setPage(0);
 	};
 
+	console.log('CHECKKKK', orders);
 	return (
 		<Fragment>
 			<div className={classes.dashboard}>
@@ -180,20 +181,30 @@ const AllOrders = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{(rowsPerPage > 0
-									? orders.slice(
-											page * rowsPerPage,
-											page * rowsPerPage + rowsPerPage
-									  )
-									: orders
-								).map(item => (
-									<Requested key={item.id} oneRequest={item} />
-								))}
-
-								{emptyRows > 0 && (
-									<TableRow style={{ height: 53 * emptyRows }}>
-										<TableCell colSpan={6} />
+								{orders === 'No Order Item found' ? (
+									<TableRow>
+										<TableCell colSpan={6} align='center' size='small'>
+											{orders}
+										</TableCell>
 									</TableRow>
+								) : (
+									<>
+										{(rowsPerPage > 0
+											? orders.slice(
+													page * rowsPerPage,
+													page * rowsPerPage + rowsPerPage
+											  )
+											: orders
+										).map(item => (
+											<Requested key={item.id} oneRequest={item} />
+										))}
+
+										{emptyRows > 0 && (
+											<TableRow style={{ height: 53 * emptyRows }}>
+												<TableCell colSpan={6} />
+											</TableRow>
+										)}
+									</>
 								)}
 							</TableBody>
 							<TableFooter>

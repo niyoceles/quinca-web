@@ -18,6 +18,7 @@ const initialState = {
 	updateItemSuccess: null,
 	loading: false,
 	relatedItems: null,
+	deletedItem: null,
 };
 
 export default function (state = initialState, action) {
@@ -38,25 +39,26 @@ export default function (state = initialState, action) {
 				item: action.payload,
 			};
 		case DELETE_ITEM:
-			let index = state.items.findIndex(
-				item => item.itemId === action.payload.itemId
+			let index = state.allItems.findIndex(
+				item => item.id === action.payload.id
 			);
-			index = state.items.findIndex(item => item.itemId === action.payload);
-			state.items.splice(index, 1);
+			index = state.allItems.findIndex(item => item.id === action.payload.id);
+			state.allItems.splice(index, 1);
 			return {
 				...state,
+				deletedItem: action.payload.id,
 			};
 		case POST_ITEM:
 			return {
 				...state,
-				items: [action.payload, ...state.items],
+				allItems: [action.payload, ...state.allItems],
 				item: action.payload.item,
 				addItemSuccess: action.payload.message,
 			};
 		case UPDATE_ITEM:
 			return {
 				...state,
-				items: [action.payload, ...state.items],
+				allItems: [action.payload, ...state.allItems],
 				item: action.payload.item,
 				updateItemSuccess: action.payload.message,
 			};
