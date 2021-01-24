@@ -164,7 +164,7 @@ const AllItems = () => {
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={8} lg={9}>
 							<Paper className={fixedHeightPaper}>
-								<Title>Recent Items</Title>
+								<Title>Recent items</Title>
 							</Paper>
 						</Grid>
 						<Grid item xs={12} md={3} lg={3}>

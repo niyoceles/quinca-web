@@ -163,7 +163,7 @@ const AllProforma = () => {
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={8} lg={9}>
 							<Paper className={fixedHeightPaper}>
-								<Title>Requested Proforma</Title>
+								<Title>Requested proforma</Title>
 							</Paper>
 						</Grid>
 					</Grid>
