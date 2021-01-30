@@ -78,9 +78,9 @@ const RelatedItems = props => {
 										<Typography gutterBottom variant='subtitle1'>
 											{item.itemName}
 										</Typography>
-										<Typography variant='body2' gutterBottom>
+										{/* <Typography variant='body2' gutterBottom>
 											{item.itemDescription}
-										</Typography>
+										</Typography> */}
 									</Grid>
 
 									<FormControl component='fieldset'>

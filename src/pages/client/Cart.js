@@ -20,6 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
 import CartLayout from '../../layouts/CartLayout';
 import DateWidget from '../../components/SidebarWidget/DateWidget';
+import MakePayment from '../../components/payment/MakePayment';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -275,7 +276,7 @@ const Cart = props => {
 													onClick={() => handlePayLater()}
 													disabled={isButtonDisabled}
 												>
-													Make order
+													Pay later
 												</Button>
 												<Button
 													color='secondary'
@@ -342,7 +343,7 @@ const Cart = props => {
 														width: '70%',
 													}}
 												>
-													Make order
+													Pay later
 												</Button>
 												<Button
 													color='secondary'
@@ -354,6 +355,10 @@ const Cart = props => {
 												</Button>
 											</CardActions>
 										) : null}
+										<hr />
+										<CardActions style={{ position: 'relative', bottom: '0' }}>
+											<MakePayment />
+										</CardActions>
 									</Grid>
 								</Grid>
 							</Card>
