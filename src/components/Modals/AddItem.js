@@ -119,7 +119,12 @@ const AddItem = () => {
 				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
 				data,
 				{
-					headers: { 'X-Requested-With': 'XMLHttpRequest' },
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest',
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Access-Control-Allow-Origin': true,
+						'Access-Control-Allow-Credentials': true,
+					},
 				},
 				options
 			)

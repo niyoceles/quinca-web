@@ -119,6 +119,14 @@ const EditItem = props => {
 			.post(
 				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
 				data,
+				{
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest',
+						'Content-Type': 'application/json;charset=UTF-8',
+						'Access-Control-Allow-Origin': true,
+						'Access-Control-Allow-Credentials': true,
+					},
+				},
 				options
 			)
 			.then(res => {
