@@ -106,7 +106,12 @@ const AddItem = () => {
 		data.append('timestamp', (Date.now() / 1000) | 0);
 		data.append('folder', 'QUINCAPARADI/ITEMS');
 
+		const headers = {
+			'Content-Type': 'application/json',
+		};
+
 		const options = {
+			headers: headers,
 			onUploadProgress: progressEvent => {
 				const { loaded, total } = progressEvent;
 				let percent = Math.floor((loaded * 100) / total);
@@ -114,10 +119,15 @@ const AddItem = () => {
 			},
 		};
 
+
+
 		axios
 			.post(
 				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
 				data,
+				{
+					'Access-Control-Allow-Origin': '*',
+				},
 				options
 			)
 			.then(res => {
