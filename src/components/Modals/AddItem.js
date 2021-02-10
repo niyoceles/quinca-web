@@ -97,7 +97,7 @@ const AddItem = () => {
 		}, 1000);
 	}
 
-	const uploadFile = ({ target: { files } }) => {
+	const uploadFile = async ({ target: { files } }) => {
 		let data = new FormData();
 		data.append('file', files[0]);
 		data.append('tags', `celestin, image`);
@@ -107,7 +107,6 @@ const AddItem = () => {
 		data.append('folder', 'QUINCAPARADI/ITEMS');
 
 		const options = {
-			headers: { 'X-Requested-With': 'XMLHttpRequest' },
 			onUploadProgress: progressEvent => {
 				const { loaded, total } = progressEvent;
 				let percent = Math.floor((loaded * 100) / total);
@@ -115,10 +114,13 @@ const AddItem = () => {
 			},
 		};
 
-		axios
+		await axios
 			.post(
 				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
 				data,
+				{
+					headers: { 'X-Requested-With': 'XMLHttpRequest' },
+				},
 				options
 			)
 			.then(res => {
