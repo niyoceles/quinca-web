@@ -10,7 +10,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Divider from '@material-ui/core/Divider';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -30,40 +29,16 @@ const useStyles = makeStyles(theme => ({
 		maxHeight: '100%',
 		objectFit: 'cover',
 	},
-	itemBox: {
-		boxShadow: '0 2px 3px 0 #ccc',
-		margin: '20px 0 0 0px',
-		width: '90%',
-		padding: '10px',
-		backgroundColor: 'white',
-		borderRadius: '8px',
-	},
 	links: {
 		textDecoration: 'none',
 		color: 'inherit',
 	},
-
-	main: {
-		backgroundColor: '#fff',
-	},
 	cardGrid: {
-		paddingTop: theme.spacing(8),
-		paddingBottom: theme.spacing(8),
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(6),
 		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
 		borderRadius: '10px',
-	},
-	topCardGrid: {
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(2),
-		backgroundColor: '#fff',
-		borderRadius: '10px',
-	},
-	topCard: {
-		// height: '70%',
-		display: 'flex',
-		flexDirection: 'column',
-		marginBottom: 5,
 	},
 	card: {
 		height: '100%',
@@ -82,13 +57,6 @@ const useStyles = makeStyles(theme => ({
 	divContent: {
 		marginLeft: 15,
 		marginTop: -10,
-	},
-	footer: {
-		backgroundColor: theme.palette.background.paper,
-		padding: theme.spacing(6),
-	},
-	titleFeature: {
-		marginTop: -50,
 	},
 	spin: {
 		margin: '50px auto',

@@ -10,8 +10,6 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Divider from '@material-ui/core/Divider';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -29,9 +27,9 @@ function Alert(props) {
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
-		paddingTop: theme.spacing(6),
+		paddingTop: theme.spacing(2),
 		paddingBottom: theme.spacing(2),
-		backgroundColor: '#f2f6fb',
+		backgroundColor: '#fff',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -49,21 +47,6 @@ const useStyles = makeStyles(theme => ({
 	image: {
 		height: '100%',
 		width: '100%',
-	},
-	sticky: {
-		display: 'fixed',
-	},
-	btnSize: {
-		margin: theme.spacing(1),
-		width: '98%',
-		color: 'white',
-	},
-	btnOrder: {
-		color: '#1976D2',
-		border: '1px solid #eee',
-		background: 'white',
-		position: 'fixed',
-		zIndex: 10,
 	},
 	spin: {
 		position: 'relative',
@@ -194,52 +177,44 @@ const ViewItem = () => {
 								</Card>
 							</Grid>
 							<Grid item xs={12} sm={6} md={6}>
-								<Card className={classes.card} elevation={1}>
+								<Card className={classes.card} elevation={0}>
 									<CardContent className={classes.cardContent}>
-										<Card style={{ marginTop: 10 }} elevation={0}>
-											<Typography
-												component='h2'
-												variant='h4'
-												align='left'
-												color='textPrimary'
-											>
-												{itemDetails.itemName}
-											</Typography>
+										<Typography
+											component='h2'
+											variant='h4'
+											align='left'
+											color='textPrimary'
+										>
+											{itemDetails.itemName}
+										</Typography>
 
-											<CardHeader
-												avatar={<VerifiedUserIcon color='primary' />}
-												action={
-													<IconButton aria-label='settings'>
-														<MoreVertIcon />
-													</IconButton>
-												}
-												subheader={`From ${itemDetails.owner.organization}`}
-												title={`${itemDetails.itemPrice} RWF`}
-											/>
-											<CardContent>
-												<AddCart
-													addItemCart1={handleAddItemCart}
-													selected1={itemDetails}
-													checkSubmitted1={submitted}
-												/>
-												<Typography
-													component='h3'
-													variant='h6'
-													align='left'
-													color='textPrimary'
-												>
-													Product description
-												</Typography>
-												<br />
-												<Typography
-													variant='body1'
-													color='textSecondary'
-													component='p'
-												>
-													{itemDetails.itemDescription}
-												</Typography>
-											</CardContent>
-										</Card>
+										<CardHeader
+											avatar={<VerifiedUserIcon color='primary' />}
+											subheader={`From ${itemDetails.owner.organization}`}
+											title={`${itemDetails.itemPrice} RWF`}
+										/>
+										<AddCart
+											addItemCart1={handleAddItemCart}
+											selected1={itemDetails}
+											checkSubmitted1={submitted}
+										/>
+										<Divider />
+										<Typography
+											component='h3'
+											variant='h6'
+											align='left'
+											color='textPrimary'
+										>
+											Product description
+										</Typography>
+										<br />
+										<Typography
+											variant='body1'
+											color='textSecondary'
+											component='p'
+										>
+											{itemDetails.itemDescription}
+										</Typography>
 									</CardContent>
 								</Card>
 							</Grid>
