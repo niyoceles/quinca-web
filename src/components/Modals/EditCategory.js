@@ -81,7 +81,7 @@ const EditCategory = props => {
 					<form>
 						<TextField
 							name='name'
-							tpye='text'
+							type='text'
 							label='item name'
 							placeholder='add item/ material'
 							helperText={submitted && !name ? isRequired : null}

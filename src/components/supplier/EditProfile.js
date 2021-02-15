@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 }));
 const EditProfile = props => {
 	const classes = useStyles();
-	
+
 	const [user, setUser] = useState({
 		names: props.user.names,
 		phoneNumber: props.user.phoneNumber,
@@ -111,7 +111,6 @@ const EditProfile = props => {
 			dispatch(updateMyProfile(data));
 		}
 	};
-
 
 	if (itemSubmitted) {
 		setTimeout(() => {
@@ -322,7 +321,7 @@ const EditProfile = props => {
 			</div>
 			<TextField
 				name='description'
-				tpye='text'
+				type='text'
 				label='description organization'
 				multiline
 				rows='3'

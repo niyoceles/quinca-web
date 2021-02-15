@@ -46,13 +46,21 @@ const useStyles = makeStyles(theme => ({
 }));
 const EditItem = props => {
 	const classes = useStyles();
-	const { itemName, category, itemDescription, itemPrice, itemId } = props;
+	const {
+		itemName,
+		category,
+		itemDescription,
+		itemImage,
+		itemPrice,
+		itemId,
+	} = props;
 
 	const [item, setItem] = useState({
 		itemName,
 		category,
 		itemDescription,
 		itemPrice,
+		itemImage,
 	});
 	const [open, setOpen] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
@@ -68,17 +76,21 @@ const EditItem = props => {
 		e.preventDefault();
 
 		setSubmitted(true);
-		const { itemName, category, itemDescription, itemPrice } = item;
-		if (itemName && itemDescription && itemPrice && localStorage.imageUrl) {
+		const { itemName, category, itemDescription, itemPrice, itemImage } = item;
+		if (
+			itemName &&
+			itemDescription &&
+			itemPrice &&
+			(localStorage.imageUrl || itemImage)
+		) {
 			const itemData = {
 				itemName,
-				itemImage: localStorage.imageUrl,
+				itemImage: localStorage.imageUrl || itemImage,
 				category,
 				itemDescription,
 				itemPrice,
 				status: true,
 			};
-			console.log('send', itemData);
 			dispatch(updateItem(itemId, itemData));
 		}
 	};
@@ -154,7 +166,7 @@ const EditItem = props => {
 					<form>
 						<TextField
 							name='itemName'
-							tpye='text'
+							type='number'
 							label='item name'
 							placeholder='add item/ material'
 							helperText={submitted && !item.itemName ? isRequired : null}
@@ -183,7 +195,7 @@ const EditItem = props => {
 						</FormControl>
 						<TextField
 							name='itemPrice'
-							tpye='number'
+							type='text'
 							label='item price'
 							placeholder='item price'
 							className={classes.textField}
@@ -202,22 +214,27 @@ const EditItem = props => {
 								onChange={uploadFile}
 								required
 							/>
-							{submitted && !localStorage.imageUrl && (
-								<Alert severity='error'>item image is required</Alert>
-							)}
+							{(submitted && !localStorage.imageUrl) ||
+								(!item.itemImage && (
+									<Alert severity='error'>item image is required</Alert>
+								))}
 						</div>
 						<div>
 							<img
 								width='300'
 								height='150'
-								src={linkImage ? linkImage : null}
+								src={
+									linkImage || item.itemImage
+										? linkImage || item.itemImage
+										: null
+								}
 								alt=''
 								className='edit-img'
 							/>
 						</div>
 						<TextField
 							name='itemDescription'
-							tpye='text'
+							type='text'
 							label='item description'
 							multiline
 							rows='3'

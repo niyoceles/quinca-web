@@ -81,7 +81,7 @@ const AddCategory = () => {
 					<form>
 						<TextField
 							name='name'
-							tpye='text'
+							type='text'
 							label='category name'
 							placeholder='add category name'
 							helperText={submitted && !name ? isRequired : null}

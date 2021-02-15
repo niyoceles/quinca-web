@@ -36,6 +36,7 @@ export const addItem = newItem => dispatch => {
 };
 
 export const updateItem = (itemId, updateData) => dispatch => {
+	console.log('HHHHHHHHHHHHHHHHHHHHH');
 	dispatch({ type: LOADING_UI });
 	axios
 		.put(`${REACT_APP_BACKEND}/item/${itemId}`, updateData)

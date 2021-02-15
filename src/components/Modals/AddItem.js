@@ -120,10 +120,13 @@ const AddItem = () => {
 				data,
 				{
 					headers: {
+						'Access-Control-Allow-Origin': '*',
 						'X-Requested-With': 'XMLHttpRequest',
-						'Content-Type': 'application/x-www-form-urlencoded',
-						'Access-Control-Allow-Origin': true,
+						'Content-Type': 'application/json',
 						'Access-Control-Allow-Credentials': true,
+						'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+						'Access-Control-Allow-Headers':
+							'Content-Type, Accept, Authorization, authorization',
 					},
 				},
 				options
@@ -150,7 +153,7 @@ const AddItem = () => {
 					<form>
 						<TextField
 							name='itemName'
-							tpye='text'
+							type='text'
 							label='item name'
 							placeholder='add item name'
 							helperText={submitted && !item.itemName ? isRequired : null}
@@ -179,7 +182,7 @@ const AddItem = () => {
 						</FormControl>
 						<TextField
 							name='itemPrice'
-							tpye='number'
+							type='number'
 							label='item price'
 							placeholder='item price'
 							className={classes.textField}
@@ -213,7 +216,7 @@ const AddItem = () => {
 						</div>
 						<TextField
 							name='itemDescription'
-							tpye='text'
+							type='text'
 							label='item description'
 							multiline
 							rows='3'

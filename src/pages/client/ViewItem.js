@@ -170,10 +170,7 @@ const ViewItem = () => {
 							<Link color='inherit' href='/'>
 								Home
 							</Link>
-							<Link
-								color='inherit'
-								href={`/category/${itemDetails.category}`}
-							>
+							<Link color='inherit' href={`/category/${itemDetails.category}`}>
 								{itemDetails.category}
 							</Link>
 							<Link
@@ -249,31 +246,17 @@ const ViewItem = () => {
 						</Grid>
 						<br />
 						<br />
-						<Grid container spacing={4}>
-							<Divider />
-							<Grid item xs={12} sm={12} md={12}>
-								<Typography
-									component='h3'
-									variant='h6'
-									align='left'
-									color='textPrimary'
-								>
-									Related material item
-								</Typography>
-								{/* Related items component --------------------------------------- */}
-								<RelatedItems
-									items={related ? related.relatedItems : null}
-									addItemCart={handleAddItemCart}
-									setDialog={open}
-									openDialog={handleToggleModal}
-									closeDialog={handleClose}
-									selected={selectedItem}
-									checkSubmitted={submitted}
-								/>
-							</Grid>
-						</Grid>
+						{/* Related items component --------------------------------------- */}
+						<RelatedItems
+							items={related ? related.relatedItems : null}
+							addItemCart={handleAddItemCart}
+							setDialog={open}
+							openDialog={handleToggleModal}
+							closeDialog={handleClose}
+							selected={selectedItem}
+							checkSubmitted={submitted}
+						/>
 					</Container>
-					<Divider />
 				</main>
 			) : (
 				<div style={{ margin: 'auto', width: '70vw', height: '70vh' }}>

@@ -8,7 +8,7 @@ const MakePayment = () => {
 	const config = {
 		public_key: `${REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
 		tx_ref: Date.now(),
-		amount: 100,
+		amount: 500,
 		currency: 'RWF',
 		payment_options: 'card,mobilemoney',
 		customer: {
@@ -17,10 +17,10 @@ const MakePayment = () => {
 			name: 'joel ugwumadu',
 		},
 		customizations: {
-			title: 'my Payment Title',
+			title: 'Make your payment at Quinca Paradi',
 			description: 'Payment for items in cart',
 			logo:
-				'https://res.cloudinary.com/dfsai53mw/image/upload/v1610868734/QUINCAPARADI/quinca-logo_s5k2ew.jpg',
+				'https://res.cloudinary.com/dfsai53mw/image/upload/v1613415905/QUINCAPARADI/mstile-150x150_whtq6d.png',
 		},
 	};
 
