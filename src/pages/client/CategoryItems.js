@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f2f6fb',
+		backgroundColor: '#f8f8f8',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -72,7 +72,7 @@ export default function CategoryItems(props) {
 					className={classes.titleFeature}
 					gutterBottom
 				>
-					Available material in {' '}
+					Available material in{' '}
 					{categoryitems && categoryitems.map(i => i.name)} category
 				</Typography>
 				<Grid container spacing={4}>

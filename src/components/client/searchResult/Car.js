@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		paddingTop: theme.spacing(16),
 		paddingBottom: theme.spacing(2),
-		backgroundColor: '#f2f6fb',
+		backgroundColor: '#f8f8f8',
 		marginBottom: 40,
 		borderRadius: 12,
 	},

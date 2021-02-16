@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f2f6fb',
+		backgroundColor: '#f8f8f8',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -51,6 +51,10 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	cardMedia: {
+		paddingTop: '90%',
+		padding: 5,
+	},
+	cardLink: {
 		paddingTop: '56.25%', // 16:9
 	},
 	cardContent: {
@@ -118,7 +122,7 @@ export default function LandingPage() {
 		state => state.client.homeItems.construction
 	);
 	console.log('cvcvcvc', constructionItems);
-	
+
 	const plumbingItems = useSelector(state => state.client.homeItems.plumbing);
 	const electricityItems = useSelector(
 		state => state.client.homeItems.electricity
@@ -184,7 +188,7 @@ export default function LandingPage() {
 						<Card className={classes.topCard}>
 							<ReactLink to='/category/construction' className={classes.links}>
 								<CardMedia
-									className={classes.cardMedia}
+									className={classes.cardLink}
 									image={itemImage}
 									title='Construction materials'
 								/>
@@ -193,7 +197,7 @@ export default function LandingPage() {
 						<Card className={classes.topCard}>
 							<ReactLink to='/category/plumbing' className={classes.links}>
 								<CardMedia
-									className={classes.cardMedia}
+									className={classes.cardLink}
 									image={materials}
 									title='Plumbing materials'
 								/>

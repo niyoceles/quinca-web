@@ -16,19 +16,6 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import DialogQuantity from './DialogQuantity';
 
 const useStyles = makeStyles(theme => ({
-	image: {
-		width: 200,
-		height: 150,
-		marginRight: '10px',
-		paddingRight: 10,
-	},
-	img: {
-		margin: 'auto',
-		display: 'block',
-		maxWidth: '100%',
-		maxHeight: '100%',
-		objectFit: 'cover',
-	},
 	links: {
 		textDecoration: 'none',
 		color: 'inherit',
@@ -36,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(4),
 		paddingBottom: theme.spacing(6),
-		backgroundColor: '#f2f6fb',
+		backgroundColor: '#f8f8f8',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -49,7 +36,8 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	cardMedia: {
-		paddingTop: '56.25%', // 16:9
+		paddingTop: '100%',
+		padding: 5,
 	},
 	cardContent: {
 		flexGrow: 1,

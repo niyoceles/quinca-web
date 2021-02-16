@@ -39,7 +39,8 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 	},
 	cardMedia: {
-		paddingTop: '77%',
+		paddingTop: '100%',
+		padding: 5,
 	},
 	cardContent: {
 		flexGrow: 1,
