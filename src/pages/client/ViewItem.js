@@ -26,6 +26,9 @@ function Alert(props) {
 }
 
 const useStyles = makeStyles(theme => ({
+	main: {
+		backgroundColor: '#fff',
+	},
 	cardGrid: {
 		paddingTop: theme.spacing(2),
 		paddingBottom: theme.spacing(2),
@@ -136,104 +139,107 @@ const ViewItem = () => {
 	return (
 		<ClientLayout>
 			{itemDetails.id ? (
-				<main key={itemDetails.id} container>
-					<Snackbar
-						anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-						open={snack}
-						message='I love snacks'
-						autoHideDuration={3000}
-						onClose={handleCloseSnack}
-						style={{ marginTop: 80 }}
-					>
-						<Alert onClose={handleCloseSnack} severity='success'>
-							Item added on cart
-						</Alert>
-					</Snackbar>
-					<Box style={{ padding: 15, marginLeft: 30 }}>
-						<Breadcrumbs aria-label='breadcrumb'>
-							<Link color='inherit' href='/'>
-								Home
-							</Link>
-							<Link color='inherit' href={`/category/${itemDetails.category}`}>
-								{itemDetails.category}
-							</Link>
-							<Link
-								color='textPrimary'
-								href={`/view/${itemDetails.id}`}
-								aria-current='page'
-							>
-								{itemDetails.itemName}
-							</Link>
-						</Breadcrumbs>
-					</Box>
-					<Container item className={classes.cardGrid} maxWidth='lg'>
-						<Grid container spacing={3}>
-							<Grid item xs={12} sm={6} md={6}>
-								<Card className={classes.card} elevation={1}>
-									<CardMedia
-										className={classes.cardMedia}
-										image={itemDetails.itemImage}
-										title={itemDetails.itemName}
-									/>
-								</Card>
-							</Grid>
-							<Grid item xs={12} sm={6} md={6}>
-								<Card className={classes.card} elevation={0}>
-									<CardContent className={classes.cardContent}>
-										<Typography
-											component='h2'
-											variant='h4'
-											align='left'
-											color='textPrimary'
-										>
-											{itemDetails.itemName}
-										</Typography>
+				<>
+					<main key={itemDetails.id} container className={classes.main}>
+						<Snackbar
+							anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+							open={snack}
+							message='I love snacks'
+							autoHideDuration={3000}
+							onClose={handleCloseSnack}
+							style={{ marginTop: 80 }}
+						>
+							<Alert onClose={handleCloseSnack} severity='success'>
+								Item added on cart
+							</Alert>
+						</Snackbar>
+						<Box style={{ padding: 15, marginLeft: 30 }}>
+							<Breadcrumbs aria-label='breadcrumb'>
+								<Link color='inherit' href='/'>
+									Home
+								</Link>
+								<Link
+									color='inherit'
+									href={`/category/${itemDetails.category}`}
+								>
+									{itemDetails.category}
+								</Link>
+								<Link
+									color='textPrimary'
+									href={`/view/${itemDetails.id}`}
+									aria-current='page'
+								>
+									{itemDetails.itemName}
+								</Link>
+							</Breadcrumbs>
+						</Box>
+						<Container item className={classes.cardGrid} maxWidth='lg'>
+							<Grid container spacing={3}>
+								<Grid item xs={12} sm={6} md={6}>
+									<Card className={classes.card} elevation={1}>
+										<CardMedia
+											className={classes.cardMedia}
+											image={itemDetails.itemImage}
+											title={itemDetails.itemName}
+										/>
+									</Card>
+								</Grid>
+								<Grid item xs={12} sm={6} md={6}>
+									<Card className={classes.card} elevation={0}>
+										<CardContent className={classes.cardContent}>
+											<Typography
+												component='h2'
+												variant='h4'
+												align='left'
+												color='textPrimary'
+											>
+												{itemDetails.itemName}
+											</Typography>
 
-										<CardHeader
-											avatar={<VerifiedUserIcon color='primary' />}
-											subheader={`From ${itemDetails.owner.organization}`}
-											title={`${itemDetails.itemPrice} RWF`}
-										/>
-										<AddCart
-											addItemCart1={handleAddItemCart}
-											selected1={itemDetails}
-											checkSubmitted1={submitted}
-										/>
-										<Divider />
-										<Typography
-											component='h3'
-											variant='h6'
-											align='left'
-											color='textPrimary'
-										>
-											Product description
-										</Typography>
-										<br />
-										<Typography
-											variant='body1'
-											color='textSecondary'
-											component='p'
-										>
-											{itemDetails.itemDescription}
-										</Typography>
-									</CardContent>
-								</Card>
+											<CardHeader
+												avatar={<VerifiedUserIcon color='primary' />}
+												subheader={`From ${itemDetails.owner.organization}`}
+												title={`${itemDetails.itemPrice} RWF`}
+											/>
+											<AddCart
+												addItemCart1={handleAddItemCart}
+												selected1={itemDetails}
+												checkSubmitted1={submitted}
+											/>
+											<Divider />
+											<Typography
+												component='h3'
+												variant='h6'
+												align='left'
+												color='textPrimary'
+											>
+												Product description
+											</Typography>
+											<br />
+											<Typography
+												variant='body1'
+												color='textSecondary'
+												component='p'
+											>
+												{itemDetails.itemDescription}
+											</Typography>
+										</CardContent>
+									</Card>
+								</Grid>
 							</Grid>
-						</Grid>
-						<br />
-						<br />
-						{/* Related items component --------------------------------------- */}
-						<RelatedItems
-							items={related ? related.relatedItems : null}
-							addItemCart={handleAddItemCart}
-							setDialog={open}
-							openDialog={handleToggleModal}
-							closeDialog={handleClose}
-							selected={selectedItem}
-							checkSubmitted={submitted}
-						/>
-					</Container>
-				</main>
+						</Container>
+					</main>
+					{/* Related items component --------------------------------------- */}
+					<RelatedItems
+						items={related ? related.relatedItems : null}
+						addItemCart={handleAddItemCart}
+						setDialog={open}
+						openDialog={handleToggleModal}
+						closeDialog={handleClose}
+						selected={selectedItem}
+						checkSubmitted={submitted}
+					/>
+				</>
 			) : (
 				<div style={{ margin: 'auto', width: '70vw', height: '70vh' }}>
 					<CircularProgress className={classes.spin} />

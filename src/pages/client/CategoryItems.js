@@ -15,13 +15,9 @@ import { Link as ReactLink } from 'react-router-dom';
 import ClientLayout from '../../layouts/ClientLayout';
 
 const useStyles = makeStyles(theme => ({
-	main: {
-		backgroundColor: '#fff',
-	},
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f8f8f8',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -61,7 +57,6 @@ export default function CategoryItems(props) {
 
 	return (
 		<ClientLayout>
-			<br />
 			<Divider />
 			<Container className={classes.cardGrid} maxWidth='lg'>
 				<Typography

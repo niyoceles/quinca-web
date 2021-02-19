@@ -22,10 +22,13 @@ const useStyles = makeStyles(theme => ({
 	},
 	cardGrid: {
 		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(6),
-		backgroundColor: '#f8f8f8',
+		paddingBottom: theme.spacing(4),
 		marginBottom: 40,
 		borderRadius: '10px',
+	},
+	titleFeature: {
+		marginTop: -50,
+		padding:10
 	},
 	card: {
 		height: '100%',
@@ -63,7 +66,6 @@ const RelatedItems = props => {
 				addcart={props.addItemCart}
 				selected={props.selected}
 			/>
-			<Divider />
 			<Container className={classes.cardGrid} maxWidth='lg'>
 				<Typography
 					component='h3'

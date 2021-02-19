@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f8f8f8',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -134,78 +133,83 @@ export default function LandingPage() {
 
 	return (
 		<ClientLayout>
-			<Container className={classes.topCardGrid} maxWidth='lg'>
-				<Grid container spacing={2}>
-					<Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.topCard}>
-							<CardContent className={classes.cardContent}>
-								<Typography gutterBottom variant='h5' component='h2'>
-									Categories
-								</Typography>
-								{categories !== undefined ? (
-									categories.map(category => (
-										<Link
-											display='block'
-											variant='body2'
-											href={category.url}
-											key={category}
-											className={classes.links}
-										>
-											<Grid
-												container
-												direction='row'
-												spacing={1}
-												alignItems='center'
+			<main className={classes.main}>
+				<Container className={classes.topCardGrid} maxWidth='lg'>
+					<Grid container spacing={2}>
+						<Grid item xs={12} sm={6} md={3}>
+							<Card className={classes.topCard}>
+								<CardContent className={classes.cardContent}>
+									<Typography gutterBottom variant='h5' component='h2'>
+										Categories
+									</Typography>
+									{categories !== undefined ? (
+										categories.map(category => (
+											<Link
+												display='block'
+												variant='body2'
+												href={category.url}
+												key={category}
+												className={classes.links}
 											>
-												<Grid item>
-													<DoubleArrowRoundedIcon />
+												<Grid
+													container
+													direction='row'
+													spacing={1}
+													alignItems='center'
+												>
+													<Grid item>
+														<DoubleArrowRoundedIcon />
+													</Grid>
+													<Grid item>
+														{' '}
+														<Typography
+															variant='body1'
+															color='textPrimary'
+															align='center'
+														>
+															{category.name}
+														</Typography>
+													</Grid>
 												</Grid>
-												<Grid item>
-													{' '}
-													<Typography
-														variant='body1'
-														color='textPrimary'
-														align='center'
-													>
-														{category.name}
-													</Typography>
-												</Grid>
-											</Grid>
-										</Link>
-									))
-								) : (
-									<CircularProgress className={classes.spin} />
-								)}
-							</CardContent>
-						</Card>
+											</Link>
+										))
+									) : (
+										<CircularProgress className={classes.spin} />
+									)}
+								</CardContent>
+							</Card>
+						</Grid>
+						<Grid item xs={12} sm={6} md={6}>
+							<Card className={classes.topCard}>
+								<HomeSlide />
+							</Card>
+						</Grid>
+						<Grid item xs={12} sm={6} md={3}>
+							<Card className={classes.topCard}>
+								<ReactLink
+									to='/category/construction'
+									className={classes.links}
+								>
+									<CardMedia
+										className={classes.cardLink}
+										image={itemImage}
+										title='Construction materials'
+									/>
+								</ReactLink>
+							</Card>
+							<Card className={classes.topCard}>
+								<ReactLink to='/category/plumbing' className={classes.links}>
+									<CardMedia
+										className={classes.cardLink}
+										image={materials}
+										title='Plumbing materials'
+									/>
+								</ReactLink>
+							</Card>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} sm={6} md={6}>
-						<Card className={classes.topCard}>
-							<HomeSlide />
-						</Card>
-					</Grid>
-					<Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.topCard}>
-							<ReactLink to='/category/construction' className={classes.links}>
-								<CardMedia
-									className={classes.cardLink}
-									image={itemImage}
-									title='Construction materials'
-								/>
-							</ReactLink>
-						</Card>
-						<Card className={classes.topCard}>
-							<ReactLink to='/category/plumbing' className={classes.links}>
-								<CardMedia
-									className={classes.cardLink}
-									image={materials}
-									title='Plumbing materials'
-								/>
-							</ReactLink>
-						</Card>
-					</Grid>
-				</Grid>
-			</Container>
+				</Container>
+			</main>
 			<Divider />
 			<Container className={classes.cardGrid} maxWidth='lg'>
 				<Typography
