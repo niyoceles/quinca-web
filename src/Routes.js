@@ -26,6 +26,8 @@ import OrdersPage from './pages/supplier/OrdersPage';
 import ContactUs from './pages/client/ContactUs';
 import ViewProforma from './pages/supplier/ViewProforma';
 import CategoryPage from './pages/supplier/CategoryPage';
+import AboutUs from './pages/client/AboutUs';
+import ViewOrder from './pages/supplier/ViewOrder';
 
 export const Routes = () => {
 	return (
@@ -39,11 +41,13 @@ export const Routes = () => {
 					<Route exact path='/view/:id' component={ViewItem} />
 					<Route exact path='/cart' component={Cart} />
 					<Route exact path='/contact-us' component={ContactUs} />
+					<Route exact path='/about-us' component={AboutUs} />
 					<Route exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />
 					<Route exact path='/my-proforma/:id' component={SingleProformaPage} />
 					<Route exact path='/proforma/:id' component={ViewProforma} />
+					<Route exact path='/order/:id' component={ViewOrder} />
 					<AuthRoute exact path='/client' component={clients} />
 					<AuthRoute exact path='/bookings' component={Bookings} />
 					<AuthRoute exact path='/me' component={MyProfile} />

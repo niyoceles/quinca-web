@@ -57,7 +57,7 @@ function Copyright() {
 			<Link color='inherit' href='https://quincaparadi.com/'>
 				QuincaParadi
 			</Link>{' '}
-			{'. All Rights Reserved.'}
+			{'All Rights Reserved.'}
 		</Typography>
 	);
 }
@@ -224,8 +224,8 @@ const Footer = () => {
 			<Grid container spacing={6}>
 				<Grid item xs={6} sm={3}>
 					<Typography
-						variant='body1'
-						color='textPrimary'
+						variant='body2'
+						color='textSecondary'
 						align='left'
 						gutterBottom
 					>
@@ -234,9 +234,11 @@ const Footer = () => {
 							alt='Quinca Paradi'
 							className={classes.logo}
 						/>
+						QuincaParadi is a business name and e-commerce platform owned to
+						PARADI-BOUNTY Co. LTD which is a domestic company registered under
+						CC/TIN/VAT 111707849. It is experienced company in supply and
+						distribution of construction materials in general
 					</Typography>
-					This blog post shows a few different types of content that are
-					supported and styled with Material styles. Basic typography, images
 				</Grid>
 				<Grid item xs={6} sm={3}>
 					<Typography
@@ -296,7 +298,7 @@ const Footer = () => {
 					<Link
 						display='block'
 						variant='body2'
-						href='/contact-us'
+						href='/about-us'
 						align='center'
 						className={classes.links}
 					>

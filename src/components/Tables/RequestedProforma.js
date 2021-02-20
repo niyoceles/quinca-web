@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteItem from '../Modals/DeleteItem';
 import EditItem from '../Modals/EditItem';
 
-const Requested = props => {
+const RequestedProforma = props => {
 	const history = useHistory();
 	dayjs.extend(relativeTime);
 	const {
@@ -64,9 +64,9 @@ const Requested = props => {
 	);
 };
 
-Requested.propTypes = {
+RequestedProforma.propTypes = {
 	user: PropTypes.object.isRequired,
 	openDialog: PropTypes.bool,
 };
 
-export default Requested;
+export default RequestedProforma;

@@ -20,8 +20,8 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
-import Requested from './Requested';
 import Title from '../../layouts/Title';
+import RequestedOrder from './RequestedOrder';
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -155,8 +155,6 @@ const AllOrders = () => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
-
-	console.log('CHECKKKK', orders);
 	return (
 		<Fragment>
 			<div className={classes.dashboard}>
@@ -196,7 +194,7 @@ const AllOrders = () => {
 											  )
 											: orders
 										).map(item => (
-											<Requested key={item.id} oneRequest={item} />
+											<RequestedOrder key={item.id} oneRequest={item} />
 										))}
 
 										{emptyRows > 0 && (

@@ -18,7 +18,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
-import Requested from './Requested';
+import Requested from './RequestedProforma';
 import Title from '../../layouts/Title';
 import { getAllProforma } from '../../redux/actions';
 import { useDispatch, useSelector } from 'react-redux';

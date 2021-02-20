@@ -20,7 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
 import CartLayout from '../../layouts/CartLayout';
 import DateWidget from '../../components/SidebarWidget/DateWidget';
-import MakePayment from '../../components/payment/MakePayment';
+// import MakePayment from '../../components/payment/MakePayment';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -194,7 +194,10 @@ const Cart = props => {
 																	{item.itemNumber}
 																</TableCell>
 																<TableCell align='right'>
-																	{item.itemPrice} Rwf
+																	{item.itemPrice} 
+																</TableCell>
+																<TableCell align='right'>
+																<b>{item.itemPrice * item.itemNumber}</b>	 Rwf
 																</TableCell>
 																<TableCell align='right'>
 																	<Button color='secondary'>
@@ -355,9 +358,9 @@ const Cart = props => {
 											</CardActions>
 										) : null}
 										<hr />
-										<CardActions style={{ position: 'relative', bottom: '0' }}>
+										{/* <CardActions style={{ position: 'relative', bottom: '0' }}>
 											<MakePayment />
-										</CardActions>
+										</CardActions> */}
 									</Grid>
 								</Grid>
 							</Card>
