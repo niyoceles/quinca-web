@@ -28,6 +28,7 @@ import ViewProforma from './pages/supplier/ViewProforma';
 import CategoryPage from './pages/supplier/CategoryPage';
 import AboutUs from './pages/client/AboutUs';
 import ViewOrder from './pages/supplier/ViewOrder';
+import TermsConditions from './pages/client/TermsConditions';
 
 export const Routes = () => {
 	return (
@@ -42,6 +43,7 @@ export const Routes = () => {
 					<Route exact path='/cart' component={Cart} />
 					<Route exact path='/contact-us' component={ContactUs} />
 					<Route exact path='/about-us' component={AboutUs} />
+					<Route exact path='/terms-and-conditions' component={TermsConditions} />
 					<Route exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />

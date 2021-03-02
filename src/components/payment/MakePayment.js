@@ -4,11 +4,11 @@ import Button from '@material-ui/core/Button';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 const { REACT_APP_FLUTTERWAVE_PUBLIC_KEY } = process.env;
 
-const MakePayment = () => {
+const MakePayment = (props) => {
 	const config = {
 		public_key: `${REACT_APP_FLUTTERWAVE_PUBLIC_KEY}`,
 		tx_ref: Date.now(),
-		amount: 500,
+		amount: props.totalPrice,
 		currency: 'RWF',
 		payment_options: 'card,mobilemoney',
 		customer: {

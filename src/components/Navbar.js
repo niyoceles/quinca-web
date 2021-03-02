@@ -302,6 +302,19 @@ export default function ButtonAppBar() {
 					>
 						|
 					</Typography>{' '}
+					<Link to='/terms-and-conditions' className={classes.links}>
+						<Typography variant='body2' color='textSecondary' align='center'>
+							Terms & conditions
+						</Typography>
+					</Link>
+					<Typography
+						variant='body1'
+						color='textPrimary'
+						align='center'
+						style={{ paddingLeft: 5, paddingRight: 5 }}
+					>
+						|
+					</Typography>{' '}
 					<Typography variant='body2' color='textSecondary' align='center'>
 						<CallIcon style={{ marginBottom: -8 }} /> +250 788 550 184
 					</Typography>{' '}

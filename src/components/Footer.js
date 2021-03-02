@@ -67,15 +67,15 @@ const Footer = () => {
 	const social = [
 		{
 			name: 'Facebook',
-			url: 'https://www.facebook.com/niyoceles',
+			url: 'https://www.facebook.com/Quinca-paradi-100217132135489',
 		},
 		{
 			name: 'Instagram',
-			url: 'https://www.instagram.com/in/celestin-niyonsaba/',
+			url: 'https://www.instagram.com/quincaparadi/',
 		},
 		{
 			name: 'Twitter',
-			url: 'https://twitter.com/niyoceles',
+			url: 'https://twitter.com/QuincaParadi',
 		},
 	];
 
@@ -234,10 +234,10 @@ const Footer = () => {
 							alt='Quinca Paradi'
 							className={classes.logo}
 						/>
-						QuincaParadi is a business name and e-commerce platform owned to
+						QuincaParadi is a business name and e-commerce platform owned by
 						PARADI-BOUNTY Co. LTD which is a domestic company registered under
-						CC/TIN/VAT 111707849. It is experienced company in supply and
-						distribution of construction materials in general
+						CC/TIN/VAT 111707849. we are an experienced company in the supply
+						and distribution of construction materials in general
 					</Typography>
 				</Grid>
 				<Grid item xs={6} sm={3}>
@@ -314,7 +314,7 @@ const Footer = () => {
 					<Link
 						display='block'
 						variant='body2'
-						href='/'
+						href='/terms-and-conditions'
 						align='center'
 						className={classes.links}
 					>
@@ -324,7 +324,7 @@ const Footer = () => {
 							align='left'
 							gutterBottom
 						>
-							How we work
+							Terms & Conditions
 						</Typography>
 					</Link>
 				</Grid>

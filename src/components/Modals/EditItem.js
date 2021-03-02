@@ -166,7 +166,7 @@ const EditItem = props => {
 					<form>
 						<TextField
 							name='itemName'
-							type='number'
+							type='text'
 							label='item name'
 							placeholder='add item/ material'
 							helperText={submitted && !item.itemName ? isRequired : null}
