@@ -19,8 +19,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
 import CartLayout from '../../layouts/CartLayout';
-import DateWidget from '../../components/SidebarWidget/DateWidget';
-import MakePayment from '../../components/payment/MakePayment';
+import PersonalInfoWidget from '../../components/SidebarWidget/PersonalInfoWidget';
+// import MakePayment from '../../components/payment/MakePayment';
 
 const useStyles = makeStyles(theme => ({
 	cardGrid: {
@@ -28,6 +28,8 @@ const useStyles = makeStyles(theme => ({
 		paddingBottom: theme.spacing(2),
 		marginBottom: 40,
 		borderRadius: '10px',
+		paddingLeft: '100px',
+		paddingRight: '100px',
 	},
 	card: {
 		height: '100%',
@@ -163,8 +165,14 @@ const Cart = props => {
 					>
 						Checkout
 					</Typography>
-					<Grid container spacing={3}>
-						<Grid item xs={12} sm={12} md={8}>
+					<Grid
+						container
+						spacing={0}
+						direction='column'
+						alignItems='center'
+						justify='center'
+					>
+						<Grid item xs={12} sm={12} md={12} alignItems='center'>
 							<Card className={classes.card} elevation={1}>
 								<Grid container spacing={3}>
 									<Grid item xs={12} sm={12} md={12}>
@@ -229,8 +237,10 @@ const Cart = props => {
 															<TableCell component='th' scope='row'>
 																<strong>Total</strong>
 															</TableCell>
+															<TableCell></TableCell>
+															<TableCell></TableCell>
 															<TableCell align='right'>
-																<strong>{totalPrice}</strong>
+																<strong>{totalPrice} FRW</strong>
 															</TableCell>
 														</TableRow>
 													) : null}
@@ -251,7 +261,7 @@ const Cart = props => {
 											>
 												Shipping address
 											</Typography>
-											<DateWidget
+											<PersonalInfoWidget
 												selectedDate={selectedDate}
 												checkInDate={checkInDate}
 												checkOutDate={checkOutDate}
@@ -265,6 +275,35 @@ const Cart = props => {
 											/>
 											<hr />
 										</Grid>
+										<TableContainer>
+											<Table
+												className={classes.table}
+												aria-label='customized table'
+											>
+												<TableBody>
+													{bookedItems && totalPrice !== 0 ? (
+														<>
+															<TableRow>
+																<TableCell component='th' scope='row'>
+																	<strong>Items ({bookedItems.length})</strong>
+																</TableCell>
+																<TableCell align='right'>
+																	<strong>{bookedItems.length}</strong>
+																</TableCell>
+															</TableRow>
+															<TableRow>
+																<TableCell component='th' scope='row'>
+																	<strong>Total Amount to pay</strong>
+																</TableCell>
+																<TableCell align='right'>
+																	<strong>{totalPrice} FRW</strong>
+																</TableCell>
+															</TableRow>
+														</>
+													) : null}
+												</TableBody>
+											</Table>
+										</TableContainer>
 										<hr />
 										{bookedItems ? (
 											<CardActions
@@ -296,6 +335,7 @@ const Cart = props => {
 								</Grid>
 							</Card>
 						</Grid>
+						{/* 
 						<Grid item xs={12} sm={12} md={4}>
 							<Card elevation={1} className={classes.sticky}>
 								<Grid container spacing={3}>
@@ -319,20 +359,30 @@ const Cart = props => {
 											>
 												<TableBody>
 													{bookedItems && totalPrice !== 0 ? (
-														<TableRow>
-															<TableCell component='th' scope='row'>
-																<strong>Items ({bookedItems.length})</strong>
-															</TableCell>
-															<TableCell align='right'>
-																<strong>{bookedItems.length}</strong>
-															</TableCell>
-														</TableRow>
+														<>
+															<TableRow>
+																<TableCell component='th' scope='row'>
+																	<strong>Items ({bookedItems.length})</strong>
+																</TableCell>
+																<TableCell align='right'>
+																	<strong>{bookedItems.length}</strong>
+																</TableCell>
+															</TableRow>
+															<TableRow>
+																<TableCell component='th' scope='row'>
+																	<strong>Total Amount to pay</strong>
+																</TableCell>
+																<TableCell align='right'>
+																	<strong>{totalPrice} FRW</strong>
+																</TableCell>
+															</TableRow>
+														</>
 													) : null}
 												</TableBody>
 											</Table>
-										</TableContainer>
+										</TableContainer> */}
 
-										<hr />
+						{/* <hr />
 										{bookedItems && totalPrice !== 0 ? (
 											<CardActions
 												style={{ position: 'relative', bottom: '0' }}
@@ -359,14 +409,15 @@ const Cart = props => {
 												</Button>
 											</CardActions>
 										) : null}
-										<hr />
-										<CardActions style={{ position: 'relative', bottom: '0' }}>
+										<hr /> */}
+						{/* <CardActions style={{ position: 'relative', bottom: '0' }}>
 											<MakePayment totalPrice={totalPrice} />
-										</CardActions>
-									</Grid>
+										</CardActions> */}
+						{/* </Grid>
 								</Grid>
 							</Card>
-						</Grid>
+						</Grid> */}
+						{/* end */}
 					</Grid>
 					<br />
 					<br />

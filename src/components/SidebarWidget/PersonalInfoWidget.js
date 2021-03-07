@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const DateWidget = props => {
+const PersonalInfoWidget = props => {
 	const classes = useStyles();
 	return (
 		<form noValidate onSubmit={props.onSubmitForm}>
@@ -183,4 +183,4 @@ const DateWidget = props => {
 	);
 };
 
-export default DateWidget;
+export default PersonalInfoWidget;

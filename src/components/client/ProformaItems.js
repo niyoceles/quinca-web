@@ -97,20 +97,23 @@ const ProformaItems = props => {
 								type='number'
 								id='quantity'
 							/>
+							<br />
 							<Button
 								type='submit'
 								color='primary'
 								size='small'
-								style={{
-									backgroundColor: '#0080003a',
-									width: '80%',
-									color: 'green',
-								}}
+								variant='contained'
 								onClick={e => props.addItem(e, selectedItem, quantity)}
 							>
-								Confirm cart
+								request item
 							</Button>
-							<Button onClick={handleClose} color='primary'>
+							&nbsp; &nbsp;
+							<Button
+								onClick={handleClose}
+								color='secondary'
+								size='small'
+								variant='contained'
+							>
 								Cancel
 							</Button>
 						</form>

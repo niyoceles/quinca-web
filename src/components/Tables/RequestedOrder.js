@@ -47,15 +47,15 @@ const RequestedOrder = props => {
 				{itemsArray.length}
 			</TableCell>
 			<TableCell align='right' size='small'>
-				<DeleteItem itemId={id} itemName={id} />
+				{/* <DeleteItem itemId={id} itemName={id} /> */}
 				<Button onClick={() => handleClickOpen(id)}>View</Button>
-				<EditItem
+				{/* <EditItem
 					itemId={id}
 					itemName={id}
 					category={category}
 					itemDescription={itemDescription}
 					status={status}
-				/>
+				/> */}
 			</TableCell>
 			<TableCell align='right' size='small'>
 				{dayjs(createdAt).fromNow()}
