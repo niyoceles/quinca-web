@@ -32,7 +32,7 @@ const terms = [
 	{
 		id: 1,
 		title:
-			'To use Trusella you will be required to provide us with personal information of which you have to always keep confidential for your account’s security sake. In case you get worried about your account’s security, kindly alert us right away.',
+			'To use Quinca Paradi, you will be required to provide us with personal information of which you have to always keep confidential for your information’s security sake. In case you get worried about your information’s security, kindly alert us right away.',
 	},
 	{
 		id: 2,
@@ -62,7 +62,7 @@ const terms = [
 	{
 		id: 7,
 		title:
-			'The payment will be made in the currency of your preference depending on your location.',
+			'The payment will be made in the currency of Rwandan Francs or dollars.',
 	},
 	{
 		id: 8,
