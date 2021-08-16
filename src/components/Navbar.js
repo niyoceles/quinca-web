@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 		padding: '4px 20px',
 
 		'&:hover': {
-			background: '#f2f6fb',
+			background: '#f8f8f8',
 			boxShadow: '0px 1px 1px #888888',
 			color: '#333',
 		},
@@ -157,6 +157,7 @@ export default function ButtonAppBar() {
 	const orderedItems = JSON.parse(localStorage.getItem('orderSummary'));
 	const isAuthenticated = useSelector(state => state.auth.authenticated);
 	// const user = useSelector(state => state.auth.user);
+	console.log('check order:', orderedItems);
 	const userinformation = JSON.parse(localStorage.getItem('userInfo'));
 	const [state, setState] = React.useState({
 		top: false,
@@ -291,6 +292,19 @@ export default function ButtonAppBar() {
 					<Link to='/contact-us' className={classes.links}>
 						<Typography variant='body2' color='textSecondary' align='center'>
 							Help
+						</Typography>
+					</Link>
+					<Typography
+						variant='body1'
+						color='textPrimary'
+						align='center'
+						style={{ paddingLeft: 5, paddingRight: 5 }}
+					>
+						|
+					</Typography>{' '}
+					<Link to='/terms-and-conditions' className={classes.links}>
+						<Typography variant='body2' color='textSecondary' align='center'>
+							Terms & conditions
 						</Typography>
 					</Link>
 					<Typography
@@ -439,7 +453,9 @@ export default function ButtonAppBar() {
 											borderRadius: '25px',
 										}}
 									>
-										{orderedItems && orderedItems.length}
+										{orderedItems && orderedItems.length
+											? orderedItems.length
+											: '0'}
 									</span>
 								</Link>
 							</Grid>

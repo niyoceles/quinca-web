@@ -12,7 +12,6 @@ import {
 	GET_MY_PROFORMA_SUCCESS,
 	REQUEST_PROFORMA_FAILURE,
 	REQUEST_PROFORMA_SUCCESS,
-	BOOKING,
 	GET_CLIENT_BOOKINGS,
 	GET_SINGLE_PROFORMA_SUCCESS,
 	GET_SINGLE_PROFORMA_FAILURE,
@@ -155,7 +154,6 @@ export const getSingleProforma = id => dispatch => {
 };
 
 export const searchItems = keyword => dispatch => {
-	console.log('cccccccccccccccccc:', keyword);
 	axios
 		.post(`${REACT_APP_BACKEND}/item/search`, keyword)
 		.then(res => {

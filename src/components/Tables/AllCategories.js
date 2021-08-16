@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import 'dotenv/config';
 import PropTypes from 'prop-types';
@@ -164,7 +164,7 @@ const AllCategories = () => {
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={8} lg={9}>
 							<Paper className={fixedHeightPaper}>
-								<Title>Recent Categories</Title>
+								<Title>Recent categories</Title>
 							</Paper>
 						</Grid>
 						<Grid item xs={12} md={3} lg={3}>
@@ -177,10 +177,10 @@ const AllCategories = () => {
 						<Table stickyHeader aria-label='sticky table'>
 							<TableHead>
 								<TableRow>
-									<StyledTableCell>Names</StyledTableCell>
+									<StyledTableCell>Name</StyledTableCell>
 									<StyledTableCell align='left'>Status</StyledTableCell>
 									<StyledTableCell align='right'>Created Time</StyledTableCell>
-									<StyledTableCell align='right'>Actions</StyledTableCell>
+									{/* <StyledTableCell align='right'>Actions</StyledTableCell> */}
 								</TableRow>
 							</TableHead>
 							<TableBody>

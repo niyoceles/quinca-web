@@ -21,7 +21,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Spinner from '../../components/Ui/Spinner/Spinner';
 import moment from 'moment';
-import DateWidget from '../../components/SidebarWidget/DateWidget';
+import PersonalInfoWidget from '../../components/SidebarWidget/PersonalInfoWidget';
 import CartLayout from '../../layouts/CartLayout';
 
 function Alert(props) {
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(1),
 		paddingBottom: theme.spacing(2),
-		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -259,7 +258,7 @@ const RequestProforma = props => {
 								</Table>
 							</TableContainer>
 							<hr />
-							<DateWidget
+							<PersonalInfoWidget
 								selectedDate={selectedDate}
 								checkInDate={checkInDate}
 								checkOutDate={checkOutDate}

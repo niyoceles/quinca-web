@@ -36,6 +36,7 @@ export const addItem = newItem => dispatch => {
 };
 
 export const updateItem = (itemId, updateData) => dispatch => {
+	console.log('HHHHHHHHHHHHHHHHHHHHH');
 	dispatch({ type: LOADING_UI });
 	axios
 		.put(`${REACT_APP_BACKEND}/item/${itemId}`, updateData)
@@ -59,7 +60,8 @@ export const deleteItem = itemId => dispatch => {
 	axios
 		.delete(`${REACT_APP_BACKEND}/item/delete/${itemId}`)
 		.then(res => {
-			dispatch({ type: DELETE_ITEM, payload: itemId });
+			dispatch({ type: DELETE_ITEM, payload: res.data });
+			toast.success(res.data.message);
 		})
 		.catch(err => console.log(err.response.data));
 };

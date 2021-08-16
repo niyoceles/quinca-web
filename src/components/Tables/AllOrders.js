@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import 'dotenv/config';
 import PropTypes from 'prop-types';
@@ -20,8 +20,8 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
-import Requested from './Requested';
 import Title from '../../layouts/Title';
+import RequestedOrder from './RequestedOrder';
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -155,7 +155,6 @@ const AllOrders = () => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
-
 	return (
 		<Fragment>
 			<div className={classes.dashboard}>
@@ -163,7 +162,7 @@ const AllOrders = () => {
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={8} lg={9}>
 							<Paper className={fixedHeightPaper}>
-								<Title>Requested Proforma</Title>
+								<Title>Requested orders</Title>
 							</Paper>
 						</Grid>
 					</Grid>
@@ -180,20 +179,30 @@ const AllOrders = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{(rowsPerPage > 0
-									? orders.slice(
-											page * rowsPerPage,
-											page * rowsPerPage + rowsPerPage
-									  )
-									: orders
-								).map(item => (
-									<Requested key={item.id} oneRequest={item} />
-								))}
-
-								{emptyRows > 0 && (
-									<TableRow style={{ height: 53 * emptyRows }}>
-										<TableCell colSpan={6} />
+								{orders === 'No Order Item found' ? (
+									<TableRow>
+										<TableCell colSpan={6} align='center' size='small'>
+											{orders}
+										</TableCell>
 									</TableRow>
+								) : (
+									<>
+										{(rowsPerPage > 0
+											? orders.slice(
+													page * rowsPerPage,
+													page * rowsPerPage + rowsPerPage
+											  )
+											: orders
+										).map(item => (
+											<RequestedOrder key={item.id} oneRequest={item} />
+										))}
+
+										{emptyRows > 0 && (
+											<TableRow style={{ height: 53 * emptyRows }}>
+												<TableCell colSpan={6} />
+											</TableRow>
+										)}
+									</>
 								)}
 							</TableBody>
 							<TableFooter>

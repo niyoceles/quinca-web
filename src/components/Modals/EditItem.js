@@ -46,13 +46,21 @@ const useStyles = makeStyles(theme => ({
 }));
 const EditItem = props => {
 	const classes = useStyles();
-	const { itemName, category, itemDescription, itemPrice, itemId } = props;
+	const {
+		itemName,
+		category,
+		itemDescription,
+		itemImage,
+		itemPrice,
+		itemId,
+	} = props;
 
 	const [item, setItem] = useState({
 		itemName,
 		category,
 		itemDescription,
 		itemPrice,
+		itemImage,
 	});
 	const [open, setOpen] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
@@ -68,17 +76,21 @@ const EditItem = props => {
 		e.preventDefault();
 
 		setSubmitted(true);
-		const { itemName, category, itemDescription, itemPrice } = item;
-		if (itemName && itemDescription && itemPrice && localStorage.imageUrl) {
+		const { itemName, category, itemDescription, itemPrice, itemImage } = item;
+		if (
+			itemName &&
+			itemDescription &&
+			itemPrice &&
+			(localStorage.imageUrl || itemImage)
+		) {
 			const itemData = {
 				itemName,
-				itemImage: localStorage.imageUrl,
+				itemImage: localStorage.imageUrl || itemImage,
 				category,
 				itemDescription,
 				itemPrice,
 				status: true,
 			};
-			console.log('send', itemData);
 			dispatch(updateItem(itemId, itemData));
 		}
 	};
@@ -105,6 +117,7 @@ const EditItem = props => {
 		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
 		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
 		data.append('timestamp', (Date.now() / 1000) | 0);
+		data.append('folder', 'QUINCAPARADI/ITEMS');
 
 		const options = {
 			onUploadProgress: progressEvent => {
@@ -118,6 +131,14 @@ const EditItem = props => {
 			.post(
 				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
 				data,
+				{
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest',
+						'Content-Type': 'application/json;charset=UTF-8',
+						'Access-Control-Allow-Origin': true,
+						'Access-Control-Allow-Credentials': true,
+					},
+				},
 				options
 			)
 			.then(res => {
@@ -145,7 +166,7 @@ const EditItem = props => {
 					<form>
 						<TextField
 							name='itemName'
-							tpye='text'
+							type='text'
 							label='item name'
 							placeholder='add item/ material'
 							helperText={submitted && !item.itemName ? isRequired : null}
@@ -174,7 +195,7 @@ const EditItem = props => {
 						</FormControl>
 						<TextField
 							name='itemPrice'
-							tpye='number'
+							type='text'
 							label='item price'
 							placeholder='item price'
 							className={classes.textField}
@@ -193,22 +214,27 @@ const EditItem = props => {
 								onChange={uploadFile}
 								required
 							/>
-							{submitted && !localStorage.imageUrl && (
-								<Alert severity='error'>item image is required</Alert>
-							)}
+							{(submitted && !localStorage.imageUrl) ||
+								(!item.itemImage && (
+									<Alert severity='error'>item image is required</Alert>
+								))}
 						</div>
 						<div>
 							<img
 								width='300'
 								height='150'
-								src={linkImage ? linkImage : null}
+								src={
+									linkImage || item.itemImage
+										? linkImage || item.itemImage
+										: null
+								}
 								alt=''
 								className='edit-img'
 							/>
 						</div>
 						<TextField
 							name='itemDescription'
-							tpye='text'
+							type='text'
 							label='item description'
 							multiline
 							rows='3'

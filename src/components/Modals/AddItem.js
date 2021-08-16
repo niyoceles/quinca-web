@@ -87,6 +87,7 @@ const AddItem = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		window.location.reload();
 	};
 
 	if (itemSubmitted) {
@@ -96,13 +97,14 @@ const AddItem = () => {
 		}, 1000);
 	}
 
-	const uploadFile = ({ target: { files } }) => {
+	const uploadFile = async ({ target: { files } }) => {
 		let data = new FormData();
 		data.append('file', files[0]);
 		data.append('tags', `celestin, image`);
 		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
 		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
 		data.append('timestamp', (Date.now() / 1000) | 0);
+		data.append('folder', 'QUINCAPARADI/ITEMS');
 
 		const options = {
 			onUploadProgress: progressEvent => {
@@ -112,10 +114,21 @@ const AddItem = () => {
 			},
 		};
 
-		axios
+		await axios
 			.post(
 				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
 				data,
+				{
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+						'X-Requested-With': 'XMLHttpRequest',
+						'Content-Type': 'application/json',
+						'Access-Control-Allow-Credentials': true,
+						'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+						'Access-Control-Allow-Headers':
+							'Content-Type, Accept, Authorization, authorization',
+					},
+				},
 				options
 			)
 			.then(res => {
@@ -140,9 +153,9 @@ const AddItem = () => {
 					<form>
 						<TextField
 							name='itemName'
-							tpye='text'
+							type='text'
 							label='item name'
-							placeholder='add room number/ car number/ package title'
+							placeholder='add item name'
 							helperText={submitted && !item.itemName ? isRequired : null}
 							error={submitted && !item.itemName ? 'is invalid' : null}
 							className={classes.textField}
@@ -169,7 +182,7 @@ const AddItem = () => {
 						</FormControl>
 						<TextField
 							name='itemPrice'
-							tpye='number'
+							type='number'
 							label='item price'
 							placeholder='item price'
 							className={classes.textField}
@@ -203,7 +216,7 @@ const AddItem = () => {
 						</div>
 						<TextField
 							name='itemDescription'
-							tpye='text'
+							type='text'
 							label='item description'
 							multiline
 							rows='3'

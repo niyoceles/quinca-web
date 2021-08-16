@@ -57,7 +57,7 @@ function Copyright() {
 			<Link color='inherit' href='https://quincaparadi.com/'>
 				QuincaParadi
 			</Link>{' '}
-			{'. All Rights Reserved.'}
+			{'All Rights Reserved.'}
 		</Typography>
 	);
 }
@@ -67,15 +67,15 @@ const Footer = () => {
 	const social = [
 		{
 			name: 'Facebook',
-			url: 'https://www.facebook.com/niyoceles',
+			url: 'https://www.facebook.com/Quinca-paradi-100217132135489',
 		},
 		{
 			name: 'Instagram',
-			url: 'https://www.instagram.com/in/celestin-niyonsaba/',
+			url: 'https://www.instagram.com/quincaparadi/',
 		},
 		{
 			name: 'Twitter',
-			url: 'https://twitter.com/niyoceles',
+			url: 'https://twitter.com/QuincaParadi',
 		},
 	];
 
@@ -86,15 +86,15 @@ const Footer = () => {
 		},
 		{
 			name: 'Contruction materials',
-			url: '/contruction',
+			url: '/category/construction',
 		},
 		{
 			name: 'Plumbing materials',
-			url: '/plumbing',
+			url: '/category/plumbing',
 		},
 		{
 			name: 'Electricity materials',
-			url: '/electricity',
+			url: '/category/electricity',
 		},
 	];
 	return (
@@ -224,8 +224,8 @@ const Footer = () => {
 			<Grid container spacing={6}>
 				<Grid item xs={6} sm={3}>
 					<Typography
-						variant='body1'
-						color='textPrimary'
+						variant='body2'
+						color='textSecondary'
 						align='left'
 						gutterBottom
 					>
@@ -234,9 +234,11 @@ const Footer = () => {
 							alt='Quinca Paradi'
 							className={classes.logo}
 						/>
+						QuincaParadi is a business name and e-commerce platform owned by
+						PARADI-BOUNTY Co. LTD which is a domestic company registered under
+						CC/TIN/VAT 111707849. we are an experienced company in the supply
+						and distribution of construction materials in general
 					</Typography>
-					This blog post shows a few different types of content that are
-					supported and styled with Material styles. Basic typography, images
 				</Grid>
 				<Grid item xs={6} sm={3}>
 					<Typography
@@ -296,7 +298,7 @@ const Footer = () => {
 					<Link
 						display='block'
 						variant='body2'
-						href='/contact-us'
+						href='/about-us'
 						align='center'
 						className={classes.links}
 					>
@@ -312,7 +314,7 @@ const Footer = () => {
 					<Link
 						display='block'
 						variant='body2'
-						href='/'
+						href='/terms-and-conditions'
 						align='center'
 						className={classes.links}
 					>
@@ -322,7 +324,7 @@ const Footer = () => {
 							align='left'
 							gutterBottom
 						>
-							How we work
+							Terms & Conditions
 						</Typography>
 					</Link>
 				</Grid>

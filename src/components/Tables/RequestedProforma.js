@@ -8,10 +8,10 @@ import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import DeleteItem from '../Modals/DeleteItem';
-import EditItem from '../Modals/EditItem';
+// import DeleteItem from '../Modals/DeleteItem';
+// import EditItem from '../Modals/EditItem';
 
-const Requested = props => {
+const RequestedProforma = props => {
 	const history = useHistory();
 	dayjs.extend(relativeTime);
 	const {
@@ -47,15 +47,15 @@ const Requested = props => {
 				{itemsArray.length}
 			</TableCell>
 			<TableCell align='right' size='small'>
-				<DeleteItem itemId={id} itemName={id} />
+				{/* <DeleteItem itemId={id} itemName={id} /> */}
 				<Button onClick={() => handleClickOpen(id)}>View</Button>
-				<EditItem
+				{/* <EditItem
 					itemId={id}
 					itemName={id}
 					category={category}
 					itemDescription={itemDescription}
 					status={status}
-				/>
+				/> */}
 			</TableCell>
 			<TableCell align='right' size='small'>
 				{dayjs(createdAt).fromNow()}
@@ -64,9 +64,9 @@ const Requested = props => {
 	);
 };
 
-Requested.propTypes = {
+RequestedProforma.propTypes = {
 	user: PropTypes.object.isRequired,
 	openDialog: PropTypes.bool,
 };
 
-export default Requested;
+export default RequestedProforma;

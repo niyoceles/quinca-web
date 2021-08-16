@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -51,6 +50,10 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	cardMedia: {
+		paddingTop: '90%',
+		padding: 5,
+	},
+	cardLink: {
 		paddingTop: '56.25%', // 16:9
 	},
 	cardContent: {
@@ -118,7 +121,7 @@ export default function LandingPage() {
 		state => state.client.homeItems.construction
 	);
 	console.log('cvcvcvc', constructionItems);
-	
+
 	const plumbingItems = useSelector(state => state.client.homeItems.plumbing);
 	const electricityItems = useSelector(
 		state => state.client.homeItems.electricity
@@ -130,78 +133,83 @@ export default function LandingPage() {
 
 	return (
 		<ClientLayout>
-			<Container className={classes.topCardGrid} maxWidth='lg'>
-				<Grid container spacing={2}>
-					<Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.topCard}>
-							<CardContent className={classes.cardContent}>
-								<Typography gutterBottom variant='h5' component='h2'>
-									Categories
-								</Typography>
-								{categories !== undefined ? (
-									categories.map(category => (
-										<Link
-											display='block'
-											variant='body2'
-											href={category.url}
-											key={category}
-											className={classes.links}
-										>
-											<Grid
-												container
-												direction='row'
-												spacing={1}
-												alignItems='center'
+			<main className={classes.main}>
+				<Container className={classes.topCardGrid} maxWidth='lg'>
+					<Grid container spacing={2}>
+						<Grid item xs={12} sm={6} md={3}>
+							<Card className={classes.topCard}>
+								<CardContent className={classes.cardContent}>
+									<Typography gutterBottom variant='h5' component='h2'>
+										Categories
+									</Typography>
+									{categories !== undefined ? (
+										categories.map(category => (
+											<Link
+												display='block'
+												variant='body2'
+												href={category.url}
+												key={category}
+												className={classes.links}
 											>
-												<Grid item>
-													<DoubleArrowRoundedIcon />
+												<Grid
+													container
+													direction='row'
+													spacing={1}
+													alignItems='center'
+												>
+													<Grid item>
+														<DoubleArrowRoundedIcon />
+													</Grid>
+													<Grid item>
+														{' '}
+														<Typography
+															variant='body1'
+															color='textPrimary'
+															align='center'
+														>
+															{category.name}
+														</Typography>
+													</Grid>
 												</Grid>
-												<Grid item>
-													{' '}
-													<Typography
-														variant='body1'
-														color='textPrimary'
-														align='center'
-													>
-														{category.name}
-													</Typography>
-												</Grid>
-											</Grid>
-										</Link>
-									))
-								) : (
-									<CircularProgress className={classes.spin} />
-								)}
-							</CardContent>
-						</Card>
+											</Link>
+										))
+									) : (
+										<CircularProgress className={classes.spin} />
+									)}
+								</CardContent>
+							</Card>
+						</Grid>
+						<Grid item xs={12} sm={6} md={6}>
+							<Card className={classes.topCard}>
+								<HomeSlide />
+							</Card>
+						</Grid>
+						<Grid item xs={12} sm={6} md={3}>
+							<Card className={classes.topCard}>
+								<ReactLink
+									to='/category/construction'
+									className={classes.links}
+								>
+									<CardMedia
+										className={classes.cardLink}
+										image={itemImage}
+										title='Construction materials'
+									/>
+								</ReactLink>
+							</Card>
+							<Card className={classes.topCard}>
+								<ReactLink to='/category/plumbing' className={classes.links}>
+									<CardMedia
+										className={classes.cardLink}
+										image={materials}
+										title='Plumbing materials'
+									/>
+								</ReactLink>
+							</Card>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} sm={6} md={6}>
-						<Card className={classes.topCard}>
-							<HomeSlide />
-						</Card>
-					</Grid>
-					<Grid item xs={12} sm={6} md={3}>
-						<Card className={classes.topCard}>
-							<ReactLink to='/category/construction' className={classes.links}>
-								<CardMedia
-									className={classes.cardMedia}
-									image={itemImage}
-									title='Construction materials'
-								/>
-							</ReactLink>
-						</Card>
-						<Card className={classes.topCard}>
-							<ReactLink to='/category/plumbing' className={classes.links}>
-								<CardMedia
-									className={classes.cardMedia}
-									image={materials}
-									title='Plumbing materials'
-								/>
-							</ReactLink>
-						</Card>
-					</Grid>
-				</Grid>
-			</Container>
+				</Container>
+			</main>
 			<Divider />
 			<Container className={classes.cardGrid} maxWidth='lg'>
 				<Typography
@@ -227,7 +235,7 @@ export default function LandingPage() {
 										/>
 										<CardContent
 											className={classes.cardContent}
-											style={{ height: 70 }}
+											style={{ height: 90 }}
 										>
 											<div className={classes.divContent}>
 												<Typography
@@ -302,7 +310,7 @@ export default function LandingPage() {
 										/>
 										<CardContent
 											className={classes.cardContent}
-											style={{ height: 70 }}
+											style={{ height: 90 }}
 										>
 											<div className={classes.divContent}>
 												<Typography
@@ -377,7 +385,7 @@ export default function LandingPage() {
 										/>
 										<CardContent
 											className={classes.cardContent}
-											style={{ height: 70 }}
+											style={{ height: 90 }}
 										>
 											<div className={classes.divContent}>
 												<Typography

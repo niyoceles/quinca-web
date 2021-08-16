@@ -33,17 +33,9 @@ const useStyles = makeStyles(theme => ({
 		backgroundSize: 'cover',
 		height: 60,
 	},
-	title: {
-		marginLeft: theme.spacing(2),
-		flex: 1,
-	},
-	main: {
-		backgroundColor: '#fff',
-	},
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -68,7 +60,8 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	cardMedia: {
-		paddingTop: '56.25%', // 16:9
+		paddingTop: '100%',
+		padding: 5,
 	},
 	cardContent: {
 		flexGrow: 1,
@@ -176,11 +169,23 @@ export default function SearchItems(props) {
 						</Grid>
 					</Toolbar>
 				</AppBar>
-				<Container className={classes.cardGrid} maxWidth='lg'>
+				<Container
+					className={classes.cardGrid}
+					maxWidth='lg'
+					style={{
+						textAlign: 'center',
+					}}
+				>
 					{submitted && !results ? (
 						<CircularProgress />
 					) : (
-						<Grid container spacing={4}>
+						<Grid
+							container
+							spacing={4}
+							style={{
+								alignItems: 'center',
+							}}
+						>
 							{results && results === 'No Item found' ? (
 								<Typography
 									component='h3'
@@ -190,22 +195,12 @@ export default function SearchItems(props) {
 									className={classes.titleFeature}
 									gutterBottom
 								>
-									your search results {results && results}
+									Your search results {results && results}
 								</Typography>
 							) : (
 								results &&
 								results.map(card => (
 									<Grid item key={card} xs={12} sm={6} md={3}>
-										<Typography
-											component='h3'
-											variant='h5'
-											align='center'
-											color='textPrimary'
-											className={classes.titleFeature}
-											gutterBottom
-										>
-											Your search found
-										</Typography>
 										<Card className={classes.card} elevation={3}>
 											<ReactLink
 												to={`/view/${card.id}`}
@@ -218,7 +213,7 @@ export default function SearchItems(props) {
 												/>
 												<CardContent
 													className={classes.cardContent}
-													style={{ height: 70 }}
+													style={{ height: 90 }}
 												>
 													<div className={classes.divContent}>
 														<Typography

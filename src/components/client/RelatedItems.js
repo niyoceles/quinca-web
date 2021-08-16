@@ -3,37 +3,55 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Link as ReactLink } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import DialogQuantity from './DialogQuantity';
 
 const useStyles = makeStyles(theme => ({
-	image: {
-		width: 200,
-		height: 150,
-		marginRight: '10px',
-		paddingRight: 10,
-	},
-	img: {
-		margin: 'auto',
-		display: 'block',
-		maxWidth: '100%',
-		maxHeight: '100%',
-		objectFit: 'cover',
-	},
-	itemBox: {
-		boxShadow: '0 2px 3px 0 #ccc',
-		margin: '20px 0 0 0px',
-		width: '90%',
-		padding: '10px',
-		backgroundColor: 'white',
-		borderRadius: '8px',
-	},
 	links: {
 		textDecoration: 'none',
 		color: 'inherit',
+	},
+	cardGrid: {
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(4),
+		marginBottom: 40,
+		borderRadius: '10px',
+	},
+	titleFeature: {
+		marginTop: -50,
+		padding:10
+	},
+	card: {
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		'&:hover': {
+			background: '#e3e5e6',
+		},
+	},
+	cardMedia: {
+		paddingTop: '100%',
+		padding: 5,
+	},
+	cardContent: {
+		flexGrow: 1,
+	},
+	divContent: {
+		marginLeft: 15,
+		marginTop: -10,
+	},
+	spin: {
+		margin: '50px auto',
+		width: '50px !important',
+		height: '50px !important',
 	},
 }));
 
@@ -47,75 +65,88 @@ const RelatedItems = props => {
 				addcart={props.addItemCart}
 				selected={props.selected}
 			/>
-			{props.items &&
-				props.items.map(item => (
-					<Grid
-						key={item.itemName}
-						container
-						spacing={3}
-						item
-						xs={12}
-						sm={6}
-						md={6}
-						className={classes.itemBox}
-					>
-						<Grid container spacing={3}>
-							<Grid item xs={4} sm={3} md={4}>
-								<ReactLink to={`/view/${item.id}`} className={classes.links}>
-									{' '}
-									<ButtonBase className={classes.image}>
-										<img
-											className={classes.img}
-											alt='...'
-											src={item.itemImage}
+			<Container className={classes.cardGrid} maxWidth='lg'>
+				<Typography
+					component='h3'
+					variant='h5'
+					align='center'
+					color='textPrimary'
+					className={classes.titleFeature}
+					gutterBottom
+				>
+					Related Material items
+				</Typography>
+				<Grid container spacing={4}>
+					{props.items !== undefined ? (
+						props.items &&
+						props.items.map(card => (
+							<Grid item key={card} xs={12} sm={6} md={3}>
+								<Card className={classes.card} elevation={3}>
+									<ReactLink to={`/view/${card.id}`} className={classes.links}>
+										<CardMedia
+											className={classes.cardMedia}
+											image={card.itemImage}
+											title='Image title'
 										/>
-									</ButtonBase>
-								</ReactLink>
-							</Grid>
-							<Grid item xs={12} sm={6} md={4} style={{ display: 'flex' }}>
-								<Grid item xs container direction='column' spacing={2}>
-									<Grid item xs>
-										<Typography gutterBottom variant='subtitle1'>
-											{item.itemName}
-										</Typography>
-										<Typography variant='body2' gutterBottom>
-											{item.itemDescription}
-										</Typography>
-									</Grid>
-
-									<FormControl component='fieldset'>
-										<span style={{ flex: 1 }}>
-											<Fab
-												variant='extended'
-												size='medium'
-												color='primary'
-												aria-label='add'
-												// className={classes.btnOrder}
-												onClick={() => props.openDialog(item)}
-											>
-												<AddShoppingCartIcon />
-												Add
-											</Fab>
-										</span>
-									</FormControl>
-								</Grid>
-								<Grid item>
-									<Typography variant='subtitle1'>
-										<Fab
-											variant='extended'
-											size='small'
-											color='tertiary'
-											aria-label='price'
-											className={classes.btnBooking}
+										<CardContent
+											className={classes.cardContent}
+											style={{ height: 98 }}
 										>
-											{item.itemPrice + 'Rwf'}
-										</Fab>
-									</Typography>
-								</Grid>
+											<div className={classes.divContent}>
+												<Typography
+													variant='body2'
+													color='textPrimary'
+													align='left'
+													gutterBottom
+												>
+													{card.itemName}
+												</Typography>
+												<Grid
+													container
+													direction='row'
+													spacing={1}
+													alignItems='center'
+												>
+													<Grid item align='left'>
+														<FormControl component='fieldset'>
+															<span style={{ flex: 1 }}>
+																<Fab
+																	variant='extended'
+																	size='medium'
+																	color='primary'
+																	aria-label='add'
+																	// className={classes.btnOrder}
+																	onClick={() => props.openDialog(card)}
+																>
+																	<AddShoppingCartIcon />
+																	Add
+																</Fab>
+															</span>
+														</FormControl>
+													</Grid>
+													<Grid item></Grid>
+													<Grid item align='right'>
+														{' '}
+														<Button
+															size='medium'
+															color='primary'
+															style={{ marginTop: -5 }}
+														>
+															RWF {card.itemPrice}
+														</Button>
+													</Grid>
+												</Grid>
+											</div>
+										</CardContent>
+									</ReactLink>
+								</Card>
 							</Grid>
-						</Grid>
-					</Grid>
-				))}
+						))
+					) : (
+						<CircularProgress className={classes.spin} />
+					)}
+				</Grid>
+			</Container>
 		</>
 	);
 };

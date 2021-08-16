@@ -15,7 +15,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// Icons
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +37,9 @@ const AddCategory = () => {
 	const [name, setName] = useState('');
 	const [open, setOpen] = useState(false);
 	const [submitted, setSubmitted] = useState(false);
-	const itemSubmitted = useSelector(state => state.item.addItemSuccess);
+	const categorySubmitted = useSelector(
+		state => state.category.addCategorySuccess
+	);
 
 	const dispatch = useDispatch();
 
@@ -47,10 +48,10 @@ const AddCategory = () => {
 
 		setSubmitted(true);
 		if (name) {
-			const itemData = {
+			const categoryData = {
 				name,
 			};
-			dispatch(addCategory(itemData));
+			dispatch(addCategory(categoryData));
 		}
 	};
 
@@ -60,6 +61,7 @@ const AddCategory = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		window.location.reload();
 	};
 
 	const isRequired = <Alert severity='error'>is required</Alert>;
@@ -68,18 +70,20 @@ const AddCategory = () => {
 		<Fragment>
 			<Button variant='contained' color='primary' onClick={handleOpen}>
 				<AddIcon />
-				Add Item
+				Add Category
 			</Button>
 			<Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
-				<DialogTitle>Add item details</DialogTitle>
-				{itemSubmitted && <Alert severity='success'>{itemSubmitted}</Alert>}
+				<DialogTitle>Add category name</DialogTitle>
+				{categorySubmitted && (
+					<Alert severity='success'>{categorySubmitted}</Alert>
+				)}
 				<DialogContent>
 					<form>
 						<TextField
-							name='itemNamname'
-							tpye='text'
-							label='item name'
-							placeholder='add room number/ car number/ package title'
+							name='name'
+							type='text'
+							label='category name'
+							placeholder='add category name'
 							helperText={submitted && !name ? isRequired : null}
 							error={submitted && !name ? 'is invalid' : null}
 							className={classes.textField}
@@ -93,9 +97,11 @@ const AddCategory = () => {
 					<Button onClick={handleClose} color='secondary'>
 						Cancel
 					</Button>
-					<Button onClick={handleSubmit} color='primary'>
-						Save
-					</Button>
+					{!categorySubmitted ? (
+						<Button onClick={handleSubmit} color='primary'>
+							Save
+						</Button>
+					) : null}
 				</DialogActions>
 			</Dialog>
 		</Fragment>

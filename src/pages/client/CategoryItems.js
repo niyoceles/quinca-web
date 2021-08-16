@@ -12,31 +12,14 @@ import Divider from '@material-ui/core/Divider';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoryItems } from '../../redux/actions';
 import { Link as ReactLink } from 'react-router-dom';
-import itemImage from '../../assets/images/construction.jpg';
 import ClientLayout from '../../layouts/ClientLayout';
 
 const useStyles = makeStyles(theme => ({
-	main: {
-		backgroundColor: '#fff',
-	},
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
 		borderRadius: '10px',
-	},
-	topCardGrid: {
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(2),
-		backgroundColor: '#fff',
-		borderRadius: '10px',
-	},
-	topCard: {
-		// height: '70%',
-		display: 'flex',
-		flexDirection: 'column',
-		marginBottom: 5,
 	},
 	card: {
 		height: '100%',
@@ -51,10 +34,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	cardContent: {
 		flexGrow: 1,
-	},
-	footer: {
-		backgroundColor: theme.palette.background.paper,
-		padding: theme.spacing(6),
 	},
 	titleFeature: {
 		marginTop: -50,
@@ -78,7 +57,6 @@ export default function CategoryItems(props) {
 
 	return (
 		<ClientLayout>
-			<br />
 			<Divider />
 			<Container className={classes.cardGrid} maxWidth='lg'>
 				<Typography
@@ -89,7 +67,7 @@ export default function CategoryItems(props) {
 					className={classes.titleFeature}
 					gutterBottom
 				>
-					Available material in {' '}
+					Available material in{' '}
 					{categoryitems && categoryitems.map(i => i.name)} category
 				</Typography>
 				<Grid container spacing={4}>

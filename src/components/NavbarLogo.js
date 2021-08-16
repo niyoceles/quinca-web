@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import './styles.css';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
@@ -24,37 +24,16 @@ import InfoIcon from '@material-ui/icons/Info';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { logoutUser } from '../redux/actions';
-import Grid from '@material-ui/core/Grid';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
-import cartImage from '../assets/images/cart.svg';
 import Quinca_logo from '../assets/images/quinca-logo.jpeg';
-import userImage from '../assets/images/account.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 // import accountImage from '../assets/images/account.svg';
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1,
-	},
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
 	title: {
 		flexGrow: 1,
-	},
-	leftNavMenu: {
-		width: '45%',
-		textAlign: 'right',
-	},
-	avatar: {
-		display: 'inline-flex',
-		margin: 0,
-		width: 20,
-		height: 20,
-	},
-	username: {
-		display: 'inline-block',
 	},
 	links: {
 		textDecoration: 'none',
@@ -72,65 +51,15 @@ const useStyles = makeStyles(theme => ({
 		padding: '4px 20px',
 
 		'&:hover': {
-			background: '#f2f6fb',
+			background: '#f8f8f8',
 			boxShadow: '0px 1px 1px #888888',
 			color: '#333',
-		},
-	},
-	proformaButton: {
-		background: '#e91e63',
-		color: '#fff',
-		borderRadius: '25px',
-		padding: '6px 25px',
-
-		'&:hover': {
-			background: 'blue',
-			boxShadow: '0px 2px 10px #888888',
 		},
 	},
 	grow: {
 		flexGrow: 1,
 	},
-	searchSection: {
-		marginLeft: 0,
-	},
-	search: {
-		position: 'relative',
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: fade(theme.palette.common.white, 0.15),
-		'&:hover': {
-			backgroundColor: fade(theme.palette.common.white, 0.25),
-		},
-		marginRight: theme.spacing(2),
-		marginLeft: 0,
-		width: '100%',
-		[theme.breakpoints.up('sm')]: {
-			marginLeft: theme.spacing(3),
-			width: 'auto',
-		},
-	},
-	searchIcon: {
-		padding: theme.spacing(0, 2),
-		height: '100%',
-		position: 'absolute',
-		pointerEvents: 'none',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	inputRoot: {
-		color: 'inherit',
-	},
-	inputInput: {
-		padding: theme.spacing(1, 1, 1, 0),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-		transition: theme.transitions.create('width'),
-		width: '100%',
-		[theme.breakpoints.up('md')]: {
-			width: '20ch',
-		},
-	},
+
 	sectionDesktop: {
 		display: 'none',
 		[theme.breakpoints.up('md')]: {
@@ -241,17 +170,6 @@ export default function ButtonAppBar() {
 		</div>
 	);
 
-	const [anchorEl, setAnchorEl] = React.useState(null);
-
-	function handleClick(event) {
-		if (anchorEl !== event.currentTarget) {
-			setAnchorEl(event.currentTarget);
-		}
-	}
-
-	function handleClose() {
-		setAnchorEl(null);
-	}
 	return (
 		<Fragment>
 			<AppBar
@@ -276,7 +194,7 @@ export default function ButtonAppBar() {
 					>
 						|
 					</Typography>{' '}
-					<Link to='/login' className={classes.links}>
+					<Link to='/contact-us' className={classes.links}>
 						<Typography variant='body2' color='textSecondary' align='center'>
 							Help
 						</Typography>

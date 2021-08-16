@@ -18,15 +18,17 @@ import SingleProformaPage from './pages/client/SingleProformaPage';
 import MyProfile from './pages/client/MyProfile';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
-import SignupPage from './pages/Auth/SignupPage';
+// import SignupPage from './pages/Auth/SignupPage';
 import CategoryItems from './pages/client/CategoryItems';
 import ViewItem from './pages/client/ViewItem';
 import Cart from './pages/client/Cart';
 import OrdersPage from './pages/supplier/OrdersPage';
-import ContactForm from './components/client/ContactForm';
 import ContactUs from './pages/client/ContactUs';
 import ViewProforma from './pages/supplier/ViewProforma';
 import CategoryPage from './pages/supplier/CategoryPage';
+import AboutUs from './pages/client/AboutUs';
+import ViewOrder from './pages/supplier/ViewOrder';
+import TermsConditions from './pages/client/TermsConditions';
 
 export const Routes = () => {
 	return (
@@ -35,16 +37,19 @@ export const Routes = () => {
 				<Switch>
 					<Route exact path='/' component={LandingPage} />
 					<Route exact path='/login' component={LoginPage} />
-					<Route exact path='/signup' component={SignupPage} />
+					{/* <Route exact path='/signup' component={SignupPage} /> */}
 					<Route exact path='/account/verified' component={VerifiedAccount} />
 					<Route exact path='/view/:id' component={ViewItem} />
 					<Route exact path='/cart' component={Cart} />
 					<Route exact path='/contact-us' component={ContactUs} />
+					<Route exact path='/about-us' component={AboutUs} />
+					<Route exact path='/terms-and-conditions' component={TermsConditions} />
 					<Route exact path='/request' component={RequestProforma} />
 					<Route exact path='/category/:category' component={CategoryItems} />
 					<AuthRoute exact path='/my-proforma' component={MyProforma} />
 					<Route exact path='/my-proforma/:id' component={SingleProformaPage} />
 					<Route exact path='/proforma/:id' component={ViewProforma} />
+					<Route exact path='/order/:id' component={ViewOrder} />
 					<AuthRoute exact path='/client' component={clients} />
 					<AuthRoute exact path='/bookings' component={Bookings} />
 					<AuthRoute exact path='/me' component={MyProfile} />

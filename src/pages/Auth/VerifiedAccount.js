@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
 	cardGrid: {
 		paddingTop: theme.spacing(8),
 		paddingBottom: theme.spacing(8),
-		backgroundColor: '#f2f6fb',
 		marginBottom: 40,
 		borderRadius: '10px',
 	},
@@ -67,14 +66,16 @@ export default function VerifiedAccount() {
 							variant='h3'
 							align='center'
 							color='textPrimary'
-							gutterBottom>
+							gutterBottom
+						>
 							Account verified
 						</Typography>
 						<Typography
 							variant='h5'
 							align='center'
 							color='textSecondary'
-							paragraph>
+							paragraph
+						>
 							Your account has successful verified, <br />
 							Please click the button below to login into your account
 						</Typography>

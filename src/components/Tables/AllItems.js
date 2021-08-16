@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import 'dotenv/config';
 import PropTypes from 'prop-types';
@@ -23,9 +23,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Item from './Item';
 import Title from '../../layouts/Title';
 import AddItem from '../Modals/AddItem';
-// import NavBar from '../';
-import axios from 'axios';
-const { REACT_APP_BACKEND } = process.env;
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -167,7 +164,7 @@ const AllItems = () => {
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={8} lg={9}>
 							<Paper className={fixedHeightPaper}>
-								<Title>Recent Items</Title>
+								<Title>Recent items</Title>
 							</Paper>
 						</Grid>
 						<Grid item xs={12} md={3} lg={3}>
