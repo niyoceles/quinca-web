@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import { useHistory } from 'react-router-dom';
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -110,12 +111,12 @@ const ViewProforma = props => {
 										<Divider variant='inset' component='li' />
 
 										<ListItem>
-											<ListItemText primary='Need date from' />
-											<ListItemText primary={myprofroma.pickupDate} />
+											<ListItemText primary='Pick up date' />
+											<ListItemText primary={moment(myprofroma.pickupDate).format('MMM Do YY, h:mm a')} />
 										</ListItem>
 										<ListItem>
 											<ListItemText primary='Need date from' />
-											<ListItemText primary={myprofroma.deadline} />
+											<ListItemText primary={moment(myprofroma.deadline).format('MMM Do YY, h:mm a')} />
 										</ListItem>
 										<Divider variant='inset' component='li' />
 
@@ -202,13 +203,20 @@ const ViewProforma = props => {
 												<TableCell component='th' scope='row'>
 													<strong>Total</strong>
 												</TableCell>
+												<TableCell></TableCell>
+												<TableCell></TableCell>
 												<TableCell align='right'>
-													{/* <strong>
-												{items &&
-													myprofroma.itemsArray.map(
-														item => (item.itemNumber) * (item.itemPrice)
-													)}
-											</strong> */}
+													<strong>
+														{items &&
+															(() => {
+																let sum = 0;
+																myprofroma.itemsArray.forEach(item => {
+																	sum += (item.itemNumber * item.itemPrice)
+																})
+																return sum;
+															})()
+														}
+													</strong>
 												</TableCell>
 											</TableRow>
 										</TableBody>
