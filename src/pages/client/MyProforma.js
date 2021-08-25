@@ -18,7 +18,11 @@ import { useHistory } from 'react-router-dom';
 
 const columns = [
   { id: 'id', label: 'Name', minWidth: 170 },
-  { id: 'paymentType', label: 'Payment Type', minWidth: 100 },
+  {
+    id: 'paymentType',
+    label: 'Payment Type',
+    minWidth: 100,
+  },
   {
     id: 'status',
     label: 'Status',
@@ -78,7 +82,9 @@ const MyProforma = (props) => {
   const history = useHistory();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const myprofroma = useSelector((state) => state.client.proformaItems);
+  const myprofroma = useSelector(
+    (state) => state.client.proformaItems
+  );
   const error = useSelector((state) => state.client.error);
 
   const dispatch = useDispatch();
@@ -104,7 +110,11 @@ const MyProforma = (props) => {
     <ClientLayout>
       <Paper className={classes.root}>
         <div>
-          <Typography variant="h4" gutterBottom style={{ padding: 10 }}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            style={{ padding: 10 }}
+          >
             My Proforma
           </Typography>
           <TableContainer className={classes.container}>
@@ -122,9 +132,12 @@ const MyProforma = (props) => {
                   ))}
                 </TableRow>
               </TableHead>
-              {myprofroma.length > 0 ? (
+              {myprofroma?.length > 0 ? (
                 myprofroma
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
                   .map((proforma) => {
                     return (
                       <TableBody>
@@ -134,13 +147,20 @@ const MyProforma = (props) => {
                           tabIndex={-1}
                           key={proforma.id}
                           className={classes.row}
-                          onClick={() => handleClickOpen(proforma.id)}
+                          onClick={() =>
+                            handleClickOpen(proforma.id)
+                          }
                         >
                           {columns.map((column) => {
-                            const value = proforma[column.id];
+                            const value =
+                              proforma[column.id];
                             return (
-                              <TableCell key={column.id} align={column.align}>
-                                {column.id === 'items' && value !== undefined
+                              <TableCell
+                                key={column.id}
+                                align={column.align}
+                              >
+                                {column.id === 'items' &&
+                                value !== undefined
                                   ? value.id
                                   : column.format
                                   ? column.format(value)
@@ -180,7 +200,7 @@ const MyProforma = (props) => {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={myprofroma.length}
+            count={myprofroma?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

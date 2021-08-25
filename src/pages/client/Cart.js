@@ -79,31 +79,49 @@ const Cart = (props) => {
     bookedItems !== null ? bookedItems : []
   );
 
-  const handleAddItem = (e, item, itemNumber) => {
-    const { id, itemName, itemPrice } = item;
-    const orderItem = {
-      id,
-      itemName,
-      itemPrice: itemPrice * 1,
-      itemNumber: itemNumber * 1,
-    };
-    const ordered = orderSummary.findIndex((order) => order.id === id);
-    let updatedOrder = [...orderSummary];
+  // const handleAddItem = (e, item, itemNumber) => {
+  //   const { id, itemName, itemPrice } = item;
+  //   const orderItem = {
+  //     id,
+  //     itemName,
+  //     itemPrice: itemPrice * 1,
+  //     itemNumber: itemNumber * 1,
+  //   };
+  //   const ordered = orderSummary.findIndex((order) => order.id === id);
+  //   let updatedOrder = [...orderSummary];
 
-    if (ordered >= 0) {
-      updatedOrder[ordered] = orderItem;
-    } else updatedOrder = [...orderSummary, orderItem];
+  //   console.log('===ordered===>', ordered);
 
-    setOrderSummary(updatedOrder);
-    localStorage.setItem('orderSummary', JSON.stringify(updatedOrder));
-    const finalOrder = JSON.parse(localStorage.getItem('orderSummary'));
-    const totArray = finalOrder.map(
-      (order) => order.itemPrice * order.itemNumber
-    );
-    const total = totArray.reduce((x, y) => x + y, 0);
+  //   if (ordered >= 0) {
+  //     updatedOrder[ordered] = orderItem;
+  //   } else updatedOrder = [...orderSummary, orderItem];
 
-    localStorage.setItem('totalPrice', total);
-    setOpen(false);
+  //   setOrderSummary(updatedOrder);
+  //   localStorage.setItem('orderSummary', JSON.stringify(updatedOrder));
+  //   const finalOrder = JSON.parse(localStorage.getItem('orderSummary'));
+  //   const totArray = finalOrder.map(
+  //     (order) => order.itemPrice * order.itemNumber
+  //   );
+  //   const total = totArray.reduce((x, y) => x + y, 0);
+
+  //   localStorage.setItem('totalPrice', total);
+  //   setOpen(false);
+  // };
+
+  const handleRemoveItem = (e, item) => {
+    if (item) {
+      const requested = orderSummary.find((bk) => bk.id === item.id);
+      let updatedOrder = [...orderSummary];
+      if (requested) {
+        updatedOrder = orderSummary.filter((bk) => bk.id !== item.id);
+      }
+      setOrderSummary(updatedOrder);
+      if (updatedOrder.length === 0) {
+        localStorage.removeItem('orderSummary');
+      } else {
+        localStorage.setItem('orderSummary', JSON.stringify(updatedOrder));
+      }
+    }
   };
 
   const handleOnChange = (e) => {
@@ -127,14 +145,16 @@ const Cart = (props) => {
   useEffect(() => {
     localStorage.setItem('orderExtras', JSON.stringify(orderInfo));
     const finalOrder = JSON.parse(localStorage.getItem('orderSummary'));
-    const totArray = finalOrder.map(
-      (order) => order.itemPrice * order.itemNumber
-    );
-    const total = totArray.reduce((x, y) => x + y, 0);
+    if (finalOrder) {
+      const totArray = finalOrder.map(
+        (order) => order.itemPrice * order.itemNumber
+      );
+      const total = totArray.reduce((x, y) => x + y, 0);
 
-    localStorage.setItem('totalPrice', total);
-    setTotalPrice((localStorage.getItem('totalPrice') || 0) * 1);
-  }, [orderInfo]);
+      localStorage.setItem('totalPrice', total);
+      setTotalPrice((localStorage.getItem('totalPrice') || 0) * 1);
+    }
+  }, [orderInfo, orderSummary]);
 
   const handlePayLater = async () => {
     const tempOrderInfo = JSON.parse(localStorage.getItem('orderSummary'));
@@ -222,7 +242,7 @@ const Cart = (props) => {
                                 <TableCell align="right">
                                   <Button color="secondary">
                                     <CancelIcon
-                                      onClick={(e) => handleAddItem(e, item)}
+                                      onClick={(e) => handleRemoveItem(e, item)}
                                     />
                                   </Button>
                                 </TableCell>
