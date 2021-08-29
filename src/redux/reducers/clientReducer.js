@@ -91,12 +91,18 @@ export default function (state = initialState, action) {
     case BOOKING:
       return {
         ...state,
-        bookedItems: [...state.bookedItems, ...action.payload],
+        bookedItems: [
+          ...state.bookedItems,
+          ...action.payload,
+        ],
       };
     case GET_CLIENT_BOOKINGS:
       return {
         ...state,
-        bookedItems: [...state.bookedItems, ...action.payload],
+        bookedItems: [
+          ...state.bookedItems,
+          ...action.payload,
+        ],
         error: '',
       };
     case GET_CLIENT_BOOKINGS_FAILURE:
