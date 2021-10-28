@@ -17,10 +17,10 @@ export const loginUser = loginData => dispatch => {
 	// dispatch({ type: LOADING_UI });
 	dispatch({ type: LOGIN_REQUEST, payload: loginData });
 	axios
-		.post(`${REACT_APP_BACKEND}/user/login`, loginData)
+		.post(`${REACT_APP_BACKEND}/auth/login`, loginData)
 		.then(res => {
-			console.clear();
-			setAuthorization(res.data.User.token);
+			console.log(res.data);
+			setAuthorization(res.data.token);
 			dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
@@ -47,6 +47,7 @@ export const signupUser = newUserData => dispatch => {
 export const setAuthorization = token => {
 	const IdToken = `Bearer ${token}`;
 	const userInfo = jwtDecode(token);
+	console.log(userInfo);
 	localStorage.setItem('IdToken', IdToken);
 	localStorage.setItem('userInfo', JSON.stringify(userInfo));
 	//seting authorization to the header axios

@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import React, { Fragment, useState } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 // Redux stuff
@@ -102,7 +101,7 @@ const AddItem = () => {
 		data.append('file', files[0]);
 		data.append('tags', `celestin, image`);
 		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
-		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
+		// data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
 		data.append('timestamp', (Date.now() / 1000) | 0);
 		data.append('folder', 'QUINCAPARADI/ITEMS');
 
@@ -114,27 +113,21 @@ const AddItem = () => {
 			},
 		};
 
-		await axios
-			.post(
-				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
-				data,
-				{
-					headers: {
-						'Access-Control-Allow-Origin': '*',
-						'X-Requested-With': 'XMLHttpRequest',
-						'Content-Type': 'application/json',
-						'Access-Control-Allow-Credentials': true,
-						'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
-						'Access-Control-Allow-Headers':
-							'Content-Type, Accept, Authorization, authorization',
-					},
-				},
-				options
-			)
-			.then(res => {
-				console.log('UPLOADED', res.data.url);
-				localStorage.setItem('imageUrl', res.data.url);
-			});
+		await fetch(
+			`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
+			{
+				method: 'post',
+				body: data,
+			},
+			options
+		)
+			.then(resp => resp.json())
+			.then(data => {
+				localStorage.removeItem('imageUrl');
+				localStorage.setItem('imageUrl', data.secure_url);
+				console.log('UPLOADED', data.secure_url);
+			})
+			.catch(err => console.log(err));
 	};
 
 	const linkImage = localStorage.imageUrl;

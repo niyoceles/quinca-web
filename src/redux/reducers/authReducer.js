@@ -55,7 +55,7 @@ export default function (state = initialState, action) {
 				loginFailure: null,
 				loginData: null,
 				authenticated: true,
-				user: {...state.user, ...jwtDecode(action.payload.User.token)}
+				user: {...state.user, ...jwtDecode(action.payload.token)}
 			};
 		case LOGIN_FAILURE:
 			return {
