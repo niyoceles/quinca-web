@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import {
+  ThemeProvider as MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import objectTheme from "./utils/theme";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
