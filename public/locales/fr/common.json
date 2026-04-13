@@ -1,0 +1,16 @@
+{
+  "welcome": "Bienvenue chez Quinca Paradi",
+  "login": "Connexion",
+  "join": "S'inscrire",
+  "home": "Accueil",
+  "help": "Aide",
+  "terms": "Termes et conditions",
+  "request_proforma": "Demander un devis",
+  "my_account": "Mon compte",
+  "logout": "Déconnexion",
+  "notifications": "Notifications",
+  "no_notifications": "Aucune notification",
+  "profile": "Profil",
+  "my_proforma": "Mes Devis",
+  "my_bookings": "Mes Réservations"
+}

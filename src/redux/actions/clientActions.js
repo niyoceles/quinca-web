@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {
   GET_HOME_ITEMS_SUCCESS,
   GET_HOME_ITEMS_FAILURE,
@@ -49,17 +48,12 @@ export const getCategoryItems =
     axios
       .get(`${REACT_APP_BACKEND}/category/${category}`)
       .then((res) => {
-        console.log('hhhhhhhhhhhh', res.data);
         dispatch({
           type: GET_CATEGORY_ITEMS_SUCCESS,
           payload: res.data,
         });
       })
       .catch((err) => {
-        console.log(
-          'eee',
-          err.response ? err.response.data : null
-        );
         dispatch({
           type: GET_CATEGORY_ITEMS_FAILURE,
           payload: err.response
@@ -109,33 +103,12 @@ export const getCars = () => (dispatch) => {
     });
 };
 
-// Get my profile
-export const updateMyProfile = () => (dispatch) => {
-  axios
-    .get(`${REACT_APP_BACKEND}/supplier/myprofile`)
-    .then((res) => {
-      dispatch({
-        type: GET_HOME_ITEMS_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: GET_HOME_ITEMS_FAILURE,
-        payload: err.response
-          ? err.response.data.error
-          : null,
-      });
-    });
-};
-
 // Request proforma
 export const requestProforma =
   (proformaInfo) => (dispatch) => {
     axios
       .post(`${REACT_APP_BACKEND}/proforma`, proformaInfo)
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: REQUEST_PROFORMA_SUCCESS,
           payload: res.data,
@@ -200,7 +173,6 @@ export const searchItems = (keyword) => (dispatch) => {
   axios
     .post(`${REACT_APP_BACKEND}/item/search`, keyword)
     .then((res) => {
-      console.log('bbbbbbbbb', res.data);
       dispatch({
         type: SEARCH_SUCCESS,
         payload: res.data.results,
@@ -208,10 +180,6 @@ export const searchItems = (keyword) => (dispatch) => {
       toast.success(res.data.message);
     })
     .catch((err) => {
-      console.log(
-        'errrrr',
-        err.response ? err.response.data.error : null
-      );
       dispatch({
         type: SEARCH_FAILURE,
         payload: err.response
@@ -230,11 +198,9 @@ export const getBookings = () => (dispatch) => {
         type: GET_CLIENT_BOOKINGS,
         payload: res.data.mybooked,
       });
-      console.log('\n\n\n\n Bookings:', res.data.mybooked);
       // toast.success(res.data.message);
     })
     .catch((err) => {
-      console.log('\n\n\n\n Bookings:', err);
       dispatch({
         type: GET_CLIENT_BOOKINGS_FAILURE,
         payload: err.response
@@ -249,7 +215,6 @@ export const createOrder = (orderInfo) => (dispatch) => {
   axios
     .post(`${REACT_APP_BACKEND}/order`, orderInfo)
     .then((res) => {
-      console.log('order data', res.data);
       dispatch({
         type: REQUEST_PROFORMA_SUCCESS,
         payload: res.data,
@@ -259,10 +224,6 @@ export const createOrder = (orderInfo) => (dispatch) => {
       toast.success(res.data.message);
     })
     .catch((err) => {
-      console.log(
-        'errrrrrrrrr',
-        err.response ? err.response.data.error : null
-      );
       dispatch({
         type: REQUEST_PROFORMA_FAILURE,
         payload: err.response

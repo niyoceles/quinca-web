@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {
 	CONTACT_US_DATA,
 	CONTACT_US_FAILURE,

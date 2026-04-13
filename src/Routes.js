@@ -29,13 +29,13 @@ import CategoryPage from './pages/supplier/CategoryPage';
 import AboutUs from './pages/client/AboutUs';
 import ViewOrder from './pages/supplier/ViewOrder';
 import TermsConditions from './pages/client/TermsConditions';
+import MessagesPage from './pages/supplier/MessagesPage';
 
 export const Routes = () => {
 	return (
 		<Router>
-			<div className='container'>
-				<Switch>
-					<Route exact path='/' component={LandingPage} />
+			<Switch>
+				<Route exact path='/' component={LandingPage} />
 					<Route exact path='/login' component={LoginPage} />
 					{/* <Route exact path='/signup' component={SignupPage} /> */}
 					<Route exact path='/account/verified' component={VerifiedAccount} />
@@ -93,8 +93,12 @@ export const Routes = () => {
 						path='/account/supplier/myaccount'
 						component={ProfilePage}
 					/>
-				</Switch>
-			</div>
+					<AuthRoute
+						exact
+						path='/account/supplier/messages'
+						component={MessagesPage}
+					/>
+			</Switch>
 		</Router>
 	);
 };

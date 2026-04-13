@@ -1,236 +1,149 @@
-import React, { useEffect, Fragment } from 'react';
-import clsx from 'clsx';
-import 'dotenv/config';
-import PropTypes from 'prop-types';
-import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
-import Grid from '@material-ui/core/Grid';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
-import TableHead from '@material-ui/core/TableHead';
-import { getAllItems } from '../../redux/actions';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronsLeft, 
+  ChevronsRight,
+  Search,
+  SlidersHorizontal,
+  PackagePlus,
+  Box
+} from 'lucide-react';
+import { getAllItems } from '../../redux/actions';
+import { Card } from '../Ui/Card';
+import { Typography } from '../Ui/Typography';
+import Button from '../Ui/Button';
 import Item from './Item';
-import Title from '../../layouts/Title';
 import AddItem from '../Modals/AddItem';
 
-const useStyles1 = makeStyles(theme => ({
-	root: {
-		flexShrink: 0,
-		marginLeft: theme.spacing(2.5),
-	},
-}));
-
-function TablePaginationActions(props) {
-	const classes = useStyles1();
-	const theme = useTheme();
-	const { count, page, rowsPerPage, onChangePage } = props;
-
-	const handleFirstPageButtonClick = event => {
-		onChangePage(event, 0);
-	};
-
-	const handleBackButtonClick = event => {
-		onChangePage(event, page - 1);
-	};
-
-	const handleNextButtonClick = event => {
-		onChangePage(event, page + 1);
-	};
-
-	const handleLastPageButtonClick = event => {
-		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-	};
-
-	return (
-		<div className={classes.root}>
-			<IconButton
-				onClick={handleFirstPageButtonClick}
-				disabled={page === 0}
-				aria-label='first page'
-			>
-				{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-			</IconButton>
-			<IconButton
-				onClick={handleBackButtonClick}
-				disabled={page === 0}
-				aria-label='previous page'
-			>
-				{theme.direction === 'rtl' ? (
-					<KeyboardArrowRight />
-				) : (
-					<KeyboardArrowLeft />
-				)}
-			</IconButton>
-			<IconButton
-				onClick={handleNextButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label='next page'
-			>
-				{theme.direction === 'rtl' ? (
-					<KeyboardArrowLeft />
-				) : (
-					<KeyboardArrowRight />
-				)}
-			</IconButton>
-			<IconButton
-				onClick={handleLastPageButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label='last page'
-			>
-				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-			</IconButton>
-		</div>
-	);
-}
-
-TablePaginationActions.propTypes = {
-	count: PropTypes.number.isRequired,
-	onChangePage: PropTypes.func.isRequired,
-	page: PropTypes.number.isRequired,
-	rowsPerPage: PropTypes.number.isRequired,
-};
-
-const useStyles2 = makeStyles(theme => ({
-	root: {
-		width: '100%',
-	},
-	container: {
-		maxHeight: 700,
-	},
-	table: {
-		minWidth: 500,
-	},
-	dashboard: {
-		marginTop: 10,
-	},
-	paper: {
-		padding: theme.spacing(2),
-		display: 'flex',
-		overflow: 'auto',
-		flexDirection: 'column',
-	},
-}));
-
-const StyledTableCell = withStyles(theme => ({
-	head: {
-		backgroundColor: theme.palette.primary.dark,
-		color: theme.palette.common.white,
-	},
-	body: {
-		fontSize: 14,
-	},
-}))(TableCell);
-
 const AllItems = () => {
-	const classes = useStyles2();
-	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const items = useSelector(state => state.item.allItems);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const items = useSelector(state => state.item.allItems);
+  const dispatch = useDispatch();
 
-	const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllItems());
+  }, [dispatch]);
 
-	useEffect(() => {
-		dispatch(getAllItems());
-	}, [dispatch]);
+  const itemList = Array.isArray(items) ? items : [];
+  const totalPages = Math.ceil(itemList.length / rowsPerPage);
+  
+  const paginatedItems = itemList.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
-	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <Typography variant="h3">Material Inventory</Typography>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+            Managing {itemList.length} construction products
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center bg-white border border-slate-100 rounded-2xl px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+            <Search size={16} className="text-slate-300" />
+            <input 
+              type="text" 
+              placeholder="Filter inventory..." 
+              className="bg-transparent border-none text-xs font-bold w-full focus:ring-0 placeholder:text-slate-200"
+            />
+          </div>
+          <AddItem />
+        </div>
+      </div>
 
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
+      <Card hover={false} className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-100">
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Material Info</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Preview</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Category</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Price</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Added</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {itemList.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-8 py-20 text-center">
+                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-200">
+                      <Box size={24} />
+                    </div>
+                    <p className="font-bold text-slate-400">Inventory is empty.</p>
+                  </td>
+                </tr>
+              ) : (
+                paginatedItems.map((item) => (
+                  <Item key={item.id} item={item} />
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
-	const handleChangeRowsPerPage = event => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
+        {/* Pagination Panel */}
+        <div className="px-8 py-6 bg-slate-50/50 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-100">
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Show rows:</span>
+            <select 
+              value={rowsPerPage}
+              onChange={(e) => {
+                setRowsPerPage(Number(e.target.value));
+                setPage(0);
+              }}
+              className="bg-white border border-slate-200 rounded-xl text-xs font-black px-4 py-2 focus:ring-2 focus:ring-primary/10 outline-none"
+            >
+              {[5, 10, 25, 50].map(val => <option key={val} value={val}>{val}</option>)}
+            </select>
+          </div>
 
-	return (
-		<Fragment>
-			<div className={classes.dashboard}>
-				<Paper className={classes.root}>
-					<Grid container spacing={3}>
-						<Grid item xs={12} md={8} lg={9}>
-							<Paper className={fixedHeightPaper}>
-								<Title>Recent items</Title>
-							</Paper>
-						</Grid>
-						<Grid item xs={12} md={3} lg={3}>
-							<Paper className={classes.paper}>
-								<AddItem />
-							</Paper>
-						</Grid>
-					</Grid>
-					<TableContainer className={classes.container}>
-						<Table stickyHeader aria-label='sticky table'>
-							<TableHead>
-								<TableRow>
-									<StyledTableCell>Item Name/Number</StyledTableCell>
-									<StyledTableCell align='left'>Item Image</StyledTableCell>
-									<StyledTableCell align='right'>Item Category</StyledTableCell>
-									<StyledTableCell align='right'>Item Price</StyledTableCell>
-									<StyledTableCell align='right'>Created Time</StyledTableCell>
-									<StyledTableCell align='right'>Actions</StyledTableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{(rowsPerPage > 0
-									? items.slice(
-											page * rowsPerPage,
-											page * rowsPerPage + rowsPerPage
-									  )
-									: items
-								).map(item => (
-									<Item key={item.id} item={item} />
-								))}
-
-								{emptyRows > 0 && (
-									<TableRow style={{ height: 53 * emptyRows }}>
-										<TableCell colSpan={6} />
-									</TableRow>
-								)}
-							</TableBody>
-							<TableFooter>
-								<TableRow>
-									<TablePagination
-										rowsPerPageOptions={[
-											5,
-											10,
-											25,
-											{ label: 'All', value: -1 },
-										]}
-										colSpan={3}
-										count={items.length}
-										rowsPerPage={rowsPerPage}
-										page={page}
-										SelectProps={{
-											inputProps: { 'aria-label': 'rows per page' },
-											native: true,
-										}}
-										onChangePage={handleChangePage}
-										onChangeRowsPerPage={handleChangeRowsPerPage}
-										ActionsComponent={TablePaginationActions}
-									/>
-								</TableRow>
-							</TableFooter>
-						</Table>
-					</TableContainer>
-				</Paper>
-			</div>
-		</Fragment>
-	);
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-400 tracking-tight mr-4">
+              Page <span className="text-secondary">{page + 1}</span> of <span className="text-secondary">{totalPages || 1}</span>
+            </span>
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={() => setPage(0)}
+                disabled={page === 0}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronsLeft size={16} />
+              </button>
+              <button 
+                onClick={() => setPage(p => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button 
+                onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                disabled={page >= totalPages - 1}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronRight size={16} />
+              </button>
+              <button 
+                onClick={() => setPage(totalPages - 1)}
+                disabled={page >= totalPages - 1}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronsRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
 };
 
 export default AllItems;

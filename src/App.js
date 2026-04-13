@@ -1,18 +1,12 @@
 import React, { Component } from "react";
-import {
-  ThemeProvider as MuiThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core/styles";
-import objectTheme from "./utils/theme";
+import { Provider } from "react-redux";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import { Provider } from "react-redux";
 import store from "./redux/store/index";
 import { SET_AUTHENTICATED } from "../src/redux/types";
 import { logoutUser } from "../src/redux/actions";
 import { Routes } from "./Routes";
-
-const theme = createMuiTheme(objectTheme);
+import SocketHandler from "./components/common/SocketHandler";
 
 const token = localStorage.IdToken;
 if (token) {
@@ -26,15 +20,13 @@ if (token) {
   }
 }
 
-
 class App extends Component {
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <Provider store={store}>
-          <Routes />
-        </Provider>
-      </MuiThemeProvider>
+      <Provider store={store}>
+        <SocketHandler />
+        <Routes />
+      </Provider>
     );
   }
 }

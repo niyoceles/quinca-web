@@ -1,242 +1,254 @@
-import 'dotenv/config';
 import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-// Redux stuff
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { 
+  PackagePlus, 
+  Upload, 
+  X, 
+  Check, 
+  AlertCircle,
+  Image as ImageIcon,
+  Loader2
+} from 'lucide-react';
 import { addItem } from '../../redux/actions';
-
-// import Validator from '../../utils/inputValidation';
-// MUI Stuff
-import Button from '@material-ui/core/Button';
-import Alert from '@material-ui/lab/Alert';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-// Icons
-import AddIcon from '@material-ui/icons/Add';
+import { Modal } from '../Ui/Modal';
+import Button from '../Ui/Button';
+import Input from '../Ui/Input';
+import { Typography } from '../Ui/Typography';
 
 const {
-	REACT_APP_CLOUDINARY_NAME,
-	REACT_APP_CLOUDINARY_API_KEY,
-	REACT_APP_CLOUDINARY_UPLOAD_PRESET,
+  REACT_APP_CLOUDINARY_NAME,
+  REACT_APP_CLOUDINARY_UPLOAD_PRESET,
 } = process.env;
 
-const useStyles = makeStyles(theme => ({
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-	textField: {
-		margin: '10px auto 10px auto',
-	},
-	formControl: {
-		margin: '10px auto 10px auto',
-		minWidth: '100%',
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2),
-	},
-}));
 const AddItem = () => {
-	const classes = useStyles();
-	const [item, setItem] = useState({
-		itemName: '',
-		category: '',
-		itemDescription: '',
-		itemPrice: '',
-	});
-	const [open, setOpen] = useState(false);
-	const [submitted, setSubmitted] = useState(false);
-	const itemSubmitted = useSelector(state => state.item.addItemSuccess);
+  const [item, setItem] = useState({
+    itemName: '',
+    category: '',
+    itemDescription: '',
+    itemPrice: '',
+  });
+  const [open, setOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  
+  const itemSubmitted = useSelector(state => state.item.addItemSuccess);
+  const dispatch = useDispatch();
 
-	const dispatch = useDispatch();
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setItem(prev => ({ ...prev, [name]: value }));
+  };
 
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setItem(item => ({ ...item, [name]: value }));
-	};
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setItem({ itemName: '', category: '', itemDescription: '', itemPrice: '' });
+    setImageUrl('');
+    setSubmitted(false);
+    // window.location.reload(); // Optional, depending on if Redux state satisfies UI update
+  };
 
-	const handleSubmit = e => {
-		e.preventDefault();
+  const uploadFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-		setSubmitted(true);
-		const { itemName, category, itemDescription, itemPrice } = item;
-		if (itemName && itemDescription && itemPrice && localStorage.imageUrl) {
-			const itemData = {
-				itemName,
-				itemImage: localStorage.imageUrl,
-				category,
-				itemDescription,
-				itemPrice,
-				status: true,
-			};
-			dispatch(addItem(itemData));
-		}
-	};
+    setIsUploading(true);
+    let data = new FormData();
+    data.append('file', file);
+    data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+    data.append('folder', 'QUINCAPARADI/ITEMS');
 
-	const handleOpen = () => {
-		setOpen(true);
-	};
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
+        { method: 'POST', body: data }
+      );
+      const resData = await response.json();
+      setImageUrl(resData.secure_url);
+      localStorage.setItem('imageUrl', resData.secure_url);
+    } catch (err) {
+      console.error('Upload failed', err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
-	const handleClose = () => {
-		setOpen(false);
-		window.location.reload();
-	};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    
+    if (item.itemName && item.itemDescription && item.itemPrice && imageUrl) {
+      const itemData = {
+        ...item,
+        itemImage: imageUrl,
+        status: true,
+      };
+      dispatch(addItem(itemData));
+    }
+  };
 
-	if (itemSubmitted) {
-		setTimeout(() => {
-			handleClose();
-			localStorage.removeItem('imageUrl');
-		}, 1000);
-	}
+  if (itemSubmitted && open) {
+    setTimeout(() => {
+      handleClose();
+      localStorage.removeItem('imageUrl');
+    }, 1500);
+  }
 
-	const uploadFile = async ({ target: { files } }) => {
-		let data = new FormData();
-		data.append('file', files[0]);
-		data.append('tags', `celestin, image`);
-		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
-		// data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
-		data.append('timestamp', (Date.now() / 1000) | 0);
-		data.append('folder', 'QUINCAPARADI/ITEMS');
+  return (
+    <Fragment>
+      <Button 
+        onClick={handleOpen}
+        variant="primary"
+        className="rounded-2xl font-black shadow-premium"
+        icon={PackagePlus}
+      >
+        Add Material
+      </Button>
 
-		const options = {
-			onUploadProgress: progressEvent => {
-				const { loaded, total } = progressEvent;
-				let percent = Math.floor((loaded * 100) / total);
-				console.log(`${loaded}kb of ${total}kb | ${percent}%`);
-			},
-		};
+      <Modal 
+        open={open} 
+        onClose={handleClose} 
+        title="Register New Material"
+        maxWidth="2xl"
+      >
+        {itemSubmitted ? (
+          <div className="py-12 text-center animate-in zoom-in-95 duration-500">
+            <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-500">
+              <Check size={40} />
+            </div>
+            <Typography variant="h3" className="mb-2">Material Registered!</Typography>
+            <p className="text-slate-500 font-medium">Inventory has been updated successfully.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-6">
+                <Input
+                  label="Material Name"
+                  name="itemName"
+                  placeholder="e.g. Premium Construction Cement"
+                  value={item.itemName}
+                  onChange={handleChange}
+                  error={submitted && !item.itemName ? "Material name is required" : null}
+                />
 
-		await fetch(
-			`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
-			{
-				method: 'post',
-				body: data,
-			},
-			options
-		)
-			.then(resp => resp.json())
-			.then(data => {
-				localStorage.removeItem('imageUrl');
-				localStorage.setItem('imageUrl', data.secure_url);
-				console.log('UPLOADED', data.secure_url);
-			})
-			.catch(err => console.log(err));
-	};
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Category</label>
+                  <select
+                    name="category"
+                    value={item.category}
+                    onChange={handleChange}
+                    className={`w-full bg-slate-50 border rounded-2xl py-4 px-6 text-sm font-bold text-secondary focus:ring-4 focus:ring-primary/10 transition-all outline-none ${
+                        submitted && !item.category ? 'border-rose-500 bg-rose-50/30' : 'border-slate-100 hover:border-slate-200 focus:border-primary/20'
+                    }`}
+                  >
+                    <option value="">Select a category</option>
+                    <option value="construction">Construction</option>
+                    <option value="electricity">Electricity</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="tools">Tools & Hardware</option>
+                  </select>
+                  {submitted && !item.category && <p className="text-[10px] font-bold text-rose-500 ml-1">Please select a category</p>}
+                </div>
 
-	const linkImage = localStorage.imageUrl;
-	const isRequired = <Alert severity='error'>is required</Alert>;
+                <Input
+                  label="Price (RWF)"
+                  name="itemPrice"
+                  type="number"
+                  placeholder="0.00"
+                  value={item.itemPrice}
+                  onChange={handleChange}
+                  error={submitted && !item.itemPrice ? "Price is required" : null}
+                />
+              </div>
 
-	return (
-		<Fragment>
-			<Button variant='contained' color='primary' onClick={handleOpen}>
-				<AddIcon />
-				Add Item
-			</Button>
-			<Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
-				<DialogTitle>Add item details</DialogTitle>
-				{itemSubmitted && <Alert severity='success'>{itemSubmitted}</Alert>}
-				<DialogContent>
-					<form>
-						<TextField
-							name='itemName'
-							type='text'
-							label='item name'
-							placeholder='add item name'
-							helperText={submitted && !item.itemName ? isRequired : null}
-							error={submitted && !item.itemName ? 'is invalid' : null}
-							className={classes.textField}
-							value={item.itemName}
-							onChange={handleChange}
-							fullWidth
-						/>
-						<FormControl className={classes.formControl}>
-							<InputLabel id='select-label'>Item category</InputLabel>
-							<Select
-								name='category'
-								labelId='select-label'
-								id='select'
-								helperText={submitted && !item.category ? isRequired : null}
-								error={submitted && !item.category ? 'is invalid' : null}
-								value={item.category}
-								onChange={handleChange}
-								fullWidth
-							>
-								<MenuItem value={'construction'}>construction</MenuItem>
-								<MenuItem value={'electricity'}>electricity</MenuItem>
-								<MenuItem value={'plumbing'}>plumbing</MenuItem>
-							</Select>
-						</FormControl>
-						<TextField
-							name='itemPrice'
-							type='number'
-							label='item price'
-							placeholder='item price'
-							className={classes.textField}
-							helperText={submitted && !item.itemPrice ? isRequired : null}
-							error={submitted && !item.itemPrice ? 'is invalid' : null}
-							value={item.itemPrice}
-							onChange={handleChange}
-							fullWidth
-						/>
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Product Visuals</label>
+                <div className={`relative border-2 border-dashed rounded-[2rem] h-[260px] flex flex-col items-center justify-center transition-all ${
+                  imageUrl ? 'border-primary/20 bg-slate-50' : 'border-slate-200 hover:border-primary/40 hover:bg-slate-50/50'
+                }`}>
+                  {isUploading ? (
+                    <div className="flex flex-col items-center gap-3">
+                      <Loader2 className="text-primary animate-spin" size={32} />
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Optimizing Media...</p>
+                    </div>
+                  ) : imageUrl ? (
+                    <div className="w-full h-full p-4 group">
+                      <img src={imageUrl} alt="Preview" className="w-full h-full object-cover rounded-2xl shadow-lg" />
+                      <button 
+                        type="button"
+                        onClick={() => setImageUrl('')}
+                        className="absolute top-6 right-6 p-2 bg-rose-500 text-white rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-4 p-8 text-center">
+                      <div className="w-16 h-16 bg-white rounded-3xl shadow-sm flex items-center justify-center text-slate-300">
+                        <ImageIcon size={32} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-secondary">Drop product image here</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mt-1">PNG, JPG up to 10MB</p>
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={uploadFile}
+                      />
+                    </div>
+                  )}
+                </div>
+                {submitted && !imageUrl && (
+                  <div className="flex items-center gap-2 text-rose-500 text-[10px] font-bold ml-1 bg-rose-50 p-2 rounded-xl">
+                    <AlertCircle size={14} /> Material image is required
+                  </div>
+                )}
+              </div>
+            </div>
 
-						<div className='container' style={{ paddingBottom: 25 }}>
-							<input
-								type='file'
-								accept='image/*'
-								className='form-control profile-pic-uploader'
-								onChange={uploadFile}
-								required
-							/>
-							{submitted && !localStorage.imageUrl && (
-								<Alert severity='error'>item image is required</Alert>
-							)}
-						</div>
-						<div>
-							<img
-								width='300'
-								height='150'
-								src={linkImage ? linkImage : null}
-								alt=''
-								className='edit-img'
-							/>
-						</div>
-						<TextField
-							name='itemDescription'
-							type='text'
-							label='item description'
-							multiline
-							rows='3'
-							placeholder='Item description'
-							className={classes.textField}
-							helperText={
-								submitted && !item.itemDescription ? isRequired : null
-							}
-							error={submitted && !item.itemDescription ? 'is invalid' : null}
-							value={item.itemDescription}
-							onChange={handleChange}
-							fullWidth
-						/>
-					</form>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose} color='secondary'>
-						Cancel
-					</Button>
-					<Button onClick={handleSubmit} color='primary'>
-						Save
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</Fragment>
-	);
+            <div className="space-y-6 pt-4">
+              <Input
+                label="Full Description"
+                name="itemDescription"
+                variant="textarea"
+                rows="4"
+                placeholder="Describe material specifications, dimensions, and unique features..."
+                value={item.itemDescription}
+                onChange={handleChange}
+                error={submitted && !item.itemDescription ? "Description is required" : null}
+              />
+
+              <div className="flex items-center justify-end gap-3 py-6 border-t border-slate-50 mt-8">
+                <Button 
+                    type="button" 
+                    variant="outline" 
+                    className="rounded-2xl px-8"
+                    onClick={handleClose}
+                >
+                    Cancel
+                </Button>
+                <Button 
+                    type="submit" 
+                    className="rounded-2xl px-12 font-black shadow-premium"
+                    loading={isUploading}
+                >
+                    Save Material
+                </Button>
+              </div>
+            </div>
+          </form>
+        )}
+      </Modal>
+    </Fragment>
+  );
 };
+
+export default AddItem;
 
 AddItem.propTypes = {
 	addItem: PropTypes.func.isRequired,
@@ -244,5 +256,3 @@ AddItem.propTypes = {
 	classes: PropTypes.object.isRequired,
 	UI: PropTypes.object.isRequired,
 };
-
-export default AddItem;

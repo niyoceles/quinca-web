@@ -1,267 +1,248 @@
-import 'dotenv/config';
-import React, { Fragment, useState } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import MyButton from '../../utils/MyButton';
-import { makeStyles } from '@material-ui/core/styles';
-// Redux stuff
+import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { 
+  Pencil, 
+  Upload, 
+  X, 
+  Check, 
+  AlertCircle,
+  Image as ImageIcon,
+  Loader2,
+  Save
+} from 'lucide-react';
 import { updateItem } from '../../redux/actions';
-
-// import Validator from '../../utils/inputValidation';
-// MUI Stuff
-import Button from '@material-ui/core/Button';
-import Alert from '@material-ui/lab/Alert';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import EditIcon from '@material-ui/icons/Edit';
+import { Modal } from '../Ui/Modal';
+import Button from '../Ui/Button';
+import Input from '../Ui/Input';
+import { Typography } from '../Ui/Typography';
 
 const {
-	REACT_APP_CLOUDINARY_NAME,
-	REACT_APP_CLOUDINARY_API_KEY,
-	REACT_APP_CLOUDINARY_UPLOAD_PRESET,
+  REACT_APP_CLOUDINARY_NAME,
+  REACT_APP_CLOUDINARY_UPLOAD_PRESET,
 } = process.env;
 
-const useStyles = makeStyles(theme => ({
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-	textField: {
-		margin: '10px auto 10px auto',
-	},
-	formControl: {
-		margin: '10px auto 10px auto',
-		minWidth: '100%',
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2),
-	},
-}));
-const EditItem = props => {
-	const classes = useStyles();
-	const {
-		itemName,
-		category,
-		itemDescription,
-		itemImage,
-		itemPrice,
-		itemId,
-	} = props;
+const EditItem = ({ 
+  itemId, 
+  itemName: initialName, 
+  category: initialCategory, 
+  itemDescription: initialDescription, 
+  itemPrice: initialPrice, 
+  itemImage: initialImage 
+}) => {
+  const [item, setItem] = useState({
+    itemName: initialName,
+    category: initialCategory,
+    itemDescription: initialDescription,
+    itemPrice: initialPrice,
+  });
+  const [open, setOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(initialImage);
+  
+  const itemSubmitted = useSelector(state => state.item.updateItemSuccess);
+  const dispatch = useDispatch();
 
-	const [item, setItem] = useState({
-		itemName,
-		category,
-		itemDescription,
-		itemPrice,
-		itemImage,
-	});
-	const [open, setOpen] = useState(false);
-	const [submitted, setSubmitted] = useState(false);
-	const itemSubmitted = useSelector(state => state.item.updateItemSuccess);
-	const dispatch = useDispatch();
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setItem(prev => ({ ...prev, [name]: value }));
+  };
 
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setItem(item => ({ ...item, [name]: value }));
-	};
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setSubmitted(false);
+  };
 
-	const handleSubmit = e => {
-		e.preventDefault();
+  const uploadFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-		setSubmitted(true);
-		const { itemName, category, itemDescription, itemPrice, itemImage } = item;
-		if (
-			itemName &&
-			itemDescription &&
-			itemPrice &&
-			(localStorage.imageUrl || itemImage)
-		) {
-			const itemData = {
-				itemName,
-				itemImage: localStorage.imageUrl || itemImage,
-				category,
-				itemDescription,
-				itemPrice,
-				status: true,
-			};
-			dispatch(updateItem(itemId, itemData));
-		}
-	};
+    setIsUploading(true);
+    let data = new FormData();
+    data.append('file', file);
+    data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+    data.append('folder', 'QUINCAPARADI/ITEMS');
 
-	const handleOpen = () => {
-		setOpen(true);
-	};
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
+        { method: 'POST', body: data }
+      );
+      const resData = await response.json();
+      setImageUrl(resData.secure_url);
+    } catch (err) {
+      console.error('Upload failed', err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
-	const handleClose = () => {
-		setOpen(false);
-	};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    
+    if (item.itemName && item.itemDescription && item.itemPrice && imageUrl) {
+      const itemData = {
+        ...item,
+        itemImage: imageUrl,
+        status: true,
+      };
+      dispatch(updateItem(itemId, itemData));
+    }
+  };
 
-	if (itemSubmitted) {
-		setTimeout(() => {
-			handleClose();
-			localStorage.removeItem('imageUrl');
-		}, 1000);
-	}
+  if (itemSubmitted && open) {
+    setTimeout(() => {
+      handleClose();
+    }, 1500);
+  }
 
-	const uploadFile = ({ target: { files } }) => {
-		let data = new FormData();
-		data.append('file', files[0]);
-		data.append('tags', `celestin, image`);
-		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
-		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
-		data.append('timestamp', (Date.now() / 1000) | 0);
-		data.append('folder', 'QUINCAPARADI/ITEMS');
+  return (
+    <Fragment>
+      <button 
+        onClick={handleOpen}
+        className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
+        title="Edit Material"
+      >
+        <Pencil size={16} />
+      </button>
 
-		const options = {
-			onUploadProgress: progressEvent => {
-				const { loaded, total } = progressEvent;
-				let percent = Math.floor((loaded * 100) / total);
-				console.log(`${loaded}kb of ${total}kb | ${percent}%`);
-			},
-		};
+      <Modal 
+        open={open} 
+        onClose={handleClose} 
+        title="Edit Material Details"
+        maxWidth="2xl"
+      >
+        {itemSubmitted ? (
+          <div className="py-12 text-center animate-in zoom-in-95 duration-500">
+            <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-500">
+              <Check size={40} />
+            </div>
+            <Typography variant="h3" className="mb-2">Updates Saved!</Typography>
+            <p className="text-slate-500 font-medium">Material information has been updated.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-6">
+                <Input
+                  label="Material Name"
+                  name="itemName"
+                  value={item.itemName}
+                  onChange={handleChange}
+                  error={submitted && !item.itemName ? "Name is required" : null}
+                />
 
-		axios
-			.post(
-				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
-				data,
-				{
-					headers: {
-						'X-Requested-With': 'XMLHttpRequest',
-						'Content-Type': 'application/json;charset=UTF-8',
-						'Access-Control-Allow-Origin': true,
-						'Access-Control-Allow-Credentials': true,
-					},
-				},
-				options
-			)
-			.then(res => {
-				console.log('UPLOADED', res.data.url);
-				localStorage.setItem('imageUrl', res.data.url);
-			});
-	};
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Category</label>
+                  <select
+                    name="category"
+                    value={item.category}
+                    onChange={handleChange}
+                    className={`w-full bg-slate-50 border rounded-2xl py-4 px-6 text-sm font-bold text-secondary focus:ring-4 focus:ring-primary/10 transition-all outline-none ${
+                        submitted && !item.category ? 'border-rose-500 bg-rose-50/30' : 'border-slate-100 hover:border-slate-200 focus:border-primary/20'
+                    }`}
+                  >
+                    <option value="construction">Construction</option>
+                    <option value="electricity">Electricity</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="tools">Tools & Hardware</option>
+                  </select>
+                </div>
 
-	const linkImage = localStorage.imageUrl;
-	const isRequired = <Alert severity='error'>is required</Alert>;
+                <Input
+                  label="Price (RWF)"
+                  name="itemPrice"
+                  type="number"
+                  value={item.itemPrice}
+                  onChange={handleChange}
+                  error={submitted && !item.itemPrice ? "Price is required" : null}
+                />
+              </div>
 
-	return (
-		<Fragment>
-			<MyButton
-				tip='Edit item'
-				onClick={handleOpen}
-				btnClassName={classes.deleteButton}
-			>
-				<EditIcon color='primary' />
-			</MyButton>
-			<Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
-				<DialogTitle>Update item details</DialogTitle>
-				{itemSubmitted && <Alert severity='success'>{itemSubmitted}</Alert>}
-				<DialogContent>
-					<form>
-						<TextField
-							name='itemName'
-							type='text'
-							label='item name'
-							placeholder='add item/ material'
-							helperText={submitted && !item.itemName ? isRequired : null}
-							error={submitted && !item.itemName ? 'is invalid' : null}
-							className={classes.textField}
-							value={item.itemName}
-							onChange={handleChange}
-							fullWidth
-						/>
-						<FormControl className={classes.formControl}>
-							<InputLabel id='select-label'>Item category</InputLabel>
-							<Select
-								name='category'
-								labelId='select-label'
-								id='select'
-								helperText={submitted && !item.category ? isRequired : null}
-								error={submitted && !item.category ? 'is invalid' : null}
-								value={item.category}
-								onChange={handleChange}
-								fullWidth
-							>
-								<MenuItem value={'construction'}>construction</MenuItem>
-								<MenuItem value={'electricity'}>electricity</MenuItem>
-								<MenuItem value={'plumbing'}>plumbing</MenuItem>
-							</Select>
-						</FormControl>
-						<TextField
-							name='itemPrice'
-							type='text'
-							label='item price'
-							placeholder='item price'
-							className={classes.textField}
-							helperText={submitted && !item.itemPrice ? isRequired : null}
-							error={submitted && !item.itemPrice ? 'is invalid' : null}
-							value={item.itemPrice}
-							onChange={handleChange}
-							fullWidth
-						/>
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Update Preview</label>
+                <div className={`relative border-2 border-dashed rounded-[2rem] h-[260px] flex flex-col items-center justify-center transition-all ${
+                  imageUrl ? 'border-primary/20 bg-slate-50' : 'border-slate-200 hover:border-primary/40'
+                }`}>
+                  {isUploading ? (
+                    <div className="flex flex-col items-center gap-3">
+                      <Loader2 className="text-primary animate-spin" size={32} />
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Replacing Media...</p>
+                    </div>
+                  ) : imageUrl ? (
+                    <div className="w-full h-full p-4 group">
+                      <img src={imageUrl} alt="Preview" className="w-full h-full object-cover rounded-2xl shadow-lg transition-transform group-hover:scale-[1.02]" />
+                      <div className="absolute inset-0 bg-secondary/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center rounded-[2rem] m-4">
+                        <div className="flex flex-col items-center gap-2 text-white">
+                          <Upload size={24} />
+                          <span className="text-[10px] font-black uppercase tracking-widest">Change Image</span>
+                        </div>
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={uploadFile}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-4 p-8 text-center">
+                      <div className="w-16 h-16 bg-white rounded-3xl shadow-sm flex items-center justify-center text-slate-300">
+                        <ImageIcon size={32} />
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={uploadFile}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
-						<div className='container' style={{ paddingBottom: 25 }}>
-							<input
-								type='file'
-								accept='image/*'
-								className='form-control profile-pic-uploader'
-								onChange={uploadFile}
-								required
-							/>
-							{(submitted && !localStorage.imageUrl) ||
-								(!item.itemImage && (
-									<Alert severity='error'>item image is required</Alert>
-								))}
-						</div>
-						<div>
-							<img
-								width='300'
-								height='150'
-								src={
-									linkImage || item.itemImage
-										? linkImage || item.itemImage
-										: null
-								}
-								alt=''
-								className='edit-img'
-							/>
-						</div>
-						<TextField
-							name='itemDescription'
-							type='text'
-							label='item description'
-							multiline
-							rows='3'
-							placeholder='Item description'
-							className={classes.textField}
-							helperText={
-								submitted && !item.itemDescription ? isRequired : null
-							}
-							error={submitted && !item.itemDescription ? 'is invalid' : null}
-							value={item.itemDescription}
-							onChange={handleChange}
-							fullWidth
-						/>
-					</form>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose} color='secondary'>
-						Cancel
-					</Button>
-					<Button onClick={handleSubmit} color='primary'>
-						Save
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</Fragment>
-	);
+            <div className="space-y-6 pt-4">
+              <Input
+                label="Full Description"
+                name="itemDescription"
+                variant="textarea"
+                rows="4"
+                value={item.itemDescription}
+                onChange={handleChange}
+                error={submitted && !item.itemDescription ? "Description is required" : null}
+              />
+
+              <div className="flex items-center justify-end gap-3 py-6 border-t border-slate-50 mt-8">
+                <Button 
+                    type="button" 
+                    variant="ghost" 
+                    className="rounded-2xl px-8"
+                    onClick={handleClose}
+                >
+                    Discard
+                </Button>
+                <Button 
+                    type="submit" 
+                    className="rounded-2xl px-12 font-black shadow-premium"
+                    loading={isUploading}
+                    icon={Save}
+                >
+                    Update Material
+                </Button>
+              </div>
+            </div>
+          </form>
+        )}
+      </Modal>
+    </Fragment>
+  );
 };
+
+export default EditItem;
 
 EditItem.propTypes = {
 	updateItem: PropTypes.func.isRequired,
@@ -269,5 +250,3 @@ EditItem.propTypes = {
 	classes: PropTypes.object.isRequired,
 	UI: PropTypes.object.isRequired,
 };
-
-export default EditItem;

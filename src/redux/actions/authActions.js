@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {
 	REGISTER_REQUEST,
 	REGISTER_SUCCESS,
@@ -17,16 +16,23 @@ export const loginUser = loginData => dispatch => {
 	// dispatch({ type: LOADING_UI });
 	dispatch({ type: LOGIN_REQUEST, payload: loginData });
 	axios
-		.post(`${REACT_APP_BACKEND}/auth/login`, loginData)
+		.post(`${REACT_APP_BACKEND}/user/login`, loginData)
 		.then(res => {
-			console.log(res.data);
-			setAuthorization(res.data.token);
-			dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+			const token = res.data.token || (res.data.data && res.data.data.token);
+			if (token) {
+				setAuthorization(token);
+				dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+			} else {
+				dispatch({
+					type: LOGIN_FAILURE,
+					payload: 'Login successful but token missing from response',
+				});
+			}
 		})
 		.catch(err => {
 			dispatch({
 				type: LOGIN_FAILURE,
-				payload: err.response ? err.response.data.error : null,
+				payload: err.response ? err.response.data.error : err.message,
 			});
 		});
 };
@@ -36,7 +42,8 @@ export const signupUser = newUserData => dispatch => {
 	axios
 		.post(`${REACT_APP_BACKEND}/user`, newUserData)
 		.then(res => {
-			setAuthorization(res.data.token);
+			const token = res.data.token || (res.data.data && res.data.data.token);
+			if (token) setAuthorization(token);
 			dispatch({ type: REGISTER_SUCCESS, payload: res.data.message });
 		})
 		.catch(err => {
@@ -45,9 +52,9 @@ export const signupUser = newUserData => dispatch => {
 };
 
 export const setAuthorization = token => {
+	if (!token) return;
 	const IdToken = `Bearer ${token}`;
 	const userInfo = jwtDecode(token);
-	console.log(userInfo);
 	localStorage.setItem('IdToken', IdToken);
 	localStorage.setItem('userInfo', JSON.stringify(userInfo));
 	//seting authorization to the header axios

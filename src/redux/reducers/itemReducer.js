@@ -3,8 +3,8 @@ import {
 	POST_ITEM,
 	SET_ITEM,
 	UPDATE_ITEM,
-	GET_RELATED_FAILURE,
-	GET_RELATED_SUCCESS,
+	GET_ITEM_RELATED_FAILURE,
+	GET_ITEM_RELATED_SUCCESS,
 	GET_ALL_ITEMS_FAILURE,
 	GET_ALL_ITEMS_SUCCESS,
 } from '../types';
@@ -62,12 +62,12 @@ export default function (state = initialState, action) {
 				item: action.payload.item,
 				updateItemSuccess: action.payload.message,
 			};
-		case GET_RELATED_SUCCESS:
+		case GET_ITEM_RELATED_SUCCESS:
 			return {
 				...state,
 				relatedItems: action.payload,
 			};
-		case GET_RELATED_FAILURE:
+		case GET_ITEM_RELATED_FAILURE:
 			return {
 				...state,
 				relatedItems: action.payload,

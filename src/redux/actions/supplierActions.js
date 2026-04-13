@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {
 	GET_PROFILE_SUCCESS,
 	GET_PROFILE_FAILURE,

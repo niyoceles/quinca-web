@@ -1,14 +1,13 @@
-import 'dotenv/config';
 import {
 	DELETE_CATEGORY,
 	UPDATE_CATEGORY,
 	SET_ERRORS,
 	POST_CATEGORY,
-	CLEAR_ERRORS,
 	LOADING_UI,
 	GET_ALL_CATEGORIES_FAILURE,
 	GET_ALL_CATEGORIES_SUCCESS,
 } from '../types';
+import { clearErrors } from './uiActions';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 const { REACT_APP_BACKEND } = process.env;
@@ -59,11 +58,12 @@ export const deleteCategory = categoryId => dispatch => {
 		.then(res => {
 			dispatch({ type: DELETE_CATEGORY, payload: categoryId });
 		})
-		.catch(err => console.log(err.response.data));
-};
-
-export const clearErrors = () => dispatch => {
-	dispatch({ type: CLEAR_ERRORS });
+		.catch(err => {
+			dispatch({
+				type: SET_ERRORS,
+				payload: err.response ? err.response.data.error : null,
+			});
+		});
 };
 
 export const getAllCategories = () => dispatch => {

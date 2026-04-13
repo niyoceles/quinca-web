@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { GET_ALL_PROFORMA_FAILURE, GET_ALL_PROFORMA_SUCCESS } from '../types';
 import axios from 'axios';
 // import { toast } from 'react-toastify';

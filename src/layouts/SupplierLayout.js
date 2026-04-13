@@ -1,65 +1,35 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
 import AuthNavbar from '../components/supplier/AuthNavbar';
+import { Container } from '../components/Ui/Layout';
 
-function Copyright() {
-	return (
-		<Typography variant='body2' color='textSecondary' align='center'>
-			{'Copyright © '}
-			<Link color='inherit' href='https://quincaparadi.com/'>
-				Quinca Paradi
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
+const SupplierLayout = ({ children }) => {
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <AuthNavbar />
+      
+      {/* 
+          Main Content Wrapper 
+          Using pt-20 to account for fixed top navbar (h-20)
+      */}
+      <div className="flex flex-grow pt-20">
+        {/* Supporting content area with responsive padding-left for the fixed sidebar */}
+        <main className="flex-grow min-w-0 transition-all duration-500">
+          <Container className="py-8 md:py-12">
+            <div className="grid grid-cols-1 gap-8 animate-in fade-in duration-700">
+              {children}
+            </div>
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		display: 'flex',
-	},
-	appBarSpacer: theme.mixins.toolbar,
-	content: {
-		flexGrow: 1,
-		height: '100vh',
-		overflow: 'auto',
-	},
-	container: {
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(4),
-	},
-	paper: {
-		padding: theme.spacing(1),
-		display: 'flex',
-		overflow: 'auto',
-		flexDirection: 'column',
-	},
-}));
+            <footer className="mt-20 py-8 border-t border-slate-100">
+              <p className="text-center text-[10px] font-black text-slate-400 uppercase tracking-widest leading-loose">
+                Copyright &copy; {new Date().getFullYear()} Quinca Paradi<br />
+                <span className="text-primary/40">Powered by Advanced Supply Chain Logistics</span>
+              </p>
+            </footer>
+          </Container>
+        </main>
+      </div>
+    </div>
+  );
+};
 
-export default function SupplierLayout(props) {
-	const classes = useStyles();
-	return (
-		<div className={classes.root}>
-			<CssBaseline />
-			<AuthNavbar />
-			<main className={classes.content}>
-				<div className={classes.appBarSpacer} />
-				<Container maxWidth='lg' className={classes.container}>
-					<Grid container spacing={3}>
-						{props.children}
-					</Grid>
-					<Box pt={4}>
-						<Copyright />
-					</Box>
-				</Container>
-			</main>
-		</div>
-	);
-}
+export default SupplierLayout;

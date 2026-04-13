@@ -1,21 +1,17 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import NavbarLogo from '../components/NavbarLogo';
-import Divider from '@material-ui/core/Divider';
 import Footer from '../components/Footer';
 
-const ClientLayout = props => {
-	return (
-		<React.Fragment>
-			<CssBaseline />
-			<NavbarLogo />
-			<main>
-				{props.children}
-				<Divider />
-			</main>
-			<Footer />
-		</React.Fragment>
-	);
+const CartLayout = ({ children }) => {
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      <NavbarLogo />
+      <main className="flex-grow py-8 md:py-12">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
-export default ClientLayout;
+export default CartLayout;
