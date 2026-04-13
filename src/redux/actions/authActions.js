@@ -1,63 +1,82 @@
+import axios from 'axios';
 import 'dotenv/config';
+import jwtDecode from 'jwt-decode';
 import {
-	REGISTER_REQUEST,
-	REGISTER_SUCCESS,
-	REGISTER_FAILURE,
+	LOGIN_FAILURE,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
-	LOGIN_FAILURE,
+	REGISTER_FAILURE,
+	REGISTER_REQUEST,
+	REGISTER_SUCCESS,
 	SET_UNAUTHENTICATED,
 } from '../types';
-import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 
-const { REACT_APP_BACKEND } = process.env;
+const {
+    REACT_APP_BACKEND
+} = process.env;
 
 export const loginUser = loginData => dispatch => {
-	// dispatch({ type: LOADING_UI });
-	dispatch({ type: LOGIN_REQUEST, payload: loginData });
-	axios
-		.post(`${REACT_APP_BACKEND}/auth/login`, loginData)
-		.then(res => {
-			console.log(res.data);
-			setAuthorization(res.data.token);
-			dispatch({ type: LOGIN_SUCCESS, payload: res.data });
-		})
-		.catch(err => {
-			dispatch({
-				type: LOGIN_FAILURE,
-				payload: err.response ? err.response.data.error : null,
-			});
-		});
+    // dispatch({ type: LOADING_UI });
+    dispatch({
+        type: LOGIN_REQUEST,
+        payload: loginData
+    });
+    axios
+        .post(`${REACT_APP_BACKEND}/user/login`, loginData)
+        .then(res => {
+            console.log(res.data);
+            setAuthorization(res.data.token);
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: LOGIN_FAILURE,
+                payload: err.response ? err.response.data.error : null,
+            });
+        });
 };
 
 export const signupUser = newUserData => dispatch => {
-	dispatch({ type: REGISTER_REQUEST, payload: newUserData });
-	axios
-		.post(`${REACT_APP_BACKEND}/user`, newUserData)
-		.then(res => {
-			setAuthorization(res.data.token);
-			dispatch({ type: REGISTER_SUCCESS, payload: res.data.message });
-		})
-		.catch(err => {
-			dispatch({ type: REGISTER_FAILURE, payload: err.response.data.error });
-		});
+    dispatch({
+        type: REGISTER_REQUEST,
+        payload: newUserData
+    });
+    axios
+        .post(`${REACT_APP_BACKEND}/user`, newUserData)
+        .then(res => {
+            setAuthorization(res.data.token);
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data.message
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: REGISTER_FAILURE,
+                payload: err.response.data.error
+            });
+        });
 };
 
 export const setAuthorization = token => {
-	const IdToken = `Bearer ${token}`;
-	const userInfo = jwtDecode(token);
-	console.log(userInfo);
-	localStorage.setItem('IdToken', IdToken);
-	localStorage.setItem('userInfo', JSON.stringify(userInfo));
-	//seting authorization to the header axios
-	axios.defaults.headers.common['Authorization'] = IdToken;
+    const IdToken = `Bearer ${token}`;
+    const userInfo = jwtDecode(token);
+    console.log(userInfo);
+    localStorage.setItem('IdToken', IdToken);
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    //seting authorization to the header axios
+    axios.defaults.headers.common['Authorization'] = IdToken;
 };
 
 export const logoutUser = () => dispatch => {
-	// set logout on backend later
-	localStorage.removeItem('IdToken');
-	localStorage.removeItem('userInfo');
-	delete axios.defaults.headers.common['Authorization'];
-	dispatch({ type: SET_UNAUTHENTICATED });
+    // set logout on backend later
+    localStorage.removeItem('IdToken');
+    localStorage.removeItem('userInfo');
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({
+        type: SET_UNAUTHENTICATED
+    });
 };
