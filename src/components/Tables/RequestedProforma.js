@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { 
   User, 
   Phone, 
@@ -14,7 +14,7 @@ import {
 import Button from '../Ui/Button';
 
 const RequestedProforma = ({ oneRequest }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   dayjs.extend(relativeTime);
   
   const {
@@ -25,7 +25,7 @@ const RequestedProforma = ({ oneRequest }) => {
   } = oneRequest;
 
   const handleClickView = () => {
-    history.push(`/proforma/${id}`);
+    navigate(`/proforma/${id}`);
   };
 
   return (

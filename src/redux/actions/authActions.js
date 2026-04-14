@@ -8,7 +8,7 @@ import {
 	SET_UNAUTHENTICATED,
 } from '../types';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const { REACT_APP_BACKEND } = process.env;
 

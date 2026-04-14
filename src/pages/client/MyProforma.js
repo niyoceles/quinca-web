@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { 
   FileText, 
@@ -21,7 +21,7 @@ import { Card } from '../../components/Ui/Card';
 import Button from '../../components/Ui/Button';
 
 const MyProforma = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage] = useState(10);
@@ -35,7 +35,7 @@ const MyProforma = () => {
   }, [dispatch]);
 
   const handleRowClick = (id) => {
-    history.push(`/my-proforma/${id}`);
+    navigate(`/my-proforma/${id}`);
   };
 
   const getStatusStyle = (status) => {
@@ -69,7 +69,7 @@ const MyProforma = () => {
             
             <div className="flex items-center gap-3">
               <Button variant="ghost" className="bg-white border border-slate-100 rounded-xl" icon={Filter}>Filter</Button>
-              <Button onClick={() => history.push('/request-proforma')} icon={ArrowRight}>New Request</Button>
+              <Button onClick={() => navigate('/request-proforma')} icon={ArrowRight}>New Request</Button>
             </div>
           </div>
 
@@ -154,7 +154,7 @@ const MyProforma = () => {
                             <Button 
                               variant="secondary" 
                               className="mt-4 rounded-2xl"
-                              onClick={() => history.push('/request-proforma')}
+                              onClick={() => navigate('/request-proforma')}
                             >
                               Create New Request
                             </Button>

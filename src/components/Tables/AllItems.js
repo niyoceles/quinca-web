@@ -10,7 +10,7 @@ import {
   PackagePlus,
   Box
 } from 'lucide-react';
-import { getAllItems } from '../../redux/actions';
+import { getMyItems } from '../../redux/actions';
 import { Card } from '../Ui/Card';
 import { Typography } from '../Ui/Typography';
 import Button from '../Ui/Button';
@@ -24,7 +24,7 @@ const AllItems = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllItems());
+    dispatch(getMyItems());
   }, [dispatch]);
 
   const itemList = Array.isArray(items) ? items : [];

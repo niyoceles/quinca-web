@@ -33,7 +33,7 @@ export default function AboutUs() {
               <Award size={12} /> Established Industry Leader
             </div>
             <Typography variant="h1">
-              About <span className="text-primary italic">Quinca Paradi</span>
+              About <span className="text-primary italic">Hadiwa</span>
             </Typography>
             <div className="h-1.5 w-24 bg-primary mx-auto rounded-full" />
             <p className="max-w-2xl mx-auto text-slate-500 font-medium">

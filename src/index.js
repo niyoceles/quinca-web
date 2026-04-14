@@ -12,14 +12,7 @@ window.process = {
   env: { ...process.env },
 };
 
-toast.configure({
-  position: "top-right",
-  autoClose: 5000,
-  hideProgressBar: true,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: false
-});
+// toast.configure is deprecated in favor of ToastContainer in App.js
 
 const container = document.getElementById("root");
 const root = createRoot(container);

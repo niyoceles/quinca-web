@@ -26,7 +26,7 @@ export default function VerifiedAccount() {
                 Account Verified!
               </Typography>
               <Typography variant="body1" className="text-slate-500 max-w-sm mx-auto leading-relaxed">
-                Congratulations! Your Quinca Paradi account is now active and ready for business.
+                Congratulations! Your Hadiwa account is now active and ready for business.
               </Typography>
             </div>
 

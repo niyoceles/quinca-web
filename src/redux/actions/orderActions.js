@@ -10,7 +10,7 @@ const { REACT_APP_BACKEND } = process.env;
 
 export const getAllOrders = () => dispatch => {
 	axios
-		.get(`${REACT_APP_BACKEND}/order`)
+		.get(`${REACT_APP_BACKEND}/order/supplier`)
 		.then(res => {
 			dispatch({ type: GET_ALL_ORDERS_SUCCESS, payload: res.data.allorders });
 		})
@@ -30,7 +30,6 @@ export const getSingleOrder = id => dispatch => {
 				type: GET_SINGLE_ORDER_SUCCESS,
 				payload: res.data,
 			});
-			toast.success(res.data.message);
 		})
 		.catch(err => {
 			dispatch({

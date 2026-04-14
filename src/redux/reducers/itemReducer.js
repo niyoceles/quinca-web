@@ -51,15 +51,18 @@ export default function (state = initialState, action) {
 		case POST_ITEM:
 			return {
 				...state,
-				allItems: [action.payload, ...state.allItems],
-				item: action.payload.item,
+				allItems: [action.payload.data, ...state.allItems],
+				item: action.payload.data,
 				addItemSuccess: action.payload.message,
 			};
 		case UPDATE_ITEM:
+			const updatedItem = action.payload.data;
 			return {
 				...state,
-				allItems: [action.payload, ...state.allItems],
-				item: action.payload.item,
+				allItems: state.allItems.map(item => 
+					item.id === updatedItem.id ? updatedItem : item
+				),
+				item: updatedItem,
 				updateItemSuccess: action.payload.message,
 			};
 		case GET_ITEM_RELATED_SUCCESS:

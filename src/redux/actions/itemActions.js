@@ -96,3 +96,17 @@ export const getAllItems = () => dispatch => {
 			});
 		});
 };
+
+export const getMyItems = () => dispatch => {
+	axios
+		.get(`${REACT_APP_BACKEND}/item`)
+		.then(res => {
+			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data.myitems });
+		})
+		.catch(err => {
+			dispatch({
+				type: GET_ALL_ITEMS_FAILURE,
+				payload: err.response ? err.response.data.error : null,
+			});
+		});
+};

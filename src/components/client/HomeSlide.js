@@ -1,8 +1,14 @@
 import React from 'react';
-import Carousel from '@brainhubeu/react-carousel';
-import '@brainhubeu/react-carousel/lib/style.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import { Link as ReactLink } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+
+// Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
+
 import constructionImage from '../../assets/images/home/construction1.jpg';
 import constructionImage2 from '../../assets/images/home/construction2.jpg';
 import constructionImage3 from '../../assets/images/home/construction3.jpg';
@@ -34,44 +40,72 @@ export const HomeSlide = () => {
 
   return (
     <div className="relative group overflow-hidden rounded-2xl shadow-premium">
-      <Carousel 
-        autoPlay={6000} 
-        infinite 
-        slidesPerPage={1} 
-        slides={slides.map((slide, index) => (
-          <div key={index} className="relative h-[450px] w-full overflow-hidden">
-            <ReactLink to={slide.link} className="block w-full h-full relative group">
-              {/* Background Image */}
-              <img 
-                src={slide.image} 
-                className="h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" 
-                alt={slide.title} 
-              />
-              
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center px-10 md:px-20">
-                <div className="max-w-md text-white">
-                  <span className="inline-block px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
-                    Top Featured
-                  </span>
-                  <h2 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
-                    {slide.title}
-                  </h2>
-                  <p className="text-slate-200 text-lg mb-8 leading-relaxed line-clamp-2">
-                    {slide.subtitle}
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <button className="bg-white text-secondary px-8 py-3 rounded-xl font-bold hover:bg-primary hover:text-white transition-all duration-300 flex items-center gap-2 group/btn">
-                      {slide.buttonText}
-                      <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </button>
+      <Swiper
+        modules={[Autoplay, Pagination, EffectFade]}
+        effect="fade"
+        speed={1000}
+        autoplay={{
+          delay: 6000,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+          dynamicBullets: true,
+        }}
+        loop={true}
+        className="h-[450px] w-full"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative h-full w-full overflow-hidden">
+              <ReactLink to={slide.link} className="block w-full h-full relative group">
+                {/* Background Image */}
+                <img 
+                  src={slide.image} 
+                  className="h-full w-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" 
+                  alt={slide.title} 
+                />
+                
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center px-10 md:px-20">
+                  <div className="max-w-md text-white">
+                    <span className="inline-block px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
+                      Top Featured
+                    </span>
+                    <h2 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
+                      {slide.title}
+                    </h2>
+                    <p className="text-slate-200 text-lg mb-8 leading-relaxed line-clamp-2">
+                      {slide.subtitle}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <button className="bg-white text-secondary px-8 py-3 rounded-xl font-bold hover:bg-primary hover:text-white transition-all duration-300 flex items-center gap-2 group/btn">
+                        {slide.buttonText}
+                        <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ReactLink>
-          </div>
+              </ReactLink>
+            </div>
+          </SwiperSlide>
         ))}
-      />
+      </Swiper>
+
+      {/* Custom Styles for Swiper Pagination */}
+      <style>{`
+        .swiper-pagination-bullet {
+          width: 12px;
+          height: 4px;
+          border-radius: 2px;
+          background: rgba(255, 255, 255, 0.5);
+          transition: all 0.3s ease;
+        }
+        .swiper-pagination-bullet-active {
+          width: 24px;
+          background: #ff6600 !important;
+        }
+      `}</style>
     </div>
   );
 };

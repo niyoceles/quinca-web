@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { 
   ArrowLeft, 
@@ -23,15 +23,14 @@ import { Typography } from '../../components/Ui/Typography';
 import Button from '../../components/Ui/Button';
 
 const ViewProforma = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const proforma = useSelector(state => state.client.proformaItem.oneproforma);
   
   useEffect(() => {
-    const lastPath = window.location.pathname;
-    const id = lastPath.split('/');
-    dispatch(getSingleProforma(id[2]));
-  }, [dispatch]);
+    dispatch(getSingleProforma(id));
+  }, [dispatch, id]);
 
   if (!proforma) {
     return (
@@ -59,7 +58,7 @@ const ViewProforma = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              onClick={() => history.push('/account/supplier/proforma')}
+              onClick={() => navigate('/account/supplier/proforma')}
               className="rounded-xl border border-slate-100 hover:bg-white text-slate-400"
               icon={ArrowLeft}
             >

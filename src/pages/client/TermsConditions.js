@@ -27,7 +27,7 @@ const terms = [
   {
     id: 1,
     title: 'Account Security',
-    content: 'To use Quinca Paradi, you will be required to provide us with personal information of which you have to always keep confidential for your information’s security sake. In case you get worried about your information’s security, kindly alert us right away.',
+    content: 'To use Hadiwa, you will be required to provide us with personal information of which you have to always keep confidential for your information’s security sake. In case you get worried about your information’s security, kindly alert us right away.',
     icon: Shield
   },
   {
@@ -123,7 +123,7 @@ export default function TermsConditions() {
               Terms & <span className="text-primary italic">Conditions</span>
             </Typography>
             <p className="text-slate-400 font-medium max-w-2xl mx-auto">
-              Please read these terms carefully before using Quinca Paradi. By using our platform as either a buyer or a seller, you agree to these guiding principles.
+              Please read these terms carefully before using Hadiwa. By using our platform as either a buyer or a seller, you agree to these guiding principles.
             </p>
           </Container>
         </div>
@@ -138,7 +138,7 @@ export default function TermsConditions() {
                 <div className="space-y-4">
                   <Typography variant="h3" className="text-secondary leading-tight">Platform Master Agreement</Typography>
                   <p className="text-slate-500 font-medium leading-relaxed italic">
-                    "All transactions and services on this platform are served and managed by PARADI-BOUNTY Co. LTD, the legal owner of Quinca Paradi."
+                    "All transactions and services on this platform are served and managed by PARADI-BOUNTY Co. LTD, the legal owner of Hadiwa."
                   </p>
                 </div>
               </div>

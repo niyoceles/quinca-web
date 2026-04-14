@@ -35,7 +35,7 @@ const DeleteItem = ({ itemId, itemName, itemPrice }) => {
   if (itemSubmitted && open) {
     setTimeout(() => {
       handleClose();
-    }, 1500);
+    }, 3000);
   }
 
   return (

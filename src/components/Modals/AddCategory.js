@@ -45,7 +45,7 @@ const AddCategory = () => {
   if (categorySubmitted && open) {
     setTimeout(() => {
       handleClose();
-    }, 1500);
+    }, 3000);
   }
 
   return (

@@ -61,10 +61,7 @@ const DashboardPage = () => {
   
   // Safely extract items from profile response
   const myItems = useMemo(() => {
-    return profileState?.data?.myprofile?.[0]?.items 
-        || profileState?.myprofile?.[0]?.items 
-        || profileState?.[0]?.items 
-        || [];
+    return profileState?.items || [];
   }, [profileState]);
 
   useEffect(() => {

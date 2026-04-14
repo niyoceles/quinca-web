@@ -74,7 +74,7 @@ export default function Dashboard() {
         {/* Footer Area */}
         <div className="pt-10 border-t border-slate-100 flex flex-col items-center justify-center gap-2">
           <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-loose text-center">
-            Quinca Paradi Purchasing Platform • Secured with Quantum-RSA v4<br />
+            Hadiwa Purchasing Platform • Secured with Quantum-RSA v4<br />
             <span className="text-emerald-500/50 italic font-bold">Encrypted Communication Channel: Active</span>
           </p>
         </div>

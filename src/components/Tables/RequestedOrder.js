@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { 
@@ -14,7 +14,7 @@ import {
 import Button from '../Ui/Button';
 
 const RequestedOrder = ({ oneRequest }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   dayjs.extend(relativeTime);
 
   const {
@@ -25,7 +25,7 @@ const RequestedOrder = ({ oneRequest }) => {
   } = oneRequest;
 
   const handleView = () => {
-    history.push(`/order/${id}`);
+    navigate(`/order/${id}`);
   };
 
   return (

@@ -24,7 +24,7 @@ import { Container } from './Ui/Layout';
 import Button from './Ui/Button';
 import SearchItems from '../pages/client/SearchItems';
 import cartImage from '../assets/images/cart.svg';
-import Quinca_logo from '../assets/images/quinca-logo.jpeg';
+import Hadiwa_logo from '../assets/images/hadiwa-logo.png';
 import userImage from '../assets/images/account.svg';
 
 const NavLink = ({ to, children, className = '' }) => (
@@ -78,7 +78,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-6">
-            {/* Language Selector */}
+            {/* Language Selector commented out for now 
             <div className="relative">
               <button 
                 onClick={() => setIsLangOpen(!isLangOpen)}
@@ -102,6 +102,7 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+            */}
 
             {isAuthenticated && userInformation && (
               <div className="flex items-center gap-2 text-slate-700">
@@ -143,7 +144,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <img src={Quinca_logo} alt="Quinca Paradi" className="h-10 md:h-12 w-auto rounded-lg shadow-sm" />
+            <img src={Hadiwa_logo} alt="Hadiwa" className="h-10 md:h-12 w-auto rounded-lg shadow-sm" />
           </Link>
 
           {/* Search Bar - AliExpress Style (Prominent) */}
@@ -270,7 +271,7 @@ export default function Navbar() {
             onClick={e => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-10">
-              <img src={Quinca_logo} alt="Quinca Paradi" className="h-8 w-auto" />
+              <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 w-auto" />
               <button onClick={() => setIsMenuOpen(false)}>
                 <X size={24} className="text-slate-400" />
               </button>

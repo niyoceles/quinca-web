@@ -23,7 +23,7 @@ export default function Informing() {
             <CheckCircle2 size={12} /> Established Industry Leader
           </div>
           <Typography variant="h1" className="text-white drop-shadow-2xl">
-            Quinca <span className="text-primary italic">Paradi</span>
+            Hadiwa
           </Typography>
           <div className="h-1.5 w-24 bg-primary mx-auto rounded-full" />
         </div>
@@ -39,13 +39,13 @@ export default function Informing() {
 
         <div className="grid grid-cols-2 gap-4 pt-8">
           <Button 
-            className="rounded-2xl py-4 bg-white text-secondary hover:bg-slate-100 shadow-xl"
+            className="rounded-2xl py-4 bg-gradient-to-r from-primary to-orange-600 text-white hover:to-primary hover:shadow-primary/30 shadow-2xl font-black ring-4 ring-primary/10 transition-all duration-300 transform hover:scale-[1.02]"
             icon={Users}
           >
             I'm a Client
           </Button>
           <Button 
-            className="rounded-2xl py-4 bg-primary text-white hover:bg-primary-dark shadow-xl"
+            className="rounded-2xl py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white hover:text-secondary shadow-2xl transition-all duration-500 group/supplier"
             icon={Building}
           >
             I'm a Supplier

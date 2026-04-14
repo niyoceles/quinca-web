@@ -18,7 +18,7 @@ import Input from '../Ui/Input';
 import Button from '../Ui/Button';
 import { Typography } from '../Ui/Typography';
 
-import Quinca_logo from '../../assets/images/quinca-logo.jpeg';
+import Hadiwa_logo from '../../assets/images/hadiwa-logo.png';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -50,13 +50,13 @@ const Signup = () => {
   return (
     <div className="flex flex-col items-center w-full">
       <RouterLink to="/">
-        <img src={Quinca_logo} alt="Quinca Paradi" className="h-16 w-auto rounded-2xl shadow-premium mb-10 transition-transform hover:scale-105 duration-300" />
+        <img src={Hadiwa_logo} alt="Hadiwa" className="h-16 w-auto rounded-2xl shadow-premium mb-10 transition-transform hover:scale-105 duration-300" />
       </RouterLink>
 
       <div className="text-center mb-10">
         <Typography variant="h2" className="mb-3">Join the Community</Typography>
         <Typography variant="body1" className="text-slate-500 max-w-sm mx-auto">
-          Start your journey with Quinca Paradi and build the future together.
+          Start your journey with Hadiwa and build the future together.
         </Typography>
       </div>
 

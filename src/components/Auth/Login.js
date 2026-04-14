@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect, Link as RouterLink } from 'react-router-dom';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 
@@ -9,7 +9,7 @@ import Button from '../Ui/Button';
 import Checkbox from '../Ui/Checkbox';
 import { Divider } from '../Ui/Layout';
 
-import Quinca_logo from '../../assets/images/quinca-logo.jpeg';
+import Hadiwa_logo from '../../assets/images/hadiwa-logo.png';
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -39,8 +39,8 @@ const Login = () => {
   };
 
   if (loginSuccess) {
-    if (userType === 'client') return <Redirect to="/" />;
-    return <Redirect to="/account/supplier/dashboard" />;
+    if (userType === 'client') return <Navigate to="/" />;
+    return <Navigate to="/account/supplier/dashboard" />;
   }
 
   return (
@@ -52,13 +52,13 @@ const Login = () => {
       <div className="relative z-10 flex flex-col items-center">
         <RouterLink to="/">
           <div className="p-2 bg-white rounded-2xl shadow-premium shadow-primary/10 mb-10 transform hover:scale-105 transition-all duration-500 ease-out">
-            <img src={Quinca_logo} alt="Quinca Paradi" className="h-12 w-auto rounded-xl" />
+            <img src={Hadiwa_logo} alt="Hadiwa" className="h-12 w-auto rounded-xl" />
           </div>
         </RouterLink>
 
         <div className="text-center mb-10 w-full animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
           <h2 className="text-4xl font-black tracking-tight text-secondary mb-3">Welcome Back</h2>
-          <p className="text-slate-400 font-bold text-sm">Sign in to your Quinca account</p>
+          <p className="text-slate-400 font-bold text-sm">Sign in to your Hadiwa account</p>
         </div>
 
         <form className="w-full space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200" noValidate onSubmit={handleSubmit}>

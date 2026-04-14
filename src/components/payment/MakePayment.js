@@ -20,7 +20,7 @@ const MakePayment = (props) => {
             name: 'User',
         },
         customizations: {
-            title: 'Make your payment at Quinca Paradi',
+            title: 'Make your payment at Hadiwa',
             description: 'Payment for items in cart',
             logo: 'https://res.cloudinary.com/dfsai53mw1/image/upload/v1613415905/QUINCAPARADI/mstile-150x150_whtq6d.png',
         },

@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { 
   Menu, 
   Bell, 
@@ -12,12 +12,15 @@ import {
   Settings,
   X
 } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
 import { MainNav, SecondaryNav } from './LeftSideBar';
+import { toggleSidebar } from '../../redux/actions/uiActions';
 import Logout from '../Auth/Logout';
-import Quinca_logo from '../../assets/images/quinca-logo.jpeg';
+import Hadiwa_logo from '../../assets/images/hadiwa-logo.png';
 
 export default function AuthNavbar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const dispatch = useDispatch();
+  const isSidebarOpen = useSelector(state => state.ui.isSidebarOpen);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -31,7 +34,7 @@ export default function AuthNavbar() {
     console.error('Invalid token');
   }
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const handleToggleSidebar = () => dispatch(toggleSidebar());
 
   return (
     <Fragment>
@@ -40,15 +43,15 @@ export default function AuthNavbar() {
         <div className="h-full flex items-center justify-between">
           <div className="flex items-center gap-6">
             <button 
-              onClick={toggleSidebar}
+              onClick={handleToggleSidebar}
               className="p-2.5 rounded-2xl hover:bg-slate-50 text-slate-400 hover:text-secondary transition-all active:scale-95"
             >
               <Menu size={22} />
             </button>
             <Link to="/" className="flex items-center gap-3 group">
-              <img src={Quinca_logo} alt="Quinca" className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
+              <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
               <div className="hidden md:block">
-                <span className="font-black text-secondary tracking-tight block leading-none">Quinca Paradi</span>
+                <span className="font-black text-secondary tracking-tight block leading-none">Hadiwa</span>
                 <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Supplier Center</span>
               </div>
             </Link>

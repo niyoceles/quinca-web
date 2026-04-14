@@ -14,7 +14,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { logoutUser } from '../redux/actions';
-import Quinca_logo from '../assets/images/quinca-logo.jpeg';
+import Hadiwa_logo from '../assets/images/hadiwa-logo.png';
 import { Container } from './Ui/Layout';
 import Button from './Ui/Button';
 
@@ -111,7 +111,7 @@ export default function NavbarLogo() {
             {/* Centered/Left Logo */}
             <div className="flex-grow flex justify-center md:justify-start">
               <Link to="/" className="block">
-                <img src={Quinca_logo} alt="Quinca Paradi" className="h-10 md:h-12 w-auto object-contain" />
+                <img src={Hadiwa_logo} alt="Hadiwa" className="h-10 md:h-12 w-auto object-contain" />
               </Link>
             </div>
 

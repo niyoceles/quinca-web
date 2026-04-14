@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ShoppingBag, ChevronRight, Tag, Info, ArrowLeft } from 'lucide-react';
 import { getCategoryItems } from '../../redux/actions';
 import ClientLayout from '../../layouts/ClientLayout';
@@ -9,8 +9,8 @@ import { Typography } from '../../components/Ui/Typography';
 import { Card } from '../../components/Ui/Card';
 import Button from '../../components/Ui/Button';
 
-export default function CategoryItems(props) {
-  const { category } = props.match.params;
+export default function CategoryItems() {
+  const { category } = useParams();
   const categoryitems = useSelector(state => state.client.categoryItems.category);
   const dispatch = useDispatch();
 

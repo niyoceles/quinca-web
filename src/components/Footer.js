@@ -18,7 +18,7 @@ import deliverImage from '../assets/images/delivery.svg';
 import momoImage from '../assets/images/mtnmomo.png';
 import masterCard from '../assets/images/mastercard.svg';
 import visaImage from '../assets/images/visa.svg';
-import Quinca_logo from '../assets/images/quinca-logo.jpeg';
+import Hadiwa_logo from '../assets/images/hadiwa-logo.png';
 
 const FooterFeature = ({ icon: Icon, title, description, image }) => (
   <div className="flex flex-col items-center text-center p-4 group">
@@ -90,9 +90,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-12">
           {/* About Section */}
           <div className="space-y-6">
-            <img src={Quinca_logo} alt="Quinca Paradi" className="h-12 w-auto rounded-lg shadow-lg" />
+            <img src={Hadiwa_logo} alt="Hadiwa" className="h-12 w-auto rounded-lg shadow-lg" />
             <p className="text-slate-400 text-sm leading-relaxed">
-              QuincaParadi is a premium e-commerce platform by PARADI-BOUNTY Co. LTD. 
+              Hadiwa is a premium e-commerce platform by PARADI-BOUNTY Co. LTD. 
               We specialize in high-quality construction materials and tools distribution.
               <span className="block mt-2 font-medium text-slate-300">CC/TIN/VAT 111707849</span>
             </p>
@@ -151,7 +151,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
-          <p>© {new Date().getFullYear()} Quinca Paradi. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} Hadiwa. All Rights Reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-primary transition-colors">Privacy</a>
             <a href="#" className="hover:text-primary transition-colors">Cookies</a>

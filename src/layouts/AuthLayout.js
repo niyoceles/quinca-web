@@ -9,7 +9,7 @@ function Copyright() {
       <Typography variant="body2" className="text-slate-400 text-center">
         {'Copyright © '}
         <Link to="/" className="text-primary font-bold hover:underline transition-all">
-          Quinca Paradi
+          Hadiwa
         </Link>{' '}
         {new Date().getFullYear()}
       </Typography>

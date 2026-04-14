@@ -17,9 +17,14 @@ import {
   SEARCH_SUCCESS,
   SEARCH_FAILURE,
   GET_CLIENT_BOOKINGS_FAILURE,
+  RESET_REQUEST_STATUS,
 } from '../types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
+export const resetRequestStatus = () => (dispatch) => {
+  dispatch({ type: RESET_REQUEST_STATUS });
+};
 
 const { REACT_APP_BACKEND } = process.env;
 
@@ -137,7 +142,6 @@ export const getMyProforma = () => (dispatch) => {
       });
       localStorage.removeItem('bookingSummary');
       localStorage.removeItem('totalPrice');
-      toast.success(res.data.message);
     })
     .catch((err) => {
       dispatch({
@@ -157,7 +161,6 @@ export const getSingleProforma = (id) => (dispatch) => {
         type: GET_SINGLE_PROFORMA_SUCCESS,
         payload: res.data,
       });
-      toast.success(res.data.message);
     })
     .catch((err) => {
       dispatch({
@@ -177,7 +180,6 @@ export const searchItems = (keyword) => (dispatch) => {
         type: SEARCH_SUCCESS,
         payload: res.data.results,
       });
-      toast.success(res.data.message);
     })
     .catch((err) => {
       dispatch({

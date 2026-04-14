@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { 
   ShieldCheck, 
   ChevronRight, 
@@ -21,6 +21,7 @@ import { Card } from "../../components/Ui/Card";
 import Button from "../../components/Ui/Button";
 
 const ViewItem = () => {
+  const { id } = useParams();
   const bookedItems = JSON.parse(localStorage.getItem("orderSummary"));
   const [snack, setSnack] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -68,10 +69,10 @@ const ViewItem = () => {
   };
 
   useEffect(() => {
-    const lastPath = window.location.pathname;
-    const id = lastPath.split("/");
-    dispatch(viewItem(id[2]));
-  }, [dispatch]);
+    if (id) {
+      dispatch(viewItem(id));
+    }
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (itemDetails.category) {

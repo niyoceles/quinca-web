@@ -51,7 +51,7 @@ export default function ContactUs() {
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cloud Mail</p>
-                          <p className="text-sm font-black text-secondary">info@quincaparadi.com</p>
+                          <p className="text-sm font-black text-secondary">info@hadiwa.com</p>
                         </div>
                       </div>
 

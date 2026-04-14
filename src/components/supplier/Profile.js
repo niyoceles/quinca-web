@@ -22,7 +22,7 @@ import Button from '../Ui/Button';
 import EditProfile from './EditProfile';
 
 const Profile = () => {
-  const profileData = useSelector(state => state.supplier.profile.myprofile);
+  const profile = useSelector(state => state.supplier.profile);
   const [showUpdate, setShowUpdate] = useState(false);
   const dispatch = useDispatch();
 
@@ -30,9 +30,7 @@ const Profile = () => {
     dispatch(getMyProfile());
   }, [dispatch]);
 
-  const profile = Array.isArray(profileData) ? profileData[0] : null;
-
-  if (!profileData) {
+  if (!profile || Object.keys(profile).length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24">
         <Loader2 className="text-primary animate-spin mb-4" size={40} />
