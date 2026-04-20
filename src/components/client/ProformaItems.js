@@ -1,206 +1,156 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Fab from '@material-ui/core/Fab';
-import NavigationIcon from '@material-ui/icons/Navigation';
+import { ShoppingCart, Plus, Minus, Info, X } from 'lucide-react';
+import { Typography } from '../Ui/Typography';
+import Button from '../Ui/Button';
+import Input from '../Ui/Input';
+import Modal from '../Ui/Modal';
+import { Card } from '../Ui/Card';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
+const ProformaItems = ({ items, addItem }) => {
+  const [open, setOpen] = useState(false);
+  const [quantity, setQuantity] = useState(10);
+  const [submitted, setSubmitted] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction='up' ref={ref} {...props} />;
-});
+  const handleOpenModal = (item) => {
+    setSelectedItem(item);
+    setQuantity(10);
+    setSubmitted(false);
+    setOpen(true);
+  };
 
-const useStyles = makeStyles(theme => ({
-	image: {
-		width: 200,
-		height: 150,
-		marginRight: '10px',
-		paddingRight: 10,
-	},
-	img: {
-		margin: 'auto',
-		display: 'block',
-		maxWidth: '100%',
-		maxHeight: '100%',
-		objectFit: 'cover',
-	},
-	itemBox: {
-		boxShadow: '0 2px 3px 0 #ccc',
-		margin: '20px 0 0 0px',
-		width: '90%',
-		padding: '10px',
-		backgroundColor: 'white',
-		borderRadius: '8px',
-	},
-}));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    if (quantity >= 10) {
+      addItem(e, selectedItem, quantity);
+      setOpen(false);
+    }
+  };
 
-const ProformaItems = props => {
-	const classes = useStyles();
-	const [open, setOpen] = useState(false);
-	const [quantity, setQuantity] = useState('');
-	const [submitted, setSubmitted] = useState(false);
-	const [selectedItem, setSelectedItem] = useState(null);
+  return (
+    <div className="space-y-8 animate-in fade-in duration-700">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <Typography variant="h3">Available Materials</Typography>
+        <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-wider">
+          <Info size={12} /> Minimum 10 units per request
+        </div>
+      </div>
 
-	const handleToggleModal = item => {
-		setOpen(!open);
-		setSelectedItem(item);
-	};
+      <div className="grid grid-cols-1 gap-6">
+        {items && items.map((item) => (
+          <Card 
+            key={item.itemName} 
+            className="p-6 md:p-8 border-none shadow-premium hover:shadow-2xl transition-all duration-300 overflow-hidden relative group"
+          >
+            <div className="flex flex-col md:flex-row gap-8 items-center">
+              {/* Image Section */}
+              <div className="w-full md:w-64 h-48 rounded-3xl overflow-hidden relative bg-slate-100 flex-shrink-0">
+                <img 
+                  src={item.itemImage} 
+                  alt={item.itemName} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
 
-	const handleClose = () => {
-		setOpen(false);
-	};
+              {/* Content Section */}
+              <div className="flex-grow space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <Typography variant="h4" className="text-secondary tracking-tight">
+                      {item.itemName}
+                    </Typography>
+                    <div className="text-[10px] bg-slate-50 text-slate-400 px-2 py-0.5 rounded-md font-bold inline-block uppercase tracking-wider">
+                      Reference: {Math.random().toString(36).substr(2, 6).toUpperCase()}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-2xl font-black shadow-lg">
+                      {item.itemPrice} <span className="text-[10px] opacity-70">RWF</span>
+                    </div>
+                  </div>
+                </div>
 
-	const handleSubmit = e => {
-		e.preventDefault();
-		setSubmitted(true);
-		if (quantity) {
-			setOpen(false);
-		}
-	};
+                <p className="text-sm text-slate-500 leading-relaxed max-w-2xl italic">
+                  {item.itemDescription}
+                </p>
 
-	return (
-		<div>
-			<Typography component='h3' variant='h5' align='left' color='textPrimary'>
-				Availability items for proforma
-			</Typography>
-			<Dialog
-				open={open}
-				TransitionComponent={Transition}
-				aria-labelledby='alert-dialog-slide-title'
-				aria-describedby='alert-dialog-slide-description'
-				keepMounted
-				close={handleClose}
-			>
-				<DialogContent>
-					<DialogContentText id='alert-dialog-slide-description'>
-						<form noValidate onSubmit={handleSubmit}>
-							<TextField
-								variant='outlined'
-								margin='normal'
-								required
-								name='quantity'
-								defaultValue={10}
-								inputProps={{ min: '10' }}
-								helperText={submitted && !quantity ? 'is invalid' : null}
-								value={quantity}
-								error={submitted && !quantity ? 'is-invalid' : null}
-								onChange={e => setQuantity(e.target.value)}
-								label='quantity'
-								type='number'
-								id='quantity'
-							/>
-							<br />
-							<Button
-								type='submit'
-								color='primary'
-								size='small'
-								variant='contained'
-								onClick={e => props.addItem(e, selectedItem, quantity)}
-							>
-								request item
-							</Button>
-							&nbsp; &nbsp;
-							<Button
-								onClick={handleClose}
-								color='secondary'
-								size='small'
-								variant='contained'
-							>
-								Cancel
-							</Button>
-						</form>
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions></DialogActions>
-			</Dialog>
-			{/* end modal----------------------------------------------------------- */}
-			<div>
-				{props.items &&
-					props.items.map(item => (
-						<Grid
-							key={item.itemName}
-							container
-							spacing={3}
-							className={classes.itemBox}
-						>
-							<Grid item xs={12} sm={12} md={4}>
-								<ButtonBase className={classes.image}>
-									<img className={classes.img} alt='...' src={item.itemImage} />
-								</ButtonBase>
-							</Grid>
-							<Grid item xs={12} sm={6} md={8} style={{ display: 'flex' }}>
-								<Grid
-									item
-									xs={8}
-									sm={8}
-									md={8}
-									container
-									direction='column'
-									spacing={2}
-								>
-									<Typography gutterBottom variant='h6'>
-										{item.itemName}
-									</Typography>
-									<Typography variant='body2'>
-										<Fab
-											variant='extended'
-											size='small'
-											color='tertiary'
-											aria-label={item.itemPrice + 'Rwf'}
-											className={classes.btnBooking}
-										>
-											{item.itemPrice + 'Rwf'}
-										</Fab>
-									</Typography>
-									<br />
-									<Typography variant='body2' gutterBottom>
-										{item.itemDescription}
-									</Typography>
-								</Grid>
-								<Grid
-									item
-									xs={4}
-									sm={4}
-									md={4}
-									container
-									direction='column'
-									spacing={2}
-								>
-									<Typography
-										component='h2'
-										variant='h4'
-										color='textPrimary'
-										className={classes.titleOrganization}
-										gutterBottom
-									>
-										<span style={{ flex: 1 }}>
-											<Fab
-												variant='extended'
-												size='medium'
-												color='primary'
-												aria-label='add'
-												// className={classes.btnOrder}
-												onClick={() => handleToggleModal(item)}
-											>
-												<NavigationIcon />
-												Add cart
-											</Fab>
-										</span>
-									</Typography>
-								</Grid>
-							</Grid>
-						</Grid>
-					))}
-			</div>
-		</div>
-	);
+                <div className="pt-4 flex items-center gap-4">
+                  <Button
+                    onClick={() => handleOpenModal(item)}
+                    className="rounded-2xl px-8 py-3.5 shadow-premium font-black group-hover:-translate-y-1 transition-all"
+                    icon={ShoppingCart}
+                  >
+                    Add to Inquiry
+                  </Button>
+                  <button className="p-3 text-slate-300 hover:text-primary transition-colors border border-slate-50 hover:bg-slate-50 rounded-xl">
+                    <Plus size={20} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      {/* Modern Modal Implementation */}
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Specify Quantity"
+        maxWidth="md"
+      >
+        <div className="p-2 space-y-8">
+          {selectedItem && (
+            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100/50">
+              <img src={selectedItem.itemImage} alt="" className="w-12 h-12 rounded-xl object-cover" />
+              <div>
+                <p className="text-sm font-black text-secondary">{selectedItem.itemName}</p>
+                <p className="text-[10px] font-bold text-slate-400">Inventory match available</p>
+              </div>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="space-y-4">
+              <Input
+                label="Required Amount"
+                type="number"
+                min="10"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                error={submitted && quantity < 10 ? 'Minimum 10 items required' : null}
+                placeholder="10"
+                icon={Plus}
+                required
+              />
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
+                Total Estimated: <span className="text-primary">{selectedItem ? (selectedItem.itemPrice * quantity).toLocaleString() : 0} RWF</span>
+              </p>
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <Button 
+                variant="secondary" 
+                className="flex-1 rounded-2xl py-4"
+                onClick={() => setOpen(false)}
+              >
+                Go Back
+              </Button>
+              <Button 
+                type="submit" 
+                className="flex-[2] rounded-2xl py-4 shadow-xl"
+                icon={ShoppingCart}
+              >
+                Confirm Request
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+    </div>
+  );
 };
+
 export default ProformaItems;

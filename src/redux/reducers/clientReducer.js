@@ -16,6 +16,9 @@ import {
   GET_SINGLE_PROFORMA_FAILURE,
   SEARCH_FAILURE,
   SEARCH_SUCCESS,
+  REQUEST_PROFORMA_SUCCESS,
+  REQUEST_PROFORMA_FAILURE,
+  RESET_REQUEST_STATUS,
 } from '../types';
 
 const initialState = {
@@ -27,11 +30,29 @@ const initialState = {
   proformaItems: [],
   proformaItem: [],
   searchResults: null,
+  requestSuccess: false,
   error: '',
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case REQUEST_PROFORMA_SUCCESS:
+      return {
+        ...state,
+        requestSuccess: true,
+        error: '',
+      };
+    case REQUEST_PROFORMA_FAILURE:
+      return {
+        ...state,
+        requestSuccess: false,
+        error: action.payload,
+      };
+    case RESET_REQUEST_STATUS:
+      return {
+        ...state,
+        requestSuccess: false,
+      };
     case SEARCH_SUCCESS:
       return {
         ...state,

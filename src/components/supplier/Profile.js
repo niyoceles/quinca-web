@@ -1,143 +1,164 @@
 import React, { useEffect, useState } from 'react';
-import { ResponsiveContainer } from 'recharts';
-import Title from '../../layouts/Title';
 import { useDispatch, useSelector } from 'react-redux';
+import { 
+  User, 
+  Mail, 
+  Building, 
+  Phone, 
+  Globe, 
+  MapPin, 
+  Fingerprint, 
+  Calendar, 
+  Edit, 
+  X,
+  CreditCard,
+  Loader2,
+  ShieldCheck
+} from 'lucide-react';
 import { getMyProfile } from '../../redux/actions';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-
-// import TextField from '@material-ui/core/TextField';
-// import Link from '@material-ui/core/Link';
-// import Grid from '@material-ui/core/Grid';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-// import Alert from '@material-ui/lab/Alert';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import EditIcon from '@material-ui/icons/Edit';
+import { Card } from '../Ui/Card';
+import { Typography } from '../Ui/Typography';
+import Button from '../Ui/Button';
 import EditProfile from './EditProfile';
 
-const useStyles = makeStyles(theme => ({
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing(1),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-		float: 'right',
-	},
-	progress: {
-		position: 'absolute',
-	},
-	spin: {
-		position: 'relative',
-		top: '50%',
-		left: '45%',
-		boxSizing: 'border-box',
-		margin: 'auto',
-		width: '100px !important',
-		height: '100px !important',
-	},
-}));
-
 const Profile = () => {
-	const classes = useStyles();
-	const profile = useSelector(state => state.supplier.profile.myprofile);
-	const [showUpdate, setShowUpdate] = useState(false);
+  const profile = useSelector(state => state.supplier.profile);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const dispatch = useDispatch();
 
-	const handleShowUpdate = () => {
-		setShowUpdate(true);
-	};
+  useEffect(() => {
+    dispatch(getMyProfile());
+  }, [dispatch]);
 
-	const handleHideUpdate = () => {
-		setShowUpdate(false);
-	};
+  if (!profile || Object.keys(profile).length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24">
+        <Loader2 className="text-primary animate-spin mb-4" size={40} />
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Synchronizing Account Data...</p>
+      </div>
+    );
+  }
 
-	const dispatch = useDispatch();
+  if (!profile) return null;
 
-	useEffect(() => {
-		dispatch(getMyProfile());
-	}, [dispatch]);
+  return (
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2 border-b border-slate-50">
+        <div className="flex items-center gap-5">
+          <div className="w-20 h-20 bg-gradient-to-br from-primary to-orange-600 rounded-[2rem] flex items-center justify-center text-white shadow-lg shadow-primary/20 border-4 border-white">
+            <User size={36} />
+          </div>
+          <div>
+            <div className="flex items-center gap-3">
+              <Typography variant="h2">{profile.names}</Typography>
+              <div className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-tight flex items-center gap-1">
+                <ShieldCheck size={12} /> Verified Supplier
+              </div>
+            </div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+              Member since {new Date(profile.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })}
+            </p>
+          </div>
+        </div>
+        
+        <Button
+          variant={showUpdate ? "ghost" : "primary"}
+          onClick={() => setShowUpdate(!showUpdate)}
+          className={`rounded-2xl px-8 font-black ${!showUpdate ? 'shadow-premium' : ''}`}
+          icon={showUpdate ? X : Edit}
+        >
+          {showUpdate ? 'Cancel Editing' : 'Update Profile'}
+        </Button>
+      </div>
 
-	return (
-		<React.Fragment>
-			{profile !== undefined ? (
-				profile.map(i => (
-					<>
-						<Title>
-							My Profile Account{' '}
-							<Button
-								variant='contained'
-								color='secondary'
-								className={classes.submit}
-								onClick={handleHideUpdate}
-								style={{ display: showUpdate ? 'block' : 'none' }}
-							>
-								Cancel updating
-							</Button>
-							<Button
-								variant='contained'
-								color='primary'
-								className={classes.submit}
-								onClick={handleShowUpdate}
-								style={{ display: showUpdate ? 'none' : 'block' }}
-							>
-								Update Profile <EditIcon color='white' fontSize='small' />
-							</Button>
-						</Title>
-						<div style={{ display: showUpdate ? 'block' : 'none' }}>
-							<EditProfile user={i} />
-						</div>
+      {showUpdate ? (
+        <Card className="border-none shadow-premium rounded-[2.5rem] bg-white p-8">
+          <EditProfile user={profile} onCancel={() => setShowUpdate(false)} />
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* General Information */}
+          <Card className="lg:col-span-2 border-none shadow-premium rounded-[2.5rem] bg-white p-10 space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-12">
+              <InfoItem icon={Mail} label="Email Address" value={profile.email} />
+              <InfoItem icon={Building} label="Organization" value={profile.organization} />
+              <InfoItem icon={Phone} label="Phone Number" value={profile.phoneNumber} />
+              <InfoItem icon={Fingerprint} label="National ID" value={profile.nationalId} />
+              <InfoItem icon={Globe} label="Region" value={`${profile.state}, ${profile.country}`} />
+              <InfoItem icon={MapPin} label="Exact Location" value={profile.location} />
+            </div>
+            
+            <div className="pt-10 border-t border-slate-50">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
+                  <MapPin size={16} />
+                </div>
+                <Typography variant="h4">Street Address</Typography>
+              </div>
+              <p className="text-sm font-bold text-secondary leading-relaxed bg-slate-50 p-6 rounded-3xl border border-slate-100/50 italic">
+                "{profile.address || 'No detailed address provided.'}"
+              </p>
+            </div>
+          </Card>
 
-						<ResponsiveContainer>
-							<div
-								className=''
-								style={{ display: showUpdate ? 'none' : 'block' }}
-							>
-								<Typography>
-									Names: <b>{i.names}</b>
-								</Typography>
-								<Typography>
-									Email: <b>{i.email}</b>
-								</Typography>
-								<Typography>
-									Organization: <b>{i.organization}</b>
-								</Typography>
-								<Typography>
-									Phone Number: <b>{i.phoneNumber}</b>
-								</Typography>
-								<Typography>
-									country: <b>{i.country}</b>
-								</Typography>
-								<Typography>
-									State: <b>{i.state}</b>
-								</Typography>
-								<Typography>
-									Address: <b>{i.address}</b>
-								</Typography>
-								<Typography>
-									Location: <b>{i.location}</b>
-								</Typography>
-								<Typography>
-									National ID: <b>{i.nationalId}</b>
-								</Typography>
-								<Typography>
-									Account type: <b>{i.userType}</b>
-								</Typography>
-								<Typography>
-									Joined at: <b>{i.createdAt}</b>
-								</Typography>
-							</div>
-						</ResponsiveContainer>
-					</>
-				))
-			) : (
-				<CircularProgress className={classes.spin} />
-			)}
-		</React.Fragment>
-	);
+          {/* Account Status Card */}
+          <div className="space-y-6">
+            <Card className="border-none shadow-premium rounded-[2.5rem] bg-secondary p-8 text-white relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:rotate-12 transition-transform duration-700">
+                <CreditCard size={120} />
+              </div>
+              <Typography variant="h3" className="text-white mb-6">Account Status</Typography>
+              <div className="space-y-6 relative z-10">
+                <div>
+                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-2">Plan Type</p>
+                  <p className="text-lg font-black capitalize">{profile.userType}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-2">Operational Status</p>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/20 text-emerald-300 rounded-2xl text-[10px] font-black uppercase ring-1 ring-emerald-500/30">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Active & Reselling
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="border-none shadow-premium rounded-[2.5rem] bg-white p-8 border border-slate-50">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-10 h-10 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
+                  <Calendar size={20} />
+                </div>
+                <Typography variant="h4">System Log</Typography>
+              </div>
+              <div className="space-y-4">
+                <LogEntry label="Account Created" date={new Date(profile.createdAt).toLocaleDateString()} />
+                <LogEntry label="Last Interaction" date="Today" />
+              </div>
+            </Card>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
+
+const InfoItem = ({ icon: Icon, label, value }) => (
+  <div className="space-y-2 group">
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
+        <Icon size={16} />
+      </div>
+      <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] leading-none">{label}</p>
+    </div>
+    <p className="text-sm font-black text-secondary pl-11 group-hover:translate-x-1 transition-transform duration-300">{value || 'Not specified'}</p>
+  </div>
+);
+
+const LogEntry = ({ label, date }) => (
+  <div className="flex items-center justify-between py-3 border-b border-slate-50 last:border-0">
+    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</span>
+    <span className="text-xs font-bold text-secondary">{date}</span>
+  </div>
+);
+
 export default Profile;

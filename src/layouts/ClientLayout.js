@@ -1,20 +1,17 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Navbar from '../components/Navbar';
-import Divider from '@material-ui/core/Divider';
 import Footer from '../components/Footer';
+import { Divider, Container } from '../components/Ui/Layout';
 
 const ClientLayout = props => {
 	return (
-		<React.Fragment>
-			<CssBaseline />
+		<div className="min-h-screen flex flex-col bg-background">
 			<Navbar />
-			<main>
+			<main className="flex-grow">
 				{props.children}
-				<Divider />
 			</main>
 			<Footer />
-		</React.Fragment>
+		</div>
 	);
 };
 

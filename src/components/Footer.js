@@ -1,12 +1,16 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import Divider from '@material-ui/core/Divider';
 import { SocialIcon } from 'react-social-icons';
-// import { Link as ReactLink } from 'react-router-dom';
+import { 
+  ShieldCheck, 
+  CreditCard, 
+  Headphones, 
+  Truck,
+  ExternalLink,
+  Globe
+} from 'lucide-react';
+import { Container, Grid, Divider, Box } from './Ui/Layout';
+import { Typography } from './Ui/Typography';
+
 import secureImage from '../assets/images/secure.svg';
 import paymentImage from '../assets/images/payment.svg';
 import helpImage from '../assets/images/help.svg';
@@ -14,359 +18,149 @@ import deliverImage from '../assets/images/delivery.svg';
 import momoImage from '../assets/images/mtnmomo.png';
 import masterCard from '../assets/images/mastercard.svg';
 import visaImage from '../assets/images/visa.svg';
-import Quinca_logo from '../assets/images/quinca-logo.jpeg';
-const useStyles = makeStyles(theme => ({
-	footer: {
-		backgroundColor: '#f8f8f8',
-		padding: theme.spacing(6),
-	},
-	button: {
-		margin: theme.spacing.unit,
-		marginTop: 5,
-		marginBottom: 5,
-		padding: 0,
-	},
-	paymentImage: {
-		padding: 5,
-	},
-	links: {
-		textDecoration: 'none !important',
-		color: 'inherit',
-		padding: 2,
-	},
-	contactLink: {
-		textDecoration: 'none !important',
-		color: 'inherit',
-		padding: 2,
-		'&:hover': {
-			boxShadow: '0px 1px 1px #888888',
-			// color: '#333',
-			textDecoration: 'none !important',
-		},
-	},
-	logo: {
-		maxWidth: 200,
-		marginRight: '10px',
-	},
-}));
+import Hadiwa_logo from '../assets/images/hadiwa-logo.png';
 
-function Copyright() {
-	return (
-		<Typography variant='body2' color='textPrimary' align='center'>
-			{'Copyright © '} {new Date().getFullYear()}{' '}
-			<Link color='inherit' href='https://quincaparadi.com/'>
-				QuincaParadi
-			</Link>{' '}
-			{'All Rights Reserved.'}
-		</Typography>
-	);
-}
+const FooterFeature = ({ icon: Icon, title, description, image }) => (
+  <div className="flex flex-col items-center text-center p-4 group">
+    <div className="mb-4 p-3 bg-slate-700/30 rounded-full group-hover:bg-primary/20 transition-colors duration-300">
+      {image ? (
+        <img src={image} alt={title} className="w-12 h-12 object-contain" />
+      ) : (
+        <Icon className="w-8 h-8 text-primary" />
+      )}
+    </div>
+    <h3 className="text-white font-bold mb-2">{title}</h3>
+    <p className="text-slate-400 text-sm">{description}</p>
+  </div>
+);
+
+const FooterLink = ({ href, children }) => (
+  <a 
+    href={href} 
+    className="block text-slate-400 hover:text-primary transition-colors duration-200 text-sm mb-2"
+  >
+    {children}
+  </a>
+);
 
 const Footer = () => {
-	const classes = useStyles();
-	const social = [
-		{
-			name: 'Facebook',
-			url: 'https://www.facebook.com/Quinca-paradi-100217132135489',
-		},
-		{
-			name: 'Instagram',
-			url: 'https://www.instagram.com/quincaparadi/',
-		},
-		{
-			name: 'Twitter',
-			url: 'https://twitter.com/QuincaParadi',
-		},
-	];
+  const categories = [
+    { name: 'All Categories', url: '/categories' },
+    { name: 'Construction materials', url: '/category/construction' },
+    { name: 'Plumbing materials', url: '/category/plumbing' },
+    { name: 'Electricity materials', url: '/category/electricity' },
+  ];
 
-	const categories = [
-		{
-			name: 'All Categories',
-			url: '/categories',
-		},
-		{
-			name: 'Contruction materials',
-			url: '/category/construction',
-		},
-		{
-			name: 'Plumbing materials',
-			url: '/category/plumbing',
-		},
-		{
-			name: 'Electricity materials',
-			url: '/category/electricity',
-		},
-	];
-	return (
-		<footer className={classes.footer}>
-			<Grid container spacing={6}>
-				<Grid item xs={6} sm={3}>
-					<Typography variant='body2' align='center' gutterBottom>
-						<img
-							width='100'
-							height='60'
-							src={secureImage}
-							alt=''
-							className='edit-img'
-						/>
-					</Typography>
-					<Typography variant='body1' color='textPrimary' align='center'>
-						100% Secure Payments
-					</Typography>
-					<Typography variant='body2' color='textSecondary' align='center'>
-						Pay with the world's most popular and secure payment methods
-					</Typography>
-				</Grid>
-				<Grid item xs={6} sm={3}>
-					<Typography variant='body2' align='center' gutterBottom>
-						<img
-							width='100'
-							height='60'
-							src={paymentImage}
-							alt=''
-							className='edit-img'
-						/>
-					</Typography>
-					<Typography variant='body1' color='textPrimary' align='center'>
-						Trust Pay
-					</Typography>
-					<Typography variant='body2' color='textSecondary' align='center'>
-						100% Payment Protection. Easy Return Policy
-					</Typography>
-				</Grid>
-				<Grid item xs={6} sm={3}>
-					<Typography variant='body2' align='center' gutterBottom>
-						<img
-							width='100'
-							height='60'
-							src={helpImage}
-							alt=''
-							className='edit-img'
-						/>
-					</Typography>
-					<Typography variant='body1' color='textPrimary' align='center'>
-						Help 24/7
-					</Typography>
-					<Typography variant='body2' color='textSecondary' align='center'>
-						Got a question? please{' '}
-						<Link
-							display='inline'
-							variant='body2'
-							href='/contact-us'
-							align='center'
-							className={classes.contactLink}
-						>
-							Contact us
-						</Link>
-					</Typography>
-				</Grid>
-				<Grid item xs={6} sm={3}>
-					<Typography variant='body2' align='center' gutterBottom>
-						<img
-							width='100'
-							height='60'
-							src={deliverImage}
-							alt=''
-							className='edit-img'
-						/>
-					</Typography>
-					<Typography variant='body1' color='textPrimary' align='center'>
-						Delivery
-					</Typography>
-					<Typography variant='body2' color='textSecondary' align='center'>
-						Fast and secure delivery service
-					</Typography>
-				</Grid>
-			</Grid>
-			<Box m={2} pt={3}>
-				<Divider />
-			</Box>
-			<Grid container spacing={6}>
-				<Grid item xs={12} sm={4}></Grid>
-				<Grid item xs={12} sm={4}>
-					<Typography variant='body1' color='textPrimary' align='center'>
-						Payment Method
-					</Typography>
-					<Typography
-						variant='body2'
-						align='center'
-						alignItems='center'
-						gutterBottom
-					>
-						<img
-							width='80'
-							height='50'
-							src={momoImage}
-							alt=''
-							className={classes.paymentImage}
-						/>
-						<img
-							width='80'
-							height='50'
-							src={visaImage}
-							alt=''
-							className={classes.paymentImage}
-						/>
-						<img
-							width='80'
-							height='50'
-							src={masterCard}
-							alt=''
-							className={classes.paymentImage}
-						/>
-					</Typography>
-				</Grid>
-				<Grid item xs={12} sm={4}></Grid>
-			</Grid>
-			<Box m={2} pt={3}>
-				<Divider />
-			</Box>
-			<Grid container spacing={6}>
-				<Grid item xs={6} sm={3}>
-					<Typography
-						variant='body2'
-						color='textSecondary'
-						align='left'
-						gutterBottom
-					>
-						<img
-							src={Quinca_logo}
-							alt='Quinca Paradi'
-							className={classes.logo}
-						/>
-						QuincaParadi is a business name and e-commerce platform owned by
-						PARADI-BOUNTY Co. LTD which is a domestic company registered under
-						CC/TIN/VAT 111707849. we are an experienced company in the supply
-						and distribution of construction materials in general
-					</Typography>
-				</Grid>
-				<Grid item xs={6} sm={3}>
-					<Typography
-						variant='body1'
-						color='textPrimary'
-						align='left'
-						gutterBottom
-					>
-						Browse
-					</Typography>
-					{categories &&
-						categories.map(category => (
-							<Link
-								display='block'
-								variant='body2'
-								href={category.url}
-								key={category}
-								align='center'
-								className={classes.links}
-							>
-								<Typography
-									variant='body2'
-									color='textSecondary'
-									align='left'
-									gutterBottom
-								>
-									{category.name}
-								</Typography>
-							</Link>
-						))}
-				</Grid>
-				<Grid item xs={6} sm={3}>
-					<Typography
-						variant='body1'
-						color='textPrimary'
-						align='left'
-						gutterBottom
-					>
-						Company
-					</Typography>
-					<Link
-						display='block'
-						variant='body2'
-						href='/contact-us'
-						align='center'
-						className={classes.links}
-					>
-						<Typography
-							variant='body2'
-							color='textSecondary'
-							align='left'
-							gutterBottom
-						>
-							Contact us
-						</Typography>
-					</Link>
-					<Link
-						display='block'
-						variant='body2'
-						href='/about-us'
-						align='center'
-						className={classes.links}
-					>
-						<Typography
-							variant='body2'
-							color='textSecondary'
-							align='left'
-							gutterBottom
-						>
-							About us
-						</Typography>
-					</Link>
-					<Link
-						display='block'
-						variant='body2'
-						href='/terms-and-conditions'
-						align='center'
-						className={classes.links}
-					>
-						<Typography
-							variant='body2'
-							color='textSecondary'
-							align='left'
-							gutterBottom
-						>
-							Terms & Conditions
-						</Typography>
-					</Link>
-				</Grid>
-				<Grid item xs={6} sm={3}>
-					<Typography
-						variant='body1'
-						color='textPrimary'
-						align='left'
-						gutterBottom
-					>
-						Stay Connected
-					</Typography>
-					{social.map(network => (
-						<Link
-							display='block'
-							variant='body2'
-							href={network.url}
-							key={network}
-							align='center'
-							className={classes.links}
-						>
-							<Grid container direction='row' spacing={1} alignItems='center'>
-								<Grid item>
-									<SocialIcon
-										className={classes.button}
-										url={network.url}
-										fontSize='12px'
-										color='white'
-										target='_blank'
-									/>
-								</Grid>
-								<Grid item>{network.name}</Grid>
-							</Grid>
-						</Link>
-					))}
-				</Grid>
-			</Grid>
-			<Box m={2} pt={3}>
-				<Divider />
-			</Box>
-			<Copyright />
-		</footer>
-	);
+  const social = [
+    { name: 'Facebook', url: 'https://www.facebook.com/Quinca-paradi-100217132135489' },
+    { name: 'Instagram', url: 'https://www.instagram.com/quincaparadi/' },
+    { name: 'Twitter', url: 'https://twitter.com/QuincaParadi' },
+  ];
+
+  return (
+    <footer className="bg-secondary pt-16 pb-8 mt-12 overflow-hidden border-t border-slate-700">
+      <Container>
+        {/* Features Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+          <FooterFeature 
+            image={secureImage}
+            title="100% Secure Payments"
+            description="Pay with the world's most popular and secure payment methods"
+          />
+          <FooterFeature 
+            image={paymentImage}
+            title="Trust Pay"
+            description="100% Payment Protection. Easy Return Policy"
+          />
+          <FooterFeature 
+            image={helpImage}
+            title="Help 24/7"
+            description="Got a question? We're here to help around the clock"
+          />
+          <FooterFeature 
+            image={deliverImage}
+            title="Delivery"
+            description="Fast and secure delivery service to your doorstep"
+          />
+        </div>
+
+        <Divider className="border-slate-700" />
+
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-12">
+          {/* About Section */}
+          <div className="space-y-6">
+            <img src={Hadiwa_logo} alt="Hadiwa" className="h-12 w-auto rounded-lg shadow-lg" />
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Hadiwa is a premium e-commerce platform by PARADI-BOUNTY Co. LTD. 
+              We specialize in high-quality construction materials and tools distribution.
+              <span className="block mt-2 font-medium text-slate-300">CC/TIN/VAT 111707849</span>
+            </p>
+          </div>
+
+          {/* Categories Section */}
+          <div>
+            <h4 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
+              Browse Categories
+            </h4>
+            <div className="flex flex-col">
+              {categories.map((cat) => (
+                <FooterLink key={cat.name} href={cat.url}>{cat.name}</FooterLink>
+              ))}
+            </div>
+          </div>
+
+          {/* Company Section */}
+          <div>
+            <h4 className="text-white font-bold text-lg mb-6">Company</h4>
+            <div className="flex flex-col">
+              <FooterLink href="/contact-us">Contact Us</FooterLink>
+              <FooterLink href="/about-us">About Us</FooterLink>
+              <FooterLink href="/terms-and-conditions">Terms & Conditions</FooterLink>
+              <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+            </div>
+          </div>
+
+          {/* Connected & Payment Section */}
+          <div>
+            <h4 className="text-white font-bold text-lg mb-6">Stay Connected</h4>
+            <div className="flex gap-4 mb-8">
+              {social.map((s) => (
+                <SocialIcon 
+                  key={s.name} 
+                  url={s.url} 
+                  target="_blank"
+                  fgColor="#ffffff"
+                  bgColor="transparent"
+                  className="hover:scale-110 transition-transform bg-slate-700/50 rounded-full"
+                  style={{ height: 40, width: 40 }}
+                />
+              ))}
+            </div>
+
+            <h4 className="text-white font-bold text-lg mb-4">Payment Methods</h4>
+            <div className="flex flex-wrap gap-4 items-center">
+              <img src={momoImage} alt="MTN MoMo" className="h-8 w-auto grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all" />
+              <img src={visaImage} alt="Visa" className="h-6 w-auto grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all" />
+              <img src={masterCard} alt="MasterCard" className="h-8 w-auto grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all" />
+            </div>
+          </div>
+        </div>
+
+        <Divider className="border-slate-700 mt-0" />
+
+        {/* Bottom Bar */}
+        <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+          <p>© {new Date().getFullYear()} Hadiwa. All Rights Reserved.</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-primary transition-colors">Privacy</a>
+            <a href="#" className="hover:text-primary transition-colors">Cookies</a>
+            <a href="#" className="hover:text-primary transition-colors">Accessibility</a>
+          </div>
+        </div>
+      </Container>
+    </footer>
+  );
 };
+
 export default Footer;

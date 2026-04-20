@@ -3,8 +3,8 @@ import {
 	POST_ITEM,
 	SET_ITEM,
 	UPDATE_ITEM,
-	GET_RELATED_FAILURE,
-	GET_RELATED_SUCCESS,
+	GET_ITEM_RELATED_FAILURE,
+	GET_ITEM_RELATED_SUCCESS,
 	GET_ALL_ITEMS_FAILURE,
 	GET_ALL_ITEMS_SUCCESS,
 } from '../types';
@@ -51,23 +51,26 @@ export default function (state = initialState, action) {
 		case POST_ITEM:
 			return {
 				...state,
-				allItems: [action.payload, ...state.allItems],
-				item: action.payload.item,
+				allItems: [action.payload.data, ...state.allItems],
+				item: action.payload.data,
 				addItemSuccess: action.payload.message,
 			};
 		case UPDATE_ITEM:
+			const updatedItem = action.payload.data;
 			return {
 				...state,
-				allItems: [action.payload, ...state.allItems],
-				item: action.payload.item,
+				allItems: state.allItems.map(item => 
+					item.id === updatedItem.id ? updatedItem : item
+				),
+				item: updatedItem,
 				updateItemSuccess: action.payload.message,
 			};
-		case GET_RELATED_SUCCESS:
+		case GET_ITEM_RELATED_SUCCESS:
 			return {
 				...state,
 				relatedItems: action.payload,
 			};
-		case GET_RELATED_FAILURE:
+		case GET_ITEM_RELATED_FAILURE:
 			return {
 				...state,
 				relatedItems: action.payload,

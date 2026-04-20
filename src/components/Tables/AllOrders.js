@@ -1,239 +1,140 @@
-import React, { useEffect, Fragment } from 'react';
-import clsx from 'clsx';
-import 'dotenv/config';
-import PropTypes from 'prop-types';
-import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
-import Grid from '@material-ui/core/Grid';
-import TableRow from '@material-ui/core/TableRow';
-import { getAllOrders } from '../../redux/actions';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
-import TableHead from '@material-ui/core/TableHead';
-import Title from '../../layouts/Title';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronsLeft, 
+  ChevronsRight,
+  Filter,
+  Download,
+  Search,
+  ArrowUpDown
+} from 'lucide-react';
+import { getAllOrders } from '../../redux/actions';
+import { Card } from '../Ui/Card';
+import { Typography } from '../Ui/Typography';
+import Button from '../Ui/Button';
 import RequestedOrder from './RequestedOrder';
 
-const useStyles1 = makeStyles(theme => ({
-	root: {
-		flexShrink: 0,
-		marginLeft: theme.spacing(2.5),
-	},
-}));
-
-function TablePaginationActions(props) {
-	const classes = useStyles1();
-	const theme = useTheme();
-	const { count, page, rowsPerPage, onChangePage } = props;
-
-	const handleFirstPageButtonClick = event => {
-		onChangePage(event, 0);
-	};
-
-	const handleBackButtonClick = event => {
-		onChangePage(event, page - 1);
-	};
-
-	const handleNextButtonClick = event => {
-		onChangePage(event, page + 1);
-	};
-
-	const handleLastPageButtonClick = event => {
-		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-	};
-
-	return (
-		<div className={classes.root}>
-			<IconButton
-				onClick={handleFirstPageButtonClick}
-				disabled={page === 0}
-				aria-label='first page'
-			>
-				{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-			</IconButton>
-			<IconButton
-				onClick={handleBackButtonClick}
-				disabled={page === 0}
-				aria-label='previous page'
-			>
-				{theme.direction === 'rtl' ? (
-					<KeyboardArrowRight />
-				) : (
-					<KeyboardArrowLeft />
-				)}
-			</IconButton>
-			<IconButton
-				onClick={handleNextButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label='next page'
-			>
-				{theme.direction === 'rtl' ? (
-					<KeyboardArrowLeft />
-				) : (
-					<KeyboardArrowRight />
-				)}
-			</IconButton>
-			<IconButton
-				onClick={handleLastPageButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label='last page'
-			>
-				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-			</IconButton>
-		</div>
-	);
-}
-
-TablePaginationActions.propTypes = {
-	count: PropTypes.number.isRequired,
-	onChangePage: PropTypes.func.isRequired,
-	page: PropTypes.number.isRequired,
-	rowsPerPage: PropTypes.number.isRequired,
-};
-
-const useStyles2 = makeStyles(theme => ({
-	root: {
-		width: '100%',
-	},
-	container: {
-		maxHeight: 700,
-	},
-	table: {
-		minWidth: 500,
-	},
-	dashboard: {
-		marginTop: 10,
-	},
-	paper: {
-		padding: theme.spacing(2),
-		display: 'flex',
-		overflow: 'auto',
-		flexDirection: 'column',
-	},
-}));
-
-const StyledTableCell = withStyles(theme => ({
-	head: {
-		backgroundColor: theme.palette.primary.dark,
-		color: theme.palette.common.white,
-	},
-	body: {
-		fontSize: 14,
-	},
-}))(TableCell);
-
 const AllOrders = () => {
-	const classes = useStyles2();
-	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const orders = useSelector(state => state.order.allOrders);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const orders = useSelector(state => state.order.allOrders);
+  const dispatch = useDispatch();
 
-	const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllOrders());
+  }, [dispatch]);
 
-	useEffect(() => {
-		dispatch(getAllOrders());
-	}, [dispatch]);
+  const orderList = Array.isArray(orders) ? orders : [];
+  const totalPages = Math.ceil(orderList.length / rowsPerPage);
+  
+  const paginatedOrders = orderList.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
-	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, orders.length - page * rowsPerPage);
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <Typography variant="h3">Requested Orders</Typography>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+            Total {orderList.length} orders found
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" icon={Filter}>Filter</Button>
+          <Button variant="outline" size="sm" icon={Download}>Export</Button>
+        </div>
+      </div>
 
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
+      <Card hover={false} className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-100">
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Customer</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Items</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Created</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {orderList.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-8 py-20 text-center">
+                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-200">
+                      <Search size={24} />
+                    </div>
+                    <p className="font-bold text-slate-400">No orders found.</p>
+                  </td>
+                </tr>
+              ) : (
+                paginatedOrders.map((item) => (
+                  <RequestedOrder key={item.id} oneRequest={item} />
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
-	const handleChangeRowsPerPage = event => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
-	return (
-		<Fragment>
-			<div className={classes.dashboard}>
-				<Paper className={classes.root}>
-					<Grid container spacing={3}>
-						<Grid item xs={12} md={8} lg={9}>
-							<Paper className={fixedHeightPaper}>
-								<Title>Requested orders</Title>
-							</Paper>
-						</Grid>
-					</Grid>
-					<TableContainer className={classes.container}>
-						<Table stickyHeader aria-label='sticky table'>
-							<TableHead>
-								<TableRow>
-									<StyledTableCell>Names</StyledTableCell>
-									<StyledTableCell align='left'>Phone</StyledTableCell>
-									<StyledTableCell align='right'>Email</StyledTableCell>
-									<StyledTableCell align='right'>No orders</StyledTableCell>
-									<StyledTableCell align='right'>Actions</StyledTableCell>
-									<StyledTableCell align='right'>Created Time</StyledTableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{orders === 'No Order Item found' ? (
-									<TableRow>
-										<TableCell colSpan={6} align='center' size='small'>
-											{orders}
-										</TableCell>
-									</TableRow>
-								) : (
-									<>
-										{(rowsPerPage > 0
-											? orders.slice(
-													page * rowsPerPage,
-													page * rowsPerPage + rowsPerPage
-											  )
-											: orders
-										).map(item => (
-											<RequestedOrder key={item.id} oneRequest={item} />
-										))}
+        {/* Custom Pagination */}
+        <div className="px-8 py-6 bg-slate-50/50 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-100">
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Rows per page:</span>
+            <select 
+              value={rowsPerPage}
+              onChange={(e) => {
+                setRowsPerPage(Number(e.target.value));
+                setPage(0);
+              }}
+              className="bg-white border border-slate-200 rounded-xl text-xs font-black px-4 py-2 focus:ring-2 focus:ring-primary/10 focus:border-primary/20 transition-all outline-none"
+            >
+              {[5, 10, 25, 50].map(val => <option key={val} value={val}>{val}</option>)}
+            </select>
+          </div>
 
-										{emptyRows > 0 && (
-											<TableRow style={{ height: 53 * emptyRows }}>
-												<TableCell colSpan={6} />
-											</TableRow>
-										)}
-									</>
-								)}
-							</TableBody>
-							<TableFooter>
-								<TableRow>
-									<TablePagination
-										rowsPerPageOptions={[
-											5,
-											10,
-											25,
-											{ label: 'All', value: -1 },
-										]}
-										colSpan={3}
-										count={orders.length}
-										rowsPerPage={rowsPerPage}
-										page={page}
-										SelectProps={{
-											inputProps: { 'aria-label': 'rows per page' },
-											native: true,
-										}}
-										onChangePage={handleChangePage}
-										onChangeRowsPerPage={handleChangeRowsPerPage}
-										ActionsComponent={TablePaginationActions}
-									/>
-								</TableRow>
-							</TableFooter>
-						</Table>
-					</TableContainer>
-				</Paper>
-			</div>
-		</Fragment>
-	);
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-400 tracking-tight mr-4">
+              Page <span className="text-secondary">{page + 1}</span> of <span className="text-secondary">{totalPages || 1}</span>
+            </span>
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={() => setPage(0)}
+                disabled={page === 0}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronsLeft size={16} />
+              </button>
+              <button 
+                onClick={() => setPage(p => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button 
+                onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                disabled={page >= totalPages - 1}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronRight size={16} />
+              </button>
+              <button 
+                onClick={() => setPage(totalPages - 1)}
+                disabled={page >= totalPages - 1}
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+              >
+                <ChevronsRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
 };
 
 export default AllOrders;

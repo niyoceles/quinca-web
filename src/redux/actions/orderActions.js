@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {
 	GET_ALL_ORDERS_FAILURE,
 	GET_ALL_ORDERS_SUCCESS,
@@ -11,7 +10,7 @@ const { REACT_APP_BACKEND } = process.env;
 
 export const getAllOrders = () => dispatch => {
 	axios
-		.get(`${REACT_APP_BACKEND}/order`)
+		.get(`${REACT_APP_BACKEND}/order/supplier`)
 		.then(res => {
 			dispatch({ type: GET_ALL_ORDERS_SUCCESS, payload: res.data.allorders });
 		})
@@ -27,12 +26,10 @@ export const getSingleOrder = id => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/order/${id}`)
 		.then(res => {
-			console.log(res.data);
 			dispatch({
 				type: GET_SINGLE_ORDER_SUCCESS,
 				payload: res.data,
 			});
-			toast.success(res.data.message);
 		})
 		.catch(err => {
 			dispatch({

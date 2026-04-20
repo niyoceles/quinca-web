@@ -1,25 +1,25 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
-	<Route
-		{...rest}
-		render={props =>
-			authenticated === true ? (
-				<Component {...props} />
-			) : (
-				<Redirect
-					to={{ pathname: '/login', state: { from: props.location } }}
-				/>
-			)
-		}
-	/>
-);
+const AuthRoute = ({ children, authenticated }) => {
+	const location = useLocation();
+
+	return authenticated === true ? (
+		children
+	) : (
+		<Navigate
+			to="/login"
+			state={{ from: location }}
+			replace
+		/>
+	);
+};
 
 AuthRoute.propTypes = {
 	authenticated: PropTypes.bool.isRequired,
+	children: PropTypes.node.isRequired,
 };
 
 const mapStateToProps = state => ({

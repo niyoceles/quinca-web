@@ -1,70 +1,76 @@
 import React, { useState } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Slide from '@material-ui/core/Slide';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction='up' ref={ref} {...props} />;
-});
+import { ShoppingCart } from 'lucide-react';
+import { Modal } from '../Ui/Modal';
+import Input from '../Ui/Input';
+import Button from '../Ui/Button';
 
 export default function DialogQuantity(props) {
-	const [submitted, setSubmitted] = useState(false);
-	const [quantity, setQuantity] = useState('');
-	const handleSubmit = e => {
-		e.preventDefault();
-		setSubmitted(true);
-	};
-	return (
-		<Dialog
-			open={props.open}
-			TransitionComponent={Transition}
-			aria-labelledby='alert-dialog-slide-title'
-			aria-describedby='alert-dialog-slide-description'
-			keepMounted
-			close={props.close}
-		>
-			<form noValidate onSubmit={handleSubmit}>
-				<DialogContent>
-					<TextField
-						variant='outlined'
-						margin='normal'
-						required
-						name='quantity'
-						defaultValue={'10'}
-						// inputProps={{ min: '10' }}
-						helperText={submitted && !quantity ? 'please add quantity' : null}
-						value={quantity}
-						error={submitted && !quantity ? 'is-invalid' : null}
-						onChange={e => setQuantity(e.target.value)}
-						label='quantity'
-						type='number'
-						id='quantity'
-						autoComplete='quantity'
-						autoFocus
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button
-						type='submit'
-						color='primary'
-						size='small'
-						style={{
-							backgroundColor: '#0080003a',
-							width: '80%',
-							color: 'green',
-						}}
-						onClick={e => props.addcart(e, props.selected, quantity)}
-					>
-						Confirm add cart
-					</Button>
-					<Button onClick={props.close} color='secondary'>
-						Cancel
-					</Button>
-				</DialogActions>
-			</form>
-		</Dialog>
-	);
+  const [submitted, setSubmitted] = useState(false);
+  const [quantity, setQuantity] = useState('10'); // Default as in original
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    if (quantity) {
+      props.addcart(e, props.selected, quantity);
+    }
+  };
+
+  return (
+    <Modal 
+      open={props.open} 
+      onClose={props.close} 
+      title="Add to Shopping Cart"
+      maxWidth="sm"
+    >
+      <form noValidate onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-slate-50 p-6 rounded-2xl mb-6">
+          <div className="flex gap-4 items-center">
+            {props.selected?.itemImage && (
+              <img 
+                src={props.selected.itemImage} 
+                alt={props.selected.itemName} 
+                className="w-20 h-20 object-cover rounded-xl shadow-sm"
+              />
+            )}
+            <div>
+              <p className="font-black text-secondary line-clamp-2">{props.selected?.itemName}</p>
+              <p className="text-primary font-bold text-lg mt-1">RWF {props.selected?.itemPrice}</p>
+            </div>
+          </div>
+        </div>
+
+        <Input
+          label="Purchase Quantity"
+          type="number"
+          id="quantity"
+          name="quantity"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          error={submitted && !quantity ? 'Please specify quantity' : null}
+          autoFocus
+          required
+          min="1"
+        />
+
+        <div className="flex gap-3 pt-4">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={props.close}
+            className="flex-1 font-bold text-slate-400"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            icon={ShoppingCart}
+            className="flex-[2] font-black rounded-xl shadow-premium"
+          >
+            Confirm Add
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  );
 }

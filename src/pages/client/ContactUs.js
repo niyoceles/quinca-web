@@ -1,82 +1,115 @@
 import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
+import { Phone, Mail, MapPin, Clock, Globe, ShieldCheck } from 'lucide-react';
+import { Container, Grid, Divider } from '../../components/Ui/Layout';
+import { Typography } from '../../components/Ui/Typography';
+import { Card } from '../../components/Ui/Card';
 import ClientLayout from '../../layouts/ClientLayout';
 import ContactForm from '../../components/client/ContactForm';
 
-const useStyles = makeStyles(theme => ({
-	cardGrid: {
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(2),
-		marginBottom: 40,
-		borderRadius: '10px',
-	},
-	card: {
-		height: 'auto',
-		display: 'flex',
-		flexDirection: 'column',
-	},
-	cardContent: {
-		flexGrow: 1,
-	},
-}));
-
 export default function ContactUs() {
-	const classes = useStyles();
-	return (
-		<ClientLayout>
-			<main container>
-				<Container item className={classes.cardGrid} maxWidth='lg'>
-					<Grid container spacing={3}>
-						<Grid item xs={12} sm={6} md={6}>
-							<Card className={classes.card} elevation={1}>
-								<CardContent className={classes.cardContent}>
-									<Typography
-										component='h3'
-										variant='h6'
-										align='left'
-										color='textPrimary'
-									>
-										Address
-									</Typography>
-									<br />
-									<Typography
-										variant='body1'
-										color='textSecondary'
-										component='p'
-									>
-										Phone: +250 788 550 184
-										<br />
-										Email: info@quincaparadi.com
-										<br />
-										Location: Kigali, Gasabo District, Gisozi
-									</Typography>
-								</CardContent>
-							</Card>
-							{/* <div style={{ width: '100%' }}>
-								<embed src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d63799.99735817496!2d30.103524999999998!3d-1.9533690000000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc76b5e00aaa31b51!2sM%26M%20Plaza!5e0!3m2!1sen!2srw!4v1605274623851!5m2!1sen!2srw' />
-							</div> */}
-						</Grid>
-						<Grid item xs={12} sm={6} md={6}>
-							<Card className={classes.card} elevation={1}>
-								<ContactForm />
-							</Card>
-						</Grid>
-						<Grid item xs={12} sm={6} md={6}>
-							<Card elevation={1}>
-								<CardMedia></CardMedia>
-							</Card>
-						</Grid>
-					</Grid>
-				</Container>
-				<Divider />
-			</main>
-		</ClientLayout>
-	);
+  return (
+    <ClientLayout>
+      <main className="bg-slate-50 min-h-screen">
+        {/* Banner Section */}
+        <div className="bg-secondary py-20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+          
+          <Container className="relative z-10 text-center space-y-4">
+            <Typography variant="h1" className="text-white">
+              Get in <span className="text-primary italic">Touch</span>
+            </Typography>
+            <p className="text-slate-400 font-medium max-w-xl mx-auto">
+              Our professional support team is ready to assist you with any inquiries regarding our premium construction materials and services.
+            </p>
+          </Container>
+        </div>
+
+        <Container className="-mt-12 pb-24 relative z-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Contact Details Column */}
+            <div className="lg:col-span-4 space-y-6">
+              <Card className="p-8 border-none shadow-premium bg-white rounded-[2.5rem] relative overflow-hidden group">
+                <div className="space-y-10">
+                  <div className="space-y-6">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Global HQ</p>
+                    
+                    <div className="space-y-6">
+                      <div className="flex gap-4 group/item">
+                        <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-300">
+                          <Phone size={20} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phone Pulse</p>
+                          <p className="text-sm font-black text-secondary">+250 788 550 184</p>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 group/item">
+                        <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-300">
+                          <Mail size={20} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cloud Mail</p>
+                          <p className="text-sm font-black text-secondary">info@hadiwa.com</p>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 group/item">
+                        <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-300">
+                          <MapPin size={20} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Office Anchor</p>
+                          <p className="text-sm font-black text-secondary">Kigali, Gasabo District, Gisozi</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Divider className="border-slate-50" />
+
+                  <div className="space-y-6">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-secondary">Availability Matrix</p>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100/50">
+                        <div className="flex items-center gap-2 text-slate-400 mb-1">
+                          <Clock size={12} /> <span className="text-[10px] font-bold uppercase tracking-widest">Mon - Fri</span>
+                        </div>
+                        <p className="text-[10px] font-black text-secondary">08:00 - 18:00</p>
+                      </div>
+                      <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100/50">
+                        <div className="flex items-center gap-2 text-slate-400 mb-1">
+                          <Globe size={12} /> <span className="text-[10px] font-bold uppercase tracking-widest">Saturday</span>
+                        </div>
+                        <p className="text-[10px] font-black text-secondary">09:00 - 15:00</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <div className="bg-primary p-8 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden group">
+                <div className="absolute bottom-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700">
+                  <ShieldCheck size={120} />
+                </div>
+                <h4 className="font-black text-lg mb-2">Verified Support</h4>
+                <p className="text-xs font-medium text-white/70 leading-relaxed">
+                   All inquiries are tracked and verified to ensure high-quality service standards and reliable procurement advice.
+                </p>
+              </div>
+            </div>
+
+            {/* Form Column */}
+            <div className="lg:col-span-8">
+              <Card className="border-none shadow-premium bg-white rounded-[2.5rem] overflow-hidden">
+                <ContactForm />
+              </Card>
+            </div>
+          </div>
+        </Container>
+      </main>
+    </ClientLayout>
+  );
 }
