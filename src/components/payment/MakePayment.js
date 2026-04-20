@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import React from 'react';
-import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
-import { CreditCard } from 'lucide-react';
-import Button from '../Ui/Button';
-
+import Button from '@material-ui/core/Button';
+import {
+    useFlutterwave,
+    closePaymentModal
+} from 'flutterwave-react-v3';
 const {
     REACT_APP_FLUTTERWAVE_PUBLIC_KEY
 } = process.env;
@@ -17,10 +19,10 @@ const MakePayment = (props) => {
         customer: {
             email: 'user@gmail.com',
             phonenumber: '07064586146',
-            name: 'User',
+            name: 'joel ugwumadu',
         },
         customizations: {
-            title: 'Make your payment at Hadiwa',
+            title: 'Make your payment at Quinca Paradi',
             description: 'Payment for items in cart',
             logo: 'https://res.cloudinary.com/dfsai53mw1/image/upload/v1613415905/QUINCAPARADI/mstile-150x150_whtq6d.png',
         },
@@ -28,24 +30,31 @@ const MakePayment = (props) => {
 
     const handleFlutterPayment = useFlutterwave(config);
 
-    return (
-        <div className="w-full">
-            <Button
-                variant="primary"
-                className="w-full rounded-[1.5rem] py-5 font-black shadow-premium active:scale-[0.98] transition-all"
-                icon={CreditCard}
-                onClick={() => {
-                    handleFlutterPayment({
-                        callback: response => {
-                            closePaymentModal();
-                        },
-                        onClose: () => { },
-                    });
-                }}
-            >
-                Confirm & Pay Now
-            </Button>
-        </div>
+    return ( <
+        div className = 'App' >
+        <
+        Button color = 'primary'
+        size = 'medium'
+        variant = 'contained'
+        style = {
+            {
+                width: '100%',
+            }
+        }
+        onClick = {
+            () => {
+                handleFlutterPayment({
+                    callback: response => {
+                        console.log(response);
+                        closePaymentModal(); // this will close the modal programmatically
+                    },
+                    onClose: () => {},
+                });
+            }
+        } >
+        Pay Now <
+        /Button> <
+        /div>
     );
 };
 

@@ -8,7 +8,7 @@ import {
 	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
 } from '../types';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 const initialState = {
 	signupData: null,

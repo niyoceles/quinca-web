@@ -1,369 +1,360 @@
-import React, {
-    useState
-} from 'react';
+import 'dotenv/config';
+import React, { useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import {
-    useDispatch,
-    useSelector
-} from 'react-redux';
-import {
-    Save,
-    Upload,
-    Loader2,
-    Image as ImageIcon,
-    Check,
-    AlertCircle
-} from 'lucide-react';
-import {
-    updateMyProfile
-} from '../../redux/actions';
-import Button from '../Ui/Button';
-import Input from '../Ui/Input';
+// import MyButton from '../../utils/MyButton';
+import { makeStyles } from '@material-ui/core/styles';
+// Redux stuff
+import { useDispatch, useSelector } from 'react-redux';
+import { updateMyProfile } from '../../redux/actions';
+
+// import Validator from '../../utils/inputValidation';
+// MUI Stuff
+import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
+import TextField from '@material-ui/core/TextField';
+// import EditIcon from '@material-ui/icons/Edit';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const {
-    REACT_APP_CLOUDINARY_NAME,
-    REACT_APP_CLOUDINARY_UPLOAD_PRESET,
+	REACT_APP_CLOUDINARY_NAME,
+	REACT_APP_CLOUDINARY_API_KEY,
+	REACT_APP_CLOUDINARY_UPLOAD_PRESET,
 } = process.env;
 
-const EditProfile = ({
-    user: initialUser,
-    onCancel
-}) => {
-    const [user, setUser] = useState({
-        ...initialUser
-    });
-    const [submitted, setSubmitted] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
-    const [imageUrl, setImageUrl] = useState(null);
+const useStyles = makeStyles(theme => ({
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+	},
+	textField: {
+		margin: '10px auto 10px auto',
+	},
+	formControl: {
+		margin: '10px auto 10px auto',
+		minWidth: '100%',
+	},
+	selectEmpty: {
+		marginTop: theme.spacing(2),
+	},
+}));
+const EditProfile = props => {
+	const classes = useStyles();
 
-    const registering = useSelector(state => state.auth.signupData);
-    const registerFailure = useSelector(state => state.auth.signupFailure);
-    const dispatch = useDispatch();
+	const [user, setUser] = useState({
+		names: props.user.names,
+		phoneNumber: props.user.phoneNumber,
+		email: props.user.email,
+		description: props.user.description,
+		nationalId: props.user.nationalId,
+		organization: props.user.organization,
+		country: props.user.country,
+		supplierType: props.user.supplierType,
+		state: props.user.state,
+		city: props.user.city,
+		address: props.user.address,
+		location: props.user.location,
+		birthDate: props.user.birthDate,
+	});
 
-    const handleChange = e => {
-        const {
-            name,
-            value
-        } = e.target;
-        setUser(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+	const [submitted, setSubmitted] = useState(false);
+	const registering = useSelector(state => state.auth.signupData);
+	const registerFailure = useSelector(state => state.auth.signupFailure);
+	const itemSubmitted = useSelector(state => state.item.addItemSuccess);
 
-    const uploadFile = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+	const dispatch = useDispatch();
 
-        setIsUploading(true);
-        let data = new FormData();
-        data.append('file', file);
-        data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+	const handleChange = e => {
+		const { name, value } = e.target;
+		setUser(user => ({ ...user, [name]: value }));
+	};
 
-        try {
-            const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`, {
-                    method: 'POST',
-                    body: data
-                }
-            );
-            const resData = await response.json();
-            setImageUrl(resData.secure_url);
-        } catch (err) {
-            console.error('Upload failed', err);
-        } finally {
-            setIsUploading(false);
-        }
-    };
+	console.log('this is user:', props.user);
+	const handleSubmit = e => {
+		e.preventDefault();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setSubmitted(true);
+		setSubmitted(true);
+		const {
+			names,
+			nationalId,
+			phoneNumber,
+			email,
+			organization,
+			country,
+			description,
+			supplierType,
+			state,
+			city,
+			address,
+			location,
+			birthDate,
+		} = user;
+		if (names && description && names && localStorage.imageUrl) {
+			const data = {
+				names,
+				nationalId,
+				phoneNumber,
+				email,
+				organization,
+				country,
+				description,
+				supplierType,
+				state,
+				city,
+				address,
+				location,
+				birthDate,
+			};
+			dispatch(updateMyProfile(data));
+		}
+	};
 
-        if (user.names && user.description) {
-            const data = {
-                ...user,
-                // Since original code relied on localStorage.imageUrl, we use imageUrl state or keep current
-            };
-            if (imageUrl) data.imageUrl = imageUrl;
-            dispatch(updateMyProfile(data));
-        }
-    };
+	if (itemSubmitted) {
+		setTimeout(() => {
+			localStorage.removeItem('imageUrl');
+		}, 1000);
+	}
 
-    return ( <
-        form onSubmit = {
-            handleSubmit
-        }
-        className = "space-y-10 animate-in fade-in duration-500" >
-        <
-        div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" > {
-            /* Profile Media Section */ } <
-        div className = "lg:col-span-1 space-y-4" >
-        <
-        label className = "text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1" > Profile Photo < /label> <
-        div className = {
-            `relative border-2 border-dashed rounded-[2.5rem] h-[280px] flex flex-col items-center justify-center transition-all bg-slate-50/50 ${
-            imageUrl ? 'border-primary/20 bg-primary/5' : 'border-slate-100 hover:border-primary/40'
-          }`
-        } > {
-            isUploading ? ( <
-                div className = "flex flex-col items-center gap-3" >
-                <
-                Loader2 className = "text-primary animate-spin"
-                size = {
-                    32
-                }
-                /> <
-                p className = "text-[10px] font-black text-slate-400 uppercase tracking-widest" > Processing... < /p> <
-                /div>
-            ) : imageUrl ? ( <
-                div className = "w-full h-full p-4 group" >
-                <
-                img src = {
-                    imageUrl
-                }
-                alt = "Preview"
-                className = "w-full h-full object-cover rounded-[2rem] shadow-lg transition-transform group-hover:scale-[1.02]" / >
-                <
-                div className = "absolute inset-0 bg-secondary/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center rounded-[2.5rem] m-4" >
-                <
-                div className = "flex flex-col items-center gap-2 text-white" >
-                <
-                Upload size = {
-                    24
-                }
-                /> <
-                span className = "text-[10px] font-black uppercase tracking-widest" > Change Photo < /span> <
-                /div> <
-                /div> <
-                input type = "file"
-                accept = "image/*"
-                className = "absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                onChange = {
-                    uploadFile
-                }
-                /> <
-                /div>
-            ) : ( <
-                div className = "flex flex-col items-center gap-4 p-8 text-center" >
-                <
-                div className = "w-16 h-16 bg-white rounded-3xl shadow-sm flex items-center justify-center text-slate-200" >
-                <
-                ImageIcon size = {
-                    32
-                }
-                /> <
-                /div> <
-                div className = "space-y-1" >
-                <
-                p className = "text-xs font-black text-secondary" > Upload Image < /p> <
-                p className = "text-[10px] font-bold text-slate-400 uppercase leading-tight" > Brand or Personal logo < /p> <
-                /div> <
-                input type = "file"
-                accept = "image/*"
-                className = "absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                onChange = {
-                    uploadFile
-                }
-                /> <
-                /div>
-            )
-        } <
-        /div> {
-            submitted && !imageUrl && !initialUser.imageUrl && ( <
-                p className = "text-[10px] font-bold text-rose-500 uppercase tracking-widest flex items-center gap-2 pl-4" >
-                <
-                AlertCircle size = {
-                    12
-                }
-                /> Image is required <
-                /p>
-            )
-        } <
-        /div>
+	const uploadFile = ({ target: { files } }) => {
+		let data = new FormData();
+		data.append('file', files[0]);
+		data.append('tags', `celestin, image`);
+		data.append('upload_preset', REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
+		data.append('api_key', REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary key
+		data.append('timestamp', (Date.now() / 1000) | 0);
 
-        {
-            /* Basic Info */ } <
-        div className = "lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6" >
-        <
-        Input label = "Full Name"
-        name = "names"
-        value = {
-            user.names
-        }
-        onChange = {
-            handleChange
-        }
-        error = {
-            submitted && !user.names ? "Required" : null
-        }
-        /> <
-        Input label = "Organization"
-        name = "organization"
-        value = {
-            user.organization
-        }
-        onChange = {
-            handleChange
-        }
-        /> <
-        Input label = "Email Address"
-        name = "email"
-        value = {
-            user.email
-        }
-        onChange = {
-            handleChange
-        }
-        /> <
-        Input label = "Phone Number"
-        name = "phoneNumber"
-        value = {
-            user.phoneNumber
-        }
-        onChange = {
-            handleChange
-        }
-        /> <
-        Input label = "National ID"
-        name = "nationalId"
-        value = {
-            user.nationalId
-        }
-        onChange = {
-            handleChange
-        }
-        />
+		const options = {
+			onUploadProgress: progressEvent => {
+				const { loaded, total } = progressEvent;
+				let percent = Math.floor((loaded * 100) / total);
+				console.log(`${loaded}kb of ${total}kb | ${percent}%`);
+			},
+		};
 
-        <
-        div className = "space-y-2" >
-        <
-        label className = "text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1" > Supplier Type < /label> <
-        select name = "supplierType"
-        value = {
-            user.supplierType
-        }
-        onChange = {
-            handleChange
-        }
-        className = "w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm font-bold text-secondary focus:ring-4 focus:ring-primary/10 transition-all outline-none" >
-        <
-        option value = "hotel" > Hotel < /option> <
-        option value = "car" > Transport Car < /option> <
-        option value = "tour" > Tour Package < /option> <
-        option value = "hardware" > Hardware Store < /option> <
-        /select> <
-        /div> <
-        /div> <
-        /div>
+		axios
+			.post(
+				`https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_NAME}/image/upload`,
+				data,
+				options
+			)
+			.then(res => {
+				console.log('UPLOADED', res.data.url);
+				localStorage.setItem('imageUrl', res.data.url);
+			});
+	};
 
-        <
-        div className = "grid grid-cols-1 md:grid-cols-3 gap-6" >
-        <
-        Input label = "Country"
-        name = "country"
-        value = {
-            user.country
-        }
-        onChange = {
-            handleChange
-        }
-        /> <
-        Input label = "State/Province"
-        name = "state"
-        value = {
-            user.state
-        }
-        onChange = {
-            handleChange
-        }
-        /> <
-        Input label = "General Location"
-        name = "location"
-        value = {
-            user.location
-        }
-        onChange = {
-            handleChange
-        }
-        /> <
-        /div>
+	const linkImage = localStorage.imageUrl;
+	const isRequired = <Alert severity='error'>is required</Alert>;
 
-        <
-        Input label = "Exact Street Address"
-        name = "address"
-        value = {
-            user.address
-        }
-        onChange = {
-            handleChange
-        }
-        variant = "textarea"
-        rows = "2" /
-        >
+	return (
+		<form className={classes.form} noValidate onSubmit={handleSubmit}>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				id='names'
+				label='Full Name'
+				name='names'
+				value={user.names}
+				helperText={submitted && !user.names ? 'is invalid' : null}
+				error={submitted && !user.names ? 'is-invalid' : null}
+				onChange={handleChange}
+				autoComplete='names'
+				autoFocus
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				id='phoneNumber'
+				label='Phone number'
+				name='phoneNumber'
+				value={user.phoneNumber}
+				helperText={submitted && !user.phoneNumber ? 'is invalid' : null}
+				error={submitted && !user.phoneNumber ? 'is-invalid' : null}
+				onChange={handleChange}
+				autoComplete='phoneNumber'
+				autoFocus
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				id='email'
+				label='Email Address'
+				name='email'
+				value={user.email}
+				helperText={submitted && !user.email ? 'is invalid' : null}
+				error={submitted && !user.email ? 'is-invalid' : null}
+				onChange={handleChange}
+				autoComplete='email'
+				autoFocus
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				name='organization'
+				helperText={submitted && !user.organization ? 'is invalid' : null}
+				value={user.organization}
+				error={submitted && !user.organization ? 'is-invalid' : null}
+				onChange={handleChange}
+				label='organization'
+				type='text'
+				id='organization'
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				name='National Id'
+				helperText={submitted && !user.nationalId ? 'is invalid' : null}
+				value={user.nationalId}
+				error={submitted && !user.nationalId ? 'is-invalid' : null}
+				onChange={handleChange}
+				label='nationalId'
+				type='text'
+				id='nationalId'
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				name='country'
+				helperText={submitted && !user.country ? 'is invalid' : null}
+				value={user.country}
+				error={submitted && !user.country ? 'is-invalid' : null}
+				onChange={handleChange}
+				label='country'
+				type='text'
+				id='country'
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				name='state'
+				helperText={submitted && !user.state ? 'is invalid' : null}
+				value={user.state}
+				error={submitted && !user.state ? 'is-invalid' : null}
+				onChange={handleChange}
+				label='state'
+				type='text'
+				id='state'
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				name='location'
+				helperText={submitted && !user.location ? 'is invalid' : null}
+				value={user.location}
+				error={submitted && !user.location ? 'is-invalid' : null}
+				onChange={handleChange}
+				label='location'
+				type='text'
+				id='location'
+			/>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				fullWidth
+				name='address'
+				helperText={submitted && !user.address ? 'is invalid' : null}
+				value={user.address}
+				error={submitted && !user.address ? 'is-invalid' : null}
+				onChange={handleChange}
+				label='address'
+				type='text'
+				id='address'
+			/>
+			<FormControl className={classes.formControl}>
+				<InputLabel id='select-label'>Supplier type on</InputLabel>
+				<Select
+					name='supplierType'
+					labelId='select-label'
+					id='select'
+					helperText={submitted && !user.supplierType ? isRequired : null}
+					error={submitted && !user.supplierType ? 'is invalid' : null}
+					value={user.supplierType}
+					onChange={handleChange}
+					fullWidth
+				>
+					<MenuItem value={'hotel'}>Hotel</MenuItem>
+					<MenuItem value={'car'}>Transport car</MenuItem>
+					<MenuItem value={'tour'}>Tour package</MenuItem>
+				</Select>
+			</FormControl>
 
-        <
-        Input label = "Organization/Personal Description"
-        name = "description"
-        value = {
-            user.description
-        }
-        onChange = {
-            handleChange
-        }
-        variant = "textarea"
-        rows = "4"
-        error = {
-            submitted && !user.description ? "Please provide a description" : null
-        }
-        />
+			<div className='container' style={{ paddingBottom: 25 }}>
+				<input
+					type='file'
+					accept='image/*'
+					className='form-control profile-pic-uploader'
+					onChange={uploadFile}
+					required
+				/>
+				{submitted && !localStorage.imageUrl && (
+					<Alert severity='error'>profile image is required</Alert>
+				)}
+			</div>
+			<div>
+				<img
+					width='300'
+					height='150'
+					src={linkImage ? linkImage : null}
+					alt=''
+					className='edit-img'
+				/>
+			</div>
+			<TextField
+				name='description'
+				type='text'
+				label='description organization'
+				multiline
+				rows='3'
+				placeholder='Description of your organization'
+				className={classes.textField}
+				helperText={submitted && !user.description ? isRequired : null}
+				error={submitted && !user.description ? 'is invalid' : null}
+				value={user.description}
+				onChange={handleChange}
+				fullWidth
+			/>
+			<Button
+				type='submit'
+				fullWidth
+				variant='contained'
+				color='primary'
+				className={classes.submit}
+			>
+				{registering && (
+					<CircularProgress size={30} className={classes.progress} />
+				)}
+				Update profile
+			</Button>
+			{registerFailure && <Alert severity='error'>{registerFailure}</Alert>}
+		</form>
+	);
+};
 
-        {
-            registerFailure && ( <
-                div className = "p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 animate-in slide-in-from-top-2" >
-                <
-                AlertCircle size = {
-                    20
-                }
-                /> <
-                p className = "text-xs font-bold" > {
-                    registerFailure
-                } < /p> <
-                /div>
-            )
-        }
-
-        <
-        div className = "flex items-center justify-end gap-3 pt-8 border-t border-slate-50" >
-        <
-        Button type = "button"
-        variant = "ghost"
-        className = "rounded-2xl px-10"
-        onClick = {
-            onCancel
-        } >
-        Discard <
-        /Button> <
-        Button type = "submit"
-        className = "rounded-2xl px-16 font-black shadow-premium"
-        loading = {
-            registering || isUploading
-        }
-        icon = {
-            Save
-        } >
-        Save Changes <
-        /Button> <
-        /div> <
-        /form>
-    );
+EditProfile.propTypes = {
+	updateItem: PropTypes.func.isRequired,
+	clearErrors: PropTypes.func.isRequired,
+	classes: PropTypes.object.isRequired,
+	UI: PropTypes.object.isRequired,
 };
 
 export default EditProfile;
-
-EditProfile.propTypes = {
-    updateItem: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired,
-    UI: PropTypes.object.isRequired,
-};

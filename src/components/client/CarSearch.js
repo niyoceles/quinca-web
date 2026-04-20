@@ -1,77 +1,183 @@
-import React, { useState } from 'react';
-import { Search, MapPin, Calendar, Clock, Car } from 'lucide-react';
-import Button from '../Ui/Button';
-import { Typography } from '../Ui/Typography';
+import React from 'react';
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import SearchIcon from '@material-ui/icons/Search';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
-export default function CarSearch() {
-  const [selectedDate, setSelectedDate] = useState('2024-08-18');
-  const [selectedTime, setSelectedTime] = useState('10:00');
+const useStyles = makeStyles((theme) => ({
+    root: {
+      backgroundColor: theme.palette.background.paper,
+      width: '80%',
+      margin: '50px 0 0 10%',
+      "& div": {
+        borderBottom: 'none',
+      }
+    },
+    search: {
+      width: '100%',
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.secondary,
+      '& svg': {
+        margin: theme.spacing(1.5),
+      },
+      '& hr': {
+        margin: theme.spacing(0, 0.5),
+      },
+    },
+    grid: {
+      flexGrow: 1,
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+      },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+    customInputs: {
+      border: 'none',
+      outline: 'none',
+    }
+  }));
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-end animate-in fade-in slide-in-from-bottom-2 duration-500">
-      {/* Pickup & Dropoff Location */}
-      <div className="lg:col-span-4 grid grid-cols-2 gap-3">
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-1.5">
-            <MapPin size={12} className="text-primary" /> Pickup
-          </label>
-          <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3.5 text-xs font-bold text-secondary outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none cursor-pointer">
-            <option value="">Select location</option>
-            <option value="Remera">Remera</option>
-            <option value="Nyabugogo">Nyabugogo</option>
-            <option value="Kicukiro">Kicukiro</option>
-          </select>
-        </div>
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-1.5">
-            <MapPin size={12} className="text-secondary" /> Dropoff
-          </label>
-          <select className="w-full bg-slate-100/50 border border-slate-100 rounded-2xl px-4 py-3.5 text-xs font-bold text-secondary outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none cursor-pointer">
-            <option value="">Select location</option>
-            <option value="Remera">Remera</option>
-            <option value="Nyabugogo">Nyabugogo</option>
-            <option value="Kicukiro">Kicukiro</option>
-          </select>
-        </div>
+  function DialogSelect() {
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    const [age, setAge] = React.useState('');
+  
+    const handleChange = (event) => {
+      setAge(Number(event.target.value) || '');
+    };
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    return (
+      <div>
+        <Button onClick={handleClickOpen}>Select your location</Button>
+        <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
+          <DialogTitle>Select the exact location</DialogTitle>
+          <DialogContent>
+            <form className={classes.container}>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="demo-dialog-native">Pickup location</InputLabel>
+                <Select
+                  native
+                  value={age}
+                  onChange={handleChange}
+                  input={<Input id="demo-dialog-native" />}
+                >
+                  <option aria-label="None" value="" />
+                  <option value={"Remera"}>Remera</option>
+                  <option value={"Nyabugogo"}>Nyabugogo</option>
+                  <option value={"Kicukiro"}>Kicukiro</option>
+                </Select>
+              </FormControl>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-dialog-select-label">Drop off location</InputLabel>
+                <Select
+                  labelId="demo-dialog-select-label"
+                  id="demo-dialog-select"
+                  value={age}
+                  onChange={handleChange}
+                  input={<Input />}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={'Remera'}>Remera</MenuItem>
+                  <MenuItem value={'Nyabugogo'}>Nyabugogo</MenuItem>
+                  <MenuItem value={'Kicukiro'}>Kicukiro</MenuItem>
+                </Select>
+              </FormControl>
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleClose} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
+    );
+  }
 
-      {/* Date & Time Selection */}
-      <div className="lg:col-span-5 grid grid-cols-2 gap-3">
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-1.5">
-            <Calendar size={12} className="text-primary" /> Rental Date
-          </label>
-          <input 
-            type="date" 
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3.5 text-xs font-bold text-secondary outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer"
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-1.5">
-            <Clock size={12} className="text-primary" /> Collection Time
-          </label>
-          <input 
-            type="time" 
-            value={selectedTime}
-            onChange={(e) => setSelectedTime(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-4 py-3.5 text-xs font-bold text-secondary outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer outline-none"
-          />
-        </div>
-      </div>
-
-      {/* Search Button */}
-      <div className="lg:col-span-3 flex items-center gap-3">
-        <Button 
-          variant="secondary" 
-          fullWidth
-          className="rounded-2xl py-4 shadow-lg font-black bg-secondary hover:bg-slate-800"
-          icon={Car}
-        >
-          Rent Logistics
-        </Button>
-      </div>
-    </div>
-  );
+export default ()=>{
+    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+    };
+    // const classes = useStyles();
+    return (
+    <Grid container spacing={1}>
+        <Grid item xs={6} sm={3}>
+          <DialogSelect/>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around">
+                <KeyboardDatePicker
+                    // margin="normal"
+                    id="date-picker-dialog"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                    }}
+                />
+                </Grid>
+            </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item xs={6} sm={2}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardTimePicker
+                id="time-picker"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                }}
+                />
+            </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+            <Button variant="contained" color="primary" margin="normal" fullWidth>
+             <SearchIcon/> Search
+          </Button>
+        </Grid>
+      </Grid>
+    )
 }

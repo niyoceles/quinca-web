@@ -1,86 +1,83 @@
 import React, { useState } from 'react';
-import { ShoppingCart, Zap } from 'lucide-react';
-import Button from '../Ui/Button';
-import Input from '../Ui/Input';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
 
-const AddCart = (props) => {
-  const [submitted, setSubmitted] = useState(false);
-  const [quantity, setQuantity] = useState('10'); // Default as in original
+const useStyles = makeStyles(theme => ({
+	form: {
+		width: '100%', // Fix IE 11 issue.
+		marginTop: theme.spacing(1),
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+		padding: 5,
+		marginRight: 10,
+	},
+	links: {
+		textDecoration: 'none !important',
+		color: 'inherit',
+		padding: 2,
+	},
+}));
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    if (quantity) {
-      props.addItemCart1(e, props.selected1, quantity);
-    }
-  };
+const AddCart = props => {
+	const classes = useStyles();
+	const [submitted, setSubmitted] = useState(false);
+	const [quantity, setQuantity] = useState('');
 
-  const handleBuyNow = (e) => {
-    // Buy Now logic (usually add to cart + redirect)
-    props.addItemCart1(e, props.selected1, quantity);
-    // The link wrapper in parent or here will handle redirect
-  };
+	const handleSubmit = e => {
+		e.preventDefault();
+		setSubmitted(true);
+	};
 
-  return (
-    <div className="mt-8 select-none">
-      <form noValidate onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-          <div className="w-32">
-            <Input
-              label="Quantity"
-              type="number"
-              id="quantity"
-              name="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              error={submitted && !quantity ? 'Required' : null}
-              className="mb-0"
-              min="1"
-            />
-          </div>
-          
-          <div className="flex-grow flex gap-3">
-            <Button
-              type="submit"
-              variant="outline"
-              size="lg"
-              className="flex-1 font-black rounded-xl border-primary text-primary hover:bg-primary/5 shadow-sm"
-              icon={ShoppingCart}
-            >
-              Add to Cart
-            </Button>
-            
-            <Button
-              type="button"
-              variant="primary"
-              size="lg"
-              className="flex-1 font-black rounded-xl shadow-premium bg-gradient-to-r from-primary to-orange-600 border-none"
-              onClick={handleBuyNow}
-              icon={Zap}
-            >
-              Buy Now
-            </Button>
-          </div>
-        </div>
-      </form>
-      
-      {/* Trust Badges */}
-      <div className="mt-8 flex flex-wrap gap-6 items-center border-t border-slate-50 pt-6">
-        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-emerald-500" />
-          Secure Transaction
-        </div>
-        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-blue-500" />
-          Buyer Protection
-        </div>
-        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-orange-500" />
-          Verified Shop
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<form className={classes.form} noValidate onSubmit={handleSubmit}>
+			<TextField
+				variant='outlined'
+				margin='normal'
+				required
+				type='number'
+				id='quantity'
+				label='Quantity'
+				name='quantity'
+				defaultValue={'10'}
+				helperText={
+					submitted && !quantity ? 'please add quantity you want' : null
+				}
+				value={quantity}
+				error={submitted && !quantity ? 'is-invalid' : null}
+				onChange={e => setQuantity(e.target.value)}
+				autoComplete='quantity'
+				autoFocus
+			/>
+			<br />
+			<Button
+				type='submit'
+				variant='contained'
+				color='primary'
+				size='medium'
+				style={{ width: '40%' }}
+				className={classes.submit}
+				onClick={e => props.addItemCart1(e, props.selected1, quantity)}
+				startIcon={<AddShoppingCartIcon />}
+			>
+				Add Cart
+			</Button>
+			<Link href='/cart' variant='body2' className={classes.links}>
+				<Button
+					variant='contained'
+					color='secondary'
+					size='medium'
+					style={{ width: '33%' }}
+					className={classes.submit}
+				>
+					Buy Now
+				</Button>
+			</Link>
+		</form>
+	);
 };
 
 export default AddCart;

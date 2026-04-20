@@ -1,61 +1,90 @@
 import React from 'react';
-import { Typography } from '../Ui/Typography';
-import Button from '../Ui/Button';
-import { Building, Users, CheckCircle2 } from 'lucide-react';
-import BackgroundImg from '../../assets/images/construction.jpg';
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+
+const useStyles = makeStyles(theme => ({
+	icon: {
+		marginRight: theme.spacing(2),
+	},
+	heroContent: {
+		backgroundColor: theme.palette.background.paper,
+		padding: theme.spacing(8, 0, 6),
+	},
+	heroButtons: {
+		marginTop: theme.spacing(4),
+	},
+	image: {
+		backgroundImage: `url(${require('../../assets/images/construction.jpg')})`,
+		backgroundRepeat: 'no-repeat',
+		backgroundColor:
+			theme.palette.type === 'light'
+				? theme.palette.grey[150]
+				: theme.palette.grey[100],
+		backgroundSize: 'cover',
+		backgroundPosition: 'center',
+	},
+}));
 
 export default function Informing() {
-  return (
-    <div 
-      className="hidden md:flex md:col-span-7 relative flex-col items-center justify-center p-12 overflow-hidden bg-secondary text-white"
-      style={{
-        backgroundImage: `url(${BackgroundImg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      {/* Dark modern overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-secondary/95 via-secondary/80 to-primary/20 backdrop-blur-[2px]" />
-
-      <div className="relative z-10 max-w-lg text-center space-y-12">
-        <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg animate-in slide-in-from-top-4 duration-700">
-            <CheckCircle2 size={12} /> Established Industry Leader
-          </div>
-          <Typography variant="h1" className="text-white drop-shadow-2xl">
-            Hadiwa
-          </Typography>
-          <div className="h-1.5 w-24 bg-primary mx-auto rounded-full" />
-        </div>
-
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-[2.5rem] shadow-2xl animate-in fade-in zoom-in-95 duration-1000">
-          <Typography variant="h3" className="text-white mb-4 italic font-black">
-            "Let us Build the world together"
-          </Typography>
-          <p className="text-slate-300 text-sm font-medium leading-relaxed">
-            Join the fastest growing construction marketplace in the region. Whether you're a high-volume supplier or a precision builder, we have the tools you need.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 pt-8">
-          <Button 
-            className="rounded-2xl py-4 bg-gradient-to-r from-primary to-orange-600 text-white hover:to-primary hover:shadow-primary/30 shadow-2xl font-black ring-4 ring-primary/10 transition-all duration-300 transform hover:scale-[1.02]"
-            icon={Users}
-          >
-            I'm a Client
-          </Button>
-          <Button 
-            className="rounded-2xl py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white hover:text-secondary shadow-2xl transition-all duration-500 group/supplier"
-            icon={Building}
-          >
-            I'm a Supplier
-          </Button>
-        </div>
-      </div>
-
-      {/* Modern abstract shape */}
-      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
-    </div>
-  );
+	const classes = useStyles();
+	return (
+		<Grid item xs={false} sm={4} md={7} className={classes.image}>
+			<Box mt={5}>
+				<Container maxWidth='sm'>
+					<br />
+					<br />
+					<br />
+					<Typography
+						component='h1'
+						variant='h2'
+						align='center'
+						color='textPrimary'
+						gutterBottom
+						style={{
+							fontSize: '48 !important',
+						}}
+					>
+						<b>Quinca Paradi</b>
+					</Typography>
+					<Divider />
+					<Typography
+						variant='h4'
+						align='center'
+						color='textPrimary'
+						paragraph
+						style={{
+							background: 'rgba(0,0,0,0.5)',
+							fontSize: 38,
+							fontWeight: 900,
+							color: 'white',
+							borderRadius: 25,
+						}}
+					>
+						Let us Build the world together
+					</Typography>
+					<br />
+					<br />
+					<div className={classes.heroButtons}>
+						<Grid container spacing={2} justify='center'>
+							<Grid item>
+								<Button variant='contained' color='primary'>
+									<h3>Be our client</h3>
+								</Button>
+							</Grid>
+							<Grid item>
+								<Button variant='contained' color='#009688'>
+									<h3>Be our supplier</h3>
+								</Button>
+							</Grid>
+						</Grid>
+					</div>
+				</Container>
+			</Box>
+		</Grid>
+	);
 }

@@ -1,15 +1,16 @@
+import 'dotenv/config';
 import {
 	DELETE_ITEM,
 	UPDATE_ITEM,
 	SET_ERRORS,
 	POST_ITEM,
+	CLEAR_ERRORS,
 	LOADING_UI,
-	GET_ITEM_RELATED_FAILURE,
-	GET_ITEM_RELATED_SUCCESS,
+	GET_RELATED_FAILURE,
+	GET_RELATED_SUCCESS,
 	GET_ALL_ITEMS_FAILURE,
 	GET_ALL_ITEMS_SUCCESS,
 } from '../types';
-import { clearErrors } from './uiActions';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 const { REACT_APP_BACKEND } = process.env;
@@ -35,6 +36,7 @@ export const addItem = newItem => dispatch => {
 };
 
 export const updateItem = (itemId, updateData) => dispatch => {
+	console.log('HHHHHHHHHHHHHHHHHHHHH');
 	dispatch({ type: LOADING_UI });
 	axios
 		.put(`${REACT_APP_BACKEND}/item/${itemId}`, updateData)
@@ -61,23 +63,22 @@ export const deleteItem = itemId => dispatch => {
 			dispatch({ type: DELETE_ITEM, payload: res.data });
 			toast.success(res.data.message);
 		})
-		.catch(err => {
-			dispatch({
-				type: SET_ERRORS,
-				payload: err.response ? err.response.data.error : null,
-			});
-		});
+		.catch(err => console.log(err.response.data));
+};
+
+export const clearErrors = () => dispatch => {
+	dispatch({ type: CLEAR_ERRORS });
 };
 
 export const relatedItems = category => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/item/related/${category}`)
 		.then(res => {
-			dispatch({ type: GET_ITEM_RELATED_SUCCESS, payload: res.data });
+			dispatch({ type: GET_RELATED_SUCCESS, payload: res.data });
 		})
 		.catch(err => {
 			dispatch({
-				type: GET_ITEM_RELATED_FAILURE,
+				type: GET_RELATED_FAILURE,
 				payload: err.response ? err.response.data.error : null,
 			});
 		});
@@ -88,20 +89,6 @@ export const getAllItems = () => dispatch => {
 		.get(`${REACT_APP_BACKEND}/item/all`)
 		.then(res => {
 			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data.allitems });
-		})
-		.catch(err => {
-			dispatch({
-				type: GET_ALL_ITEMS_FAILURE,
-				payload: err.response ? err.response.data.error : null,
-			});
-		});
-};
-
-export const getMyItems = () => dispatch => {
-	axios
-		.get(`${REACT_APP_BACKEND}/item`)
-		.then(res => {
-			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data.myitems });
 		})
 		.catch(err => {
 			dispatch({

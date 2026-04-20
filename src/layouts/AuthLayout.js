@@ -1,36 +1,46 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import Informing from '../components/Auth/Informing';
-import { Typography } from '../components/Ui/Typography';
 
 function Copyright() {
   return (
-    <div className="mt-8 pt-8 border-t border-slate-50">
-      <Typography variant="body2" className="text-slate-400 text-center">
-        {'Copyright © '}
-        <Link to="/" className="text-primary font-bold hover:underline transition-all">
-          Hadiwa
-        </Link>{' '}
-        {new Date().getFullYear()}
-      </Typography>
-    </div>
+    <Typography variant='body2' color='textSecondary' align='center'>
+      {'Copyright © '}
+      <Link color='inherit' href='https://quincaparadi.com/'>
+        Quinca Paradi
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
 }
 
-const AuthLayout = ({ children }) => {
-  return (
-    <div className="min-h-screen grid grid-cols-1 md:grid-cols-12 bg-white">
-      {/* Visual Side */}
-      <Informing />
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+}));
 
-      {/* Form Side */}
-      <div className="col-span-1 md:col-span-5 flex flex-col items-center justify-center p-8 sm:p-12 lg:p-16 xl:p-24 overflow-y-auto">
-        <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {children}
+const AuthLayout = (props) => {
+  const classes = useStyles();
+
+  return (
+    <Grid container component='main' className={classes.root}>
+      <CssBaseline />
+      <Informing />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        {props.children}
+        <Box mt={5}>
           <Copyright />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 

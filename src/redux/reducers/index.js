@@ -8,8 +8,6 @@ import contact from './contactReducer';
 import order from './orderReducer';
 import proforma from './proformaReducer';
 import category from './categoryReducer';
-import notification from './notificationReducer';
-import message from './messageReducer';
 
 export default combineReducers({
 	auth,
@@ -21,6 +19,4 @@ export default combineReducers({
 	order,
 	proforma,
 	category,
-	notification,
-	message,
 });

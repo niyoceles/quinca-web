@@ -1,101 +1,186 @@
 import React from 'react';
-import Input from '../Ui/Input';
+import {
+	KeyboardDatePicker,
+	MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import TextField from '@material-ui/core/TextField';
+import CardContent from '@material-ui/core/CardContent';
+import { makeStyles } from '@material-ui/core/styles';
 
-const PersonalInfoWidget = (props) => {
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Full Name"
-          name="names"
-          id="names"
-          required
-          autoComplete="names"
-          value={props.checkValue.names}
-          onChange={props.handleOnChange}
-          error={props.checkSubmitted && !props.checkValue.names ? 'Name is required' : null}
-          placeholder="Enter your full name"
-        />
+const useStyles = makeStyles(theme => ({
+	cardContent: {
+		flexGrow: 1,
+	},
 
-        <Input
-          label="Email Address"
-          type="email"
-          name="email"
-          id="email"
-          required
-          autoComplete="email"
-          value={props.checkValue.email}
-          onChange={props.handleOnChange}
-          error={props.checkSubmitted && !props.checkValue.email ? 'Email is required' : null}
-          placeholder="your@email.com"
-        />
-      </div>
+	textInput: {
+		width: '100%',
+		margin: '10px',
+	},
+}));
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Phone Number"
-          name="phoneNumber"
-          id="phoneNumber"
-          required
-          autoComplete="phoneNumber"
-          value={props.checkValue.phoneNumber}
-          onChange={props.handleOnChange}
-          error={props.checkSubmitted && !props.checkValue.phoneNumber ? 'Phone number is required' : null}
-          placeholder="+250..."
-        />
+const PersonalInfoWidget = props => {
+	const classes = useStyles();
+	return (
+		<form noValidate onSubmit={props.onSubmitForm}>
+			<CardContent className={classes.cardContent}>
+				<TextField
+					variant='outlined'
+					margin='normal'
+					required
+					className={classes.textInput}
+					name='names'
+					label='Name'
+					onChange={props.handleOnChange}
+					id='names'
+					value={props.checkValue.names}
+					helperText={
+						props.checkSubmitted && !props.checkHelperText.names
+							? 'is required'
+							: null
+					}
+					error={
+						props.checkSubmitted && !props.checkHelperText.names
+							? 'is required'
+							: null
+					}
+					autoComplete='names'
+					autoFocus
+				/>
 
-        <Input
-          label="Physical Address"
-          name="address"
-          id="address"
-          required
-          autoComplete="address"
-          value={props.checkValue.address}
-          onChange={props.handleOnChange}
-          error={props.checkSubmitted && !props.checkValue.address ? 'Address is required' : null}
-          placeholder="Street, Building, Apartment"
-        />
-      </div>
-
-      <Input
-        label="City / Location"
-        name="location"
-        id="location"
-        required
-        autoComplete="location"
-        value={props.checkValue.location}
-        onChange={props.handleOnChange}
-        error={props.checkSubmitted && !props.checkValue.location ? 'Location is required' : null}
-        placeholder="Kigali, Kicukiro..."
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Expected Delivery Date"
-          type="date"
-          name="startDate"
-          id="needDate"
-          value={props.checkInDate ? new Date(props.checkInDate).toISOString().split('T')[0] : ''}
-          onChange={(e) => props.onDateChange('needDate', e.target.value)}
-          min={new Date().toISOString().split('T')[0]}
-        />
-
-        <Input
-          label="Latest Deadline"
-          type="date"
-          name="endDate"
-          id="deadline"
-          value={props.checkOutDate ? new Date(props.checkOutDate).toISOString().split('T')[0] : ''}
-          onChange={(e) => props.onDateChange('deadline', e.target.value)}
-          min={props.checkInDate ? new Date(props.checkInDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]}
-        />
-      </div>
-      
-      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-4">
-        * All fields are required for secure processing
-      </p>
-    </div>
-  );
+				<TextField
+					variant='outlined'
+					margin='normal'
+					required
+					className={classes.textInput}
+					name='email'
+					label='Email'
+					onChange={props.handleOnChange}
+					id='email'
+					value={props.checkValue.email}
+					helperText={
+						props.checkSubmitted && !props.checkHelperText.email
+							? 'is required'
+							: null
+					}
+					error={
+						props.checkSubmitted && !props.checkHelperText.email
+							? 'is required'
+							: null
+					}
+					autoComplete='email'
+					autoFocus
+				/>
+				<TextField
+					variant='outlined'
+					margin='normal'
+					required
+					className={classes.textInput}
+					name='phoneNumber'
+					label='Phone number'
+					onChange={props.handleOnChange}
+					id='phoneNumber'
+					value={props.checkValue.phoneNumber}
+					helperText={
+						props.checkSubmitted && !props.checkHelperText.phoneNumber
+							? 'is required'
+							: null
+					}
+					error={
+						props.checkSubmitted && !props.checkHelperText.phoneNumber
+							? 'is required'
+							: null
+					}
+					autoComplete='phoneNumber'
+					autoFocus
+				/>
+				<TextField
+					variant='outlined'
+					margin='normal'
+					required
+					className={classes.textInput}
+					name='address'
+					label='Address'
+					onChange={props.handleOnChange}
+					id='address'
+					value={props.checkValue.address}
+					helperText={
+						props.checkSubmitted && !props.checkHelperText.address
+							? 'is required'
+							: null
+					}
+					error={
+						props.checkSubmitted && !props.checkHelperText.address
+							? 'is required'
+							: null
+					}
+					autoComplete='address'
+					autoFocus
+				/>
+				<TextField
+					variant='outlined'
+					margin='normal'
+					required
+					className={classes.textInput}
+					name='location'
+					label='Location'
+					onChange={props.handleOnChange}
+					id='location'
+					value={props.checkValue.location}
+					helperText={
+						props.checkSubmitted && !props.checkHelperText.location
+							? 'is required'
+							: null
+					}
+					error={
+						props.checkSubmitted && !props.checkHelperText.location
+							? 'is required'
+							: null
+					}
+					autoComplete='location'
+					autoFocus
+				/>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					<KeyboardDatePicker
+						utils={DateFnsUtils}
+						disableToolbar
+						className={classes.textInput}
+						variant='outlined'
+						format='MM/dd/yyyy'
+						margin='normal'
+						id='date-picker-inline'
+						label='Need at'
+						value={props.checkInDate}
+						onChange={value => {
+							props.onDateChange('startDate', value);
+						}}
+						minDate={new Date()}
+						KeyboardButtonProps={{
+							'aria-label': 'change date',
+						}}
+					/>
+					<KeyboardDatePicker
+						utils={DateFnsUtils}
+						disableToolbar
+						className={classes.textInput}
+						variant='outlined'
+						format='MM/dd/yyyy'
+						margin='normal'
+						id='date-picker-inline'
+						label='Deadline'
+						value={props.checkOutDate}
+						onChange={value => {
+							props.onDateChange('endDate', value);
+						}}
+						minDate={props.checkInDate}
+						KeyboardButtonProps={{
+							'aria-label': 'change date',
+						}}
+					/>
+				</MuiPickersUtilsProvider>
+			</CardContent>
+		</form>
+	);
 };
 
 export default PersonalInfoWidget;

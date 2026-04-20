@@ -6,4 +6,3 @@ export * from './contactAction';
 export * from './orderActions';
 export * from './proformaActions';
 export * from './categoryActions';
-export * from './uiActions';
