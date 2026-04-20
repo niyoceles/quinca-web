@@ -1,13 +1,18 @@
 import React, { Component } from "react";
-import { Provider } from "react-redux";
-import { jwtDecode } from "jwt-decode";
+import {
+  ThemeProvider as MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
+import objectTheme from "./utils/theme";
+import jwtDecode from "jwt-decode";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
 import store from "./redux/store/index";
 import { SET_AUTHENTICATED } from "../src/redux/types";
 import { logoutUser } from "../src/redux/actions";
 import { Routes } from "./Routes";
-import SocketHandler from "./components/common/SocketHandler";
+
+const theme = createMuiTheme(objectTheme);
 
 const token = localStorage.IdToken;
 if (token) {
@@ -21,21 +26,15 @@ if (token) {
   }
 }
 
+
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <SocketHandler />
-        <Routes />
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={true}
-          closeOnClick={true}
-          pauseOnHover={true}
-          draggable={false}
-        />
-      </Provider>
+      <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+          <Routes />
+        </Provider>
+      </MuiThemeProvider>
     );
   }
 }

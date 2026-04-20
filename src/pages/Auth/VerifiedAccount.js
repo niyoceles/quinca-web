@@ -1,59 +1,100 @@
 import React from 'react';
-import { CheckCircle2, LogIn, ArrowRight } from 'lucide-react';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import { Typography } from '../../components/Ui/Typography';
-import Button from '../../components/Ui/Button';
-import { Card } from '../../components/Ui/Card';
+
+const useStyles = makeStyles(theme => ({
+	icon: {
+		marginRight: theme.spacing(2),
+	},
+	heroContent: {
+		backgroundColor: theme.palette.background.paper,
+		padding: theme.spacing(8, 0, 6),
+	},
+	heroButtons: {
+		marginTop: theme.spacing(4),
+	},
+	cardGrid: {
+		paddingTop: theme.spacing(8),
+		paddingBottom: theme.spacing(8),
+		marginBottom: 40,
+		borderRadius: '10px',
+	},
+	card: {
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+	},
+	cardMedia: {
+		paddingTop: '56.25%', // 16:9
+	},
+	cardContent: {
+		flexGrow: 1,
+	},
+	footer: {
+		backgroundColor: theme.palette.background.paper,
+		padding: theme.spacing(6),
+	},
+	list: {
+		width: 250,
+	},
+	titleFeature: {
+		marginTop: -50,
+	},
+	fullList: {
+		width: 'auto',
+	},
+}));
 
 export default function VerifiedAccount() {
-  return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
-      <Navbar />
-      
-      <main className="flex-grow flex items-center justify-center py-20 px-4">
-        <Card hover={false} className="max-w-xl w-full p-12 text-center border-none shadow-premium rounded-[3rem] bg-white overflow-hidden relative">
-          {/* Decorative background circle */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -translate-y-1/2 translate-x-1/2" />
-          
-          <div className="relative z-10 space-y-8 animate-in zoom-in-95 duration-700">
-            <div className="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto text-emerald-500 shadow-inner">
-              <CheckCircle2 size={48} />
-            </div>
-            
-            <div className="space-y-4">
-              <Typography variant="h2" className="text-secondary tracking-tight">
-                Account Verified!
-              </Typography>
-              <Typography variant="body1" className="text-slate-500 max-w-sm mx-auto leading-relaxed">
-                Congratulations! Your Hadiwa account is now active and ready for business.
-              </Typography>
-            </div>
-
-            <div className="bg-slate-50 p-6 rounded-[2rem] border border-slate-100/50">
-              <p className="text-sm font-bold text-slate-600 mb-6 flex items-center justify-center gap-2">
-                Secure access enabled <ArrowRight size={14} className="text-primary" />
-              </p>
-              
-              <Button 
-                variant="primary" 
-                size="lg" 
-                className="w-full rounded-2xl shadow-premium font-black text-lg py-7"
-                onClick={() => window.location.href = '/login'}
-                icon={LogIn}
-              >
-                Sign In to Your Account
-              </Button>
-            </div>
-
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-300">
-              Identity Verified via Email System
-            </p>
-          </div>
-        </Card>
-      </main>
-
-      <Footer />
-    </div>
-  );
+	const classes = useStyles();
+	return (
+		<React.Fragment>
+			<CssBaseline />
+			<Navbar />
+			<main>
+				{/* Hero unit */}
+				<div className={classes.heroContent}>
+					<Container maxWidth='sm'>
+						<Typography
+							component='h2'
+							variant='h3'
+							align='center'
+							color='textPrimary'
+							gutterBottom
+						>
+							Account verified
+						</Typography>
+						<Typography
+							variant='h5'
+							align='center'
+							color='textSecondary'
+							paragraph
+						>
+							Your account has successful verified, <br />
+							Please click the button below to login into your account
+						</Typography>
+						<div className={classes.heroButtons}>
+							<Grid container spacing={2} justify='center'>
+								<Grid item>
+									<Link href='/login' style={{ padding: 10 }}>
+										<Button variant='contained' color='primary'>
+											Login
+										</Button>
+									</Link>
+								</Grid>
+							</Grid>
+						</div>
+					</Container>
+				</div>
+			</main>
+			{/* Footer */}
+			{/* End footer */}
+		</React.Fragment>
+	);
 }

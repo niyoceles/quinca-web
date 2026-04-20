@@ -1,310 +1,538 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
+import './styles.css';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import clsx from 'clsx';
+import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import CallIcon from '@material-ui/icons/Call';
+import EmailIcon from '@material-ui/icons/Email';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MailIcon from '@material-ui/icons/Mail';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { 
-  Search, 
-  ShoppingCart, 
-  Bell, 
-  User, 
-  Globe, 
-  Menu, 
-  X, 
-  LogOut, 
-  Settings, 
-  ClipboardList, 
-  HelpCircle,
-  Phone,
-  Mail,
-  ChevronDown
-} from 'lucide-react';
+import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
+import InfoIcon from '@material-ui/icons/Info';
+import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { logoutUser } from '../redux/actions';
-import { getMyNotifications, markAsRead } from '../redux/actions/notificationActions';
-import { Container } from './Ui/Layout';
-import Button from './Ui/Button';
-import SearchItems from '../pages/client/SearchItems';
+import Grid from '@material-ui/core/Grid';
 import cartImage from '../assets/images/cart.svg';
-import Hadiwa_logo from '../assets/images/hadiwa-logo.png';
+import Quinca_logo from '../assets/images/quinca-logo.jpeg';
 import userImage from '../assets/images/account.svg';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchItems from '../pages/client/SearchItems';
+// import accountImage from '../assets/images/account.svg';
 
-const NavLink = ({ to, children, className = '' }) => (
-  <Link to={to} className={`text-sm font-medium hover:text-primary transition-colors duration-200 ${className}`}>
-    {children}
-  </Link>
-);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  leftNavMenu: {
+    width: '45%',
+    textAlign: 'right',
+  },
+  avatar: {
+    display: 'inline-flex',
+    margin: 0,
+    width: 20,
+    height: 20,
+  },
+  username: {
+    display: 'inline-block',
+  },
+  links: {
+    textDecoration: 'none',
+    color: 'inherit',
+    paddingLeft: '5px',
+  },
+  buttonFontSize: {
+    fontSize: '11px',
+    color: '#a1a1a1',
+  },
+  loginButton: {
+    background: '#f5f5f5',
+    color: '#333',
+    borderRadius: '25px',
+    padding: '4px 20px',
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNotifOpen, setIsNotifOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    '&:hover': {
+      background: '#f8f8f8',
+      boxShadow: '0px 1px 1px #888888',
+      color: '#333',
+    },
+  },
+  proformaButton: {
+    background: '#e91e63',
+    color: '#fff',
+    borderRadius: '25px',
+    padding: '6px 25px',
+
+    '&:hover': {
+      background: 'blue',
+      boxShadow: '0px 2px 10px #888888',
+    },
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  searchSection: {
+    marginLeft: 0,
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    height: 10,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  logo: {
+    maxWidth: 200,
+    marginRight: '10px',
+  },
+}));
+
+export default function ButtonAppBar() {
+  const classes = useStyles();
   const [openSearch, setOpenSearch] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  const dispatch = useDispatch();
-  const { t, i18n } = useTranslation('common');
-  
-  const isAuthenticated = useSelector((state) => state.auth.authenticated);
-  const userInformation = JSON.parse(localStorage.getItem('userInfo'));
-  const notifications = useSelector((state) => state.notification.notifications);
-  const unreadCount = notifications.filter(n => !n.isRead).length;
   const orderedItems = JSON.parse(localStorage.getItem('orderSummary'));
+  const isAuthenticated = useSelector((state) => state.auth.authenticated);
+  // const user = useSelector(state => state.auth.user);
+  console.log('check order:', orderedItems);
+  const userinformation = JSON.parse(localStorage.getItem('userInfo'));
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    if (isAuthenticated) dispatch(getMyNotifications());
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [dispatch, isAuthenticated]);
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
 
-  const handleLogout = () => dispatch(logoutUser());
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    setIsLangOpen(false);
+    setState({ ...state, [anchor]: open });
   };
 
+  // const token = localStorage.IdToken;
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
+  const handleClickOpenSearch = () => {
+    setOpenSearch(true);
+  };
+
+  const handleCloseSearch = () => {
+    setOpenSearch(false);
+  };
+  const list = (anchor) => (
+    <div
+      className={clsx(classes.list, {
+        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+      })}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        <ListItem button>
+          <ListItemIcon>
+            <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary="QuincaParadi" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        {[
+          isAuthenticated
+            ? { title: 'Profile', path: '/me', icon: <AccountBoxIcon /> }
+            : null,
+          isAuthenticated
+            ? {
+                title: 'My Proforma',
+                path: '/my-proforma',
+                icon: <FeaturedPlayListIcon />,
+              }
+            : null,
+          isAuthenticated
+            ? {
+                title: 'My Bookings',
+                path: '/bookings',
+                icon: <FeaturedPlayListIcon />,
+              }
+            : null,
+          { title: 'Contact Us', path: '/', icon: <ContactPhoneIcon /> },
+          { title: 'About Us', path: '/', icon: <InfoIcon /> },
+        ]
+          .filter((e) => e !== null)
+          .map((link) => (
+            <ListItem button key={link.title}>
+              <ListItemIcon>{link.icon}</ListItemIcon>
+              <Link to={link.path} className={classes.links}>
+                <ListItemText primary={link.title} />
+              </Link>
+            </ListItem>
+          ))}
+        {isAuthenticated ? (
+          <ListItem button onClick={handleLogout}>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        ) : null}
+      </List>
+    </div>
+  );
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  function handleClick(event) {
+    if (anchorEl !== event.currentTarget) {
+      setAnchorEl(event.currentTarget);
+    }
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
   return (
-    <header className="relative w-full z-50">
-      {/* Top Utility Bar */}
-      <div className="bg-slate-50 border-b border-slate-100 hidden md:block py-2">
-        <Container className="flex justify-between items-center text-slate-500 text-xs font-medium">
-          <div className="flex items-center gap-6">
-            <NavLink to="/">{t('home')}</NavLink>
-            <NavLink to="/contact-us">{t('help')}</NavLink>
-            <NavLink to="/terms-and-conditions">{t('terms')}</NavLink>
-            <div className="flex items-center gap-1">
-              <Phone size={14} className="text-primary" />
-              <span>+250 788 550 184</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-6">
-            {/* Language Selector commented out for now 
-            <div className="relative">
-              <button 
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-1 hover:text-primary transition-colors"
-              >
-                <Globe size={14} />
-                <span>{i18n.language.toUpperCase()}</span>
-                <ChevronDown size={14} />
-              </button>
-              {isLangOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-xl border border-slate-100 py-1 z-[60]">
-                  {['en', 'rw', 'fr'].map((lang) => (
-                    <button
-                      key={lang}
-                      onClick={() => changeLanguage(lang)}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 hover:text-primary capitalize"
-                    >
-                      {lang === 'en' ? 'English' : lang === 'rw' ? 'Kinyarwanda' : 'Français'}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            */}
-
-            {isAuthenticated && userInformation && (
-              <div className="flex items-center gap-2 text-slate-700">
-                <Mail size={14} className="text-primary" />
-                <span>{userInformation.email}</span>
-                <span className="mx-1 text-slate-300">|</span>
-                <span className="font-bold">{userInformation.names}</span>
-              </div>
-            )}
-            
-            {!isAuthenticated && (
-              <div className="flex items-center gap-4">
-                <NavLink to="/login" className="text-primary font-bold">Sign In</NavLink>
-                <Link to="/signup">
-                  <span className="bg-primary text-white px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-tight">Join Free</span>
-                </Link>
-              </div>
-            )}
-          </div>
-        </Container>
-      </div>
-
-      {/* Main Header Bar */}
-      <div 
-        className={`w-full transition-all duration-300 ${
-          scrolled 
-            ? 'bg-white/80 backdrop-blur-lg shadow-md py-3 sticky top-0' 
-            : 'bg-white py-5'
-        }`}
+    <Fragment>
+      <AppBar
+        component="div"
+        color="default"
+        position="sticky"
+        indicatorColor="primary"
+        style={{ backgroundColor: '#fff', backgroundSize: 'cover', height: 40 }}
+        elevation={0}
       >
-        <Container className="flex items-center gap-8">
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden text-secondary"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-
-          {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
-            <img src={Hadiwa_logo} alt="Hadiwa" className="h-10 md:h-12 w-auto rounded-lg shadow-sm" />
+        <Toolbar style={{ marginTop: -15 }}>
+          <Link to="/" className={classes.links}>
+            <Typography variant="body2" color="textSecondary" align="center">
+              Home
+            </Typography>
           </Link>
+          <Typography
+            variant="body1"
+            color="textPrimary"
+            align="center"
+            style={{ paddingLeft: 5, paddingRight: 5 }}
+          >
+            |
+          </Typography>{' '}
+          <Link to="/contact-us" className={classes.links}>
+            <Typography variant="body2" color="textSecondary" align="center">
+              Help
+            </Typography>
+          </Link>
+          <Typography
+            variant="body1"
+            color="textPrimary"
+            align="center"
+            style={{ paddingLeft: 5, paddingRight: 5 }}
+          >
+            |
+          </Typography>{' '}
+          <Link to="/terms-and-conditions" className={classes.links}>
+            <Typography variant="body2" color="textSecondary" align="center">
+              Terms & conditions
+            </Typography>
+          </Link>
+          <Typography
+            variant="body1"
+            color="textPrimary"
+            align="center"
+            style={{ paddingLeft: 5, paddingRight: 5 }}
+          >
+            |
+          </Typography>{' '}
+          <Typography variant="body2" color="textSecondary" align="center">
+            <CallIcon style={{ marginBottom: -8 }} /> +250 788 550 184
+          </Typography>{' '}
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            {isAuthenticated && userinformation ? (
+              <>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  align="center"
+                >
+                  <EmailIcon style={{ marginBottom: -8 }} />{' '}
+                  {userinformation.email}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="textPrimary"
+                  align="center"
+                  style={{ paddingLeft: 5, paddingRight: 5 }}
+                >
+                  |
+                </Typography>{' '}
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  align="center"
+                >
+                  {userinformation.names}
+                </Typography>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className={classes.links}>
+                  <Button
+                    color="inherit"
+                    className={[classes.buttonFontSize, classes.loginButton]}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup" className={classes.links}>
+                  <Button
+                    color="inherit"
+                    className={[classes.buttonFontSize, classes.loginButton]}
+                  >
+                    Join
+                  </Button>
+                </Link>
+              </>
+            )}
+          </div>
+        </Toolbar>
+      </AppBar>
+      <AppBar
+        component="div"
+        color="default"
+        style={{ backgroundColor: '#fff', backgroundSize: 'cover' }}
+        position="sticky"
+        elevation={2}
+      >
+        <Toolbar>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              onClick={toggleDrawer('left', true)}
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Drawer
+              anchor="left"
+              open={state['left']}
+              onClose={toggleDrawer('left', false)}
+            >
+              {list('left')}
+            </Drawer>
+          </div>
+          {/* <div className={classes.sectionDesktop}> */}
 
-          {/* Search Bar - AliExpress Style (Prominent) */}
-          <div className="flex-grow max-w-2xl hidden md:block">
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/" className={classes.links}>
+              <img
+                src={Quinca_logo}
+                alt="Quinca Paradi"
+                className={classes.logo}
+              />
+            </Link>
+          </Typography>
+          <div className={classes.search}>
+            {/* search icons */}
             <SearchItems
-              handleOpenSearch={() => setOpenSearch(true)}
+              handleOpenSearch={handleClickOpenSearch}
               openSearch={openSearch}
-              closeSearch={() => setOpenSearch(false)}
+              closeSearch={handleCloseSearch}
             />
           </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-2 md:gap-4 ml-auto">
-            {/* Request Proforma Button */}
-            <Link to="/request" className="hidden lg:block">
-              <Button size="sm" className="rounded-full px-6 font-bold shadow-premium bg-primary hover:bg-primary-dark">
-                Request Proforma
-              </Button>
-            </Link>
-
-            {/* Cart */}
-            <Link to="/cart" className="relative p-2 group">
-              <div className="bg-slate-50 p-2 rounded-full group-hover:bg-primary/10 transition-colors">
-                <ShoppingCart className="text-secondary group-hover:text-primary transition-colors" size={24} />
-              </div>
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center border-2 border-white">
-                {orderedItems?.length || 0}
-              </span>
-            </Link>
-
-            {/* Notifications */}
-            {isAuthenticated && (
-              <div className="relative">
-                <button 
-                  onClick={() => setIsNotifOpen(!isNotifOpen)}
-                  className="p-2 hover:bg-slate-50 rounded-full transition-colors relative"
-                >
-                  <Bell className="text-secondary" size={24} />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 bg-accent h-2.5 w-2.5 rounded-full border-2 border-white animate-pulse"></span>
-                  )}
-                </button>
-                {/* Notifications Dropdown */}
-                {isNotifOpen && (
-                  <div className="absolute right-0 mt-4 w-80 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50">
-                    <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                      <span className="font-bold text-secondary">Notifications</span>
-                      <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">{unreadCount} New</span>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {notifications.length > 0 ? (
-                        notifications.map((notif) => (
-                          <div 
-                            key={notif.id}
-                            onClick={() => {
-                              dispatch(markAsRead(notif.id));
-                              setIsNotifOpen(false);
-                            }}
-                            className={`p-4 border-b border-slate-50 hover:bg-slate-50 cursor-pointer transition-colors ${!notif.isRead ? 'bg-primary/5' : ''}`}
-                          >
-                            <p className="text-sm font-bold text-secondary">{notif.title}</p>
-                            <p className="text-xs text-slate-500 line-clamp-2 mt-1">{notif.message}</p>
-                            <span className="text-[10px] text-slate-400 mt-2 block">{new Date(notif.createdAt).toLocaleDateString()}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="p-10 text-center text-slate-400">
-                          <Bell className="mx-auto mb-3 opacity-20" size={40} />
-                          <p className="text-sm">Stay tuned! No notifications yet.</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* User Menu */}
-            {isAuthenticated && (
-              <div className="relative">
-                <button 
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-1 pl-3 bg-slate-50 rounded-full hover:shadow-sm border border-slate-100 transition-all"
-                >
-                  <img src={userImage} alt="" className="h-7 w-7 opacity-75" />
-                  <span className="text-xs font-bold text-secondary hidden md:block">Account</span>
-                  <ChevronDown size={14} className="text-slate-400" />
-                </button>
-                {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-4 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 py-2 z-50">
-                    <div className="px-4 py-3 border-b border-slate-50 mb-2">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Signed in as</p>
-                      <p className="text-sm font-bold text-secondary truncate">{userInformation?.names || 'User'}</p>
-                    </div>
-                    <Link to="/me" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors">
-                      <User size={18} /> My Profile
-                    </Link>
-                    <Link to="/my-proforma" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors">
-                      <ClipboardList size={18} /> My Proforma
-                    </Link>
-                    <Link to="/bookings" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors">
-                      <ClipboardList size={18} /> My Bookings
-                    </Link>
-                    <div className="h-px bg-slate-50 my-2" />
-                    <button 
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors"
+          <div className={classes.sectionDesktop}>
+            <Grid
+              container
+              direction="row"
+              align="left"
+              spacing={1}
+              alignItems="left"
+              style={{ marginRight: 0 }}
+            >
+              <Grid item>
+                <Link to="/request" className={classes.links}>
+                  <Button
+                    color="inherit"
+                    className={[classes.buttonFontSize, classes.proformaButton]}
+                  >
+                    Request proforma
+                  </Button>
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link to="/cart" className={classes.links}>
+                  <img
+                    width="50"
+                    height="25"
+                    src={cartImage}
+                    alt=""
+                    className="edit-img"
+                  />
+                  <span
+                    style={{
+                      marginLeft: -13,
+                      backgroundColor: '#e91e63',
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      fontSize: 18,
+                      padding: 5,
+                      borderRadius: '25px',
+                    }}
+                  >
+                    {orderedItems && orderedItems.length
+                      ? orderedItems.length
+                      : '0'}
+                  </span>
+                </Link>
+              </Grid>
+              <Grid item>
+                {isAuthenticated ? (
+                  <div>
+                    <Button
+                      aria-owns={anchorEl ? 'simple-menu' : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      onMouseOver={handleClick}
+                      className={classes.buttonFontSize}
+                      color="inherit"
+                      style={{ marginTop: -5 }}
                     >
-                      <LogOut size={18} /> Sign Out
-                    </button>
+                      <img
+                        width="50"
+                        height="25"
+                        src={userImage}
+                        alt=""
+                        className="edit-img"
+                      />
+                      My Account
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                      MenuListProps={{ onMouseLeave: handleClose }}
+                    >
+                      <MenuItem
+                        onClick={handleClose}
+                        style={{ backgroundColor: '#fff' }}
+                      ></MenuItem>
+                      <List>
+                        {[
+                          {
+                            title: 'my profile',
+                            path: '/me',
+                            icon: <AccountBoxIcon />,
+                          },
+                          {
+                            title: 'My Proforma',
+                            path: '/my-proforma',
+                            icon: <FeaturedPlayListIcon />,
+                          },
+                          {
+                            title: 'My Bookings',
+                            path: '/bookings',
+                            icon: <FeaturedPlayListIcon />,
+                          },
+                        ]
+                          .filter((e) => e !== null)
+                          .map((link) => (
+                            <ListItem button key={link.title}>
+                              <ListItemIcon>{link.icon}</ListItemIcon>
+                              <Link to={link.path} className={classes.links}>
+                                <ListItemText primary={link.title} />
+                              </Link>
+                            </ListItem>
+                          ))}
+                        <ListItem button onClick={handleLogout}>
+                          {/* <ListItemIcon> */}
+                          <ExitToAppIcon />
+                          {/* </ListItemIcon> */}{' '}
+                          <ListItemText primary="Logout" />
+                        </ListItem>
+                      </List>
+                    </Menu>
                   </div>
-                )}
-              </div>
-            )}
+                ) : null}
+              </Grid>
+            </Grid>
           </div>
-        </Container>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-secondary/60 backdrop-blur-sm z-50 md:hidden" onClick={() => setIsMenuOpen(false)}>
-          <div 
-            className="w-4/5 h-full bg-white shadow-2xl p-6"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex justify-between items-center mb-10">
-              <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 w-auto" />
-              <button onClick={() => setIsMenuOpen(false)}>
-                <X size={24} className="text-slate-400" />
-              </button>
-            </div>
-            
-            <nav className="space-y-6">
-              <Link to="/me" className="flex items-center gap-4 text-lg font-bold text-secondary">
-                <User size={24} className="text-primary" /> Profile
-              </Link>
-              <Link to="/my-proforma" className="flex items-center gap-4 text-lg font-bold text-secondary">
-                <ClipboardList size={24} className="text-primary" /> My Proforma
-              </Link>
-              <Link to="/bookings" className="flex items-center gap-4 text-lg font-bold text-secondary">
-                <ClipboardList size={24} className="text-primary" /> Bookings
-              </Link>
-              <Link to="/contact-us" className="flex items-center gap-4 text-lg font-bold text-secondary">
-                <HelpCircle size={24} className="text-primary" /> Help Center
-              </Link>
-              <div className="h-px bg-slate-100" />
-              {isAuthenticated ? (
-                <button onClick={handleLogout} className="flex items-center gap-4 text-lg font-bold text-red-500">
-                  <LogOut size={24} /> Logout
-                </button>
-              ) : (
-                <div className="space-y-4 pt-4">
-                  <Link to="/login" className="block w-full text-center py-3 bg-primary text-white rounded-xl font-bold">Login</Link>
-                  <Link to="/signup" className="block w-full text-center py-3 border-2 border-primary text-primary rounded-xl font-bold">Register</Link>
-                </div>
-              )}
-            </nav>
-          </div>
-        </div>
-      )}
-    </header>
+        </Toolbar>
+      </AppBar>
+    </Fragment>
   );
 }

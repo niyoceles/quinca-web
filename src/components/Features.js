@@ -1,8 +1,12 @@
 import React from 'react';
-import { Card } from './Ui/Card';
-import { Typography } from './Ui/Typography';
-import Button from './Ui/Button';
-import { Calendar, User, MapPin, CreditCard, DollarSign, ChevronRight } from 'lucide-react';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Title from '../layouts/Title';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -17,67 +21,48 @@ const rows = [
   createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
 ];
 
-export default function Orders() {
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Typography variant="h3">Recent Activity</Typography>
-        <Button variant="ghost" size="sm" icon={ChevronRight} iconPosition="right">
-          View Detailed Reports
-        </Button>
-      </div>
+function preventDefault(event) {
+  event.preventDefault();
+}
 
-      <Card hover={false} className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Transaction Date</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Customer</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Shipment Location</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Payment</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {rows.map((row) => (
-                <tr key={row.id} className="group hover:bg-slate-50/50 transition-colors">
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
-                      <Calendar size={14} className="text-slate-300" />
-                      {row.date}
-                    </div>
-                  </td>
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-sm font-black text-secondary">
-                      <User size={14} className="text-primary/40" />
-                      {row.name}
-                    </div>
-                  </td>
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-xs font-bold text-slate-500">
-                      <MapPin size={14} className="text-slate-300" />
-                      {row.shipTo}
-                    </div>
-                  </td>
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-xs font-medium text-slate-400">
-                      <CreditCard size={14} className="text-slate-200" />
-                      {row.paymentMethod}
-                    </div>
-                  </td>
-                  <td className="px-8 py-5 text-right">
-                    <div className="flex items-center justify-end gap-1.5 text-sm font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl w-fit ml-auto">
-                      <DollarSign size={14} />
-                      {row.amount.toFixed(2)}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-    </div>
+const useStyles = makeStyles((theme) => ({
+  seeMore: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
+export default function Orders() {
+  const classes = useStyles();
+  return (
+    <React.Fragment>
+      <Title>Recent Features</Title>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Date</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Ship To</TableCell>
+            <TableCell>Payment Method</TableCell>
+            <TableCell align="right">Sale Amount</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell>{row.date}</TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.shipTo}</TableCell>
+              <TableCell>{row.paymentMethod}</TableCell>
+              <TableCell align="right">{row.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <div className={classes.seeMore}>
+        <Link color="primary" href="#" onClick={preventDefault}>
+          See more Features
+        </Link>
+      </div>
+    </React.Fragment>
   );
 }

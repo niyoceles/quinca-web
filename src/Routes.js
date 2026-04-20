@@ -1,19 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes as RouterRoutes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from './pages/client/landingPage';
-import CategoriesPage from './pages/client/Categories';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
-import Clients from './components/client/clients1';
+import clients from './components/client/clients1';
 import ItemPage from './pages/supplier/ItemPage';
 import ProformaPage from './pages/supplier/ProformaPage';
-import CustomersPage from './pages/supplier/CustomersPage';
+import customersPage from './pages/supplier/CustomersPage';
 import DashboardPage from './pages/supplier/DashboardPage';
 import ReportPage from './pages/supplier/ReportPage';
 import ProfilePage from './pages/supplier/ProfilePage';
 import RequestProforma from './pages/client/RequestProforma';
-import AdminInquiries from './pages/admin/AdminInquiries';
-import ManageSuppliers from './pages/admin/ManageSuppliers';
+//
 import Bookings from './pages/client/Bookings';
 import MyProforma from './pages/client/MyProforma';
 import SingleProformaPage from './pages/client/SingleProformaPage';
@@ -31,147 +29,72 @@ import CategoryPage from './pages/supplier/CategoryPage';
 import AboutUs from './pages/client/AboutUs';
 import ViewOrder from './pages/supplier/ViewOrder';
 import TermsConditions from './pages/client/TermsConditions';
-import MessagesPage from './pages/supplier/MessagesPage';
 
 export const Routes = () => {
 	return (
 		<Router>
-			<RouterRoutes>
-				<Route path='/' element={<LandingPage />} />
-				<Route path='/categories' element={<CategoriesPage />} />
-				<Route path='/login' element={<LoginPage />} />
-				<Route path='/account/verified' element={<VerifiedAccount />} />
-				<Route path='/view/:id' element={<ViewItem />} />
-				<Route path='/cart' element={<Cart />} />
-				<Route path='/contact-us' element={<ContactUs />} />
-				<Route path='/about-us' element={<AboutUs />} />
-				<Route path='/terms-and-conditions' element={<TermsConditions />} />
-				<Route path='/request' element={<RequestProforma />} />
-				<Route path='/category/:category' element={<CategoryItems />} />
-				<Route
-					path='/my-proforma'
-					element={
-						<AuthRoute>
-							<MyProforma />
-						</AuthRoute>
-					}
-				/>
-				<Route path='/my-proforma/:id' element={<SingleProformaPage />} />
-				<Route path='/proforma/:id' element={<ViewProforma />} />
-				<Route path='/order/:id' element={<ViewOrder />} />
-				<Route
-					path='/client'
-					element={
-						<AuthRoute>
-							<Clients />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/bookings'
-					element={
-						<AuthRoute>
-							<Bookings />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/me'
-					element={
-						<AuthRoute>
-							<MyProfile />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/proforma'
-					element={
-						<AuthRoute>
-							<ProformaPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/items'
-					element={
-						<AuthRoute>
-							<ItemPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/categories'
-					element={
-						<AuthRoute>
-							<CategoryPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/orders'
-					element={
-						<AuthRoute>
-							<OrdersPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/customers'
-					element={
-						<AuthRoute>
-							<CustomersPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/dashboard'
-					element={
-						<AuthRoute>
-							<DashboardPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/reports'
-					element={
-						<AuthRoute>
-							<ReportPage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/myaccount'
-					element={
-						<AuthRoute>
-							<ProfilePage />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/admin/inquiries'
-					element={
-						<AuthRoute>
-							<AdminInquiries />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/admin/suppliers'
-					element={
-						<AuthRoute>
-							<ManageSuppliers />
-						</AuthRoute>
-					}
-				/>
-				<Route
-					path='/account/supplier/messages'
-					element={
-						<AuthRoute>
-							<MessagesPage />
-						</AuthRoute>
-					}
-				/>
-			</RouterRoutes>
+			<div className='container'>
+				<Switch>
+					<Route exact path='/' component={LandingPage} />
+					<Route exact path='/login' component={LoginPage} />
+					{/* <Route exact path='/signup' component={SignupPage} /> */}
+					<Route exact path='/account/verified' component={VerifiedAccount} />
+					<Route exact path='/view/:id' component={ViewItem} />
+					<Route exact path='/cart' component={Cart} />
+					<Route exact path='/contact-us' component={ContactUs} />
+					<Route exact path='/about-us' component={AboutUs} />
+					<Route exact path='/terms-and-conditions' component={TermsConditions} />
+					<Route exact path='/request' component={RequestProforma} />
+					<Route exact path='/category/:category' component={CategoryItems} />
+					<AuthRoute exact path='/my-proforma' component={MyProforma} />
+					<Route exact path='/my-proforma/:id' component={SingleProformaPage} />
+					<Route exact path='/proforma/:id' component={ViewProforma} />
+					<Route exact path='/order/:id' component={ViewOrder} />
+					<AuthRoute exact path='/client' component={clients} />
+					<AuthRoute exact path='/bookings' component={Bookings} />
+					<AuthRoute exact path='/me' component={MyProfile} />
+					<AuthRoute
+						exact
+						path='/account/supplier/proforma'
+						component={ProformaPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/items'
+						component={ItemPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/categories'
+						component={CategoryPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/orders'
+						component={OrdersPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/customers'
+						component={customersPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/dashboard'
+						component={DashboardPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/reports'
+						component={ReportPage}
+					/>
+					<AuthRoute
+						exact
+						path='/account/supplier/myaccount'
+						component={ProfilePage}
+					/>
+				</Switch>
+			</div>
 		</Router>
 	);
 };

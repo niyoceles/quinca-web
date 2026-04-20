@@ -3,8 +3,8 @@ import {
 	POST_CATEGORY,
 	SET_CATEGORY,
 	UPDATE_CATEGORY,
-	GET_CAT_RELATED_FAILURE,
-	GET_CAT_RELATED_SUCCESS,
+	GET_RELATED_FAILURE,
+	GET_RELATED_SUCCESS,
 	GET_ALL_CATEGORIES_FAILURE,
 	GET_ALL_CATEGORIES_SUCCESS,
 } from '../types';
@@ -62,12 +62,12 @@ export default function (state = initialState, action) {
 				category: action.payload.category,
 				updateCategorySuccess: action.payload.message,
 			};
-		case GET_CAT_RELATED_SUCCESS:
+		case GET_RELATED_SUCCESS:
 			return {
 				...state,
 				relatedCategories: action.payload,
 			};
-		case GET_CAT_RELATED_FAILURE:
+		case GET_RELATED_FAILURE:
 			return {
 				...state,
 				relatedCategories: action.payload,

@@ -1,181 +1,305 @@
-import React, { useState, Fragment } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { Fragment } from 'react';
+import './styles.css';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import clsx from 'clsx';
+import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import CallIcon from '@material-ui/icons/Call';
+import EmailIcon from '@material-ui/icons/Email';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MailIcon from '@material-ui/icons/Mail';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  Phone, 
-  Mail, 
-  Menu, 
-  User, 
-  List as ListIcon, 
-  LogOut, 
-  HelpCircle, 
-  Info,
-  X,
-  ChevronRight
-} from 'lucide-react';
+import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
+import InfoIcon from '@material-ui/icons/Info';
+import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { logoutUser } from '../redux/actions';
-import Hadiwa_logo from '../assets/images/hadiwa-logo.png';
-import { Container } from './Ui/Layout';
-import Button from './Ui/Button';
+import Quinca_logo from '../assets/images/quinca-logo.jpeg';
+import MenuIcon from '@material-ui/icons/Menu';
+// import accountImage from '../assets/images/account.svg';
 
-export default function NavbarLogo() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const isAuthenticated = useSelector(state => state.auth.authenticated);
-  const userinformation = JSON.parse(localStorage.getItem('userInfo'));
-  const dispatch = useDispatch();
-  const location = useLocation();
+const useStyles = makeStyles(theme => ({
+	menuButton: {
+		marginRight: theme.spacing(2),
+	},
+	title: {
+		flexGrow: 1,
+	},
+	links: {
+		textDecoration: 'none',
+		color: 'inherit',
+		paddingLeft: '5px',
+	},
+	buttonFontSize: {
+		fontSize: '11px',
+		color: '#a1a1a1',
+	},
+	loginButton: {
+		background: '#f5f5f5',
+		color: '#333',
+		borderRadius: '25px',
+		padding: '4px 20px',
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    setIsDrawerOpen(false);
-  };
+		'&:hover': {
+			background: '#f8f8f8',
+			boxShadow: '0px 1px 1px #888888',
+			color: '#333',
+		},
+	},
+	grow: {
+		flexGrow: 1,
+	},
 
-  const navLinks = [
-    { title: 'Home', path: '/' },
-    { title: 'Help', path: '/contact-us' },
-  ];
+	sectionDesktop: {
+		display: 'none',
+		[theme.breakpoints.up('md')]: {
+			display: 'flex',
+		},
+	},
+	sectionMobile: {
+		display: 'flex',
+		[theme.breakpoints.up('md')]: {
+			display: 'none',
+		},
+	},
+	logo: {
+		maxWidth: 200,
+		marginRight: '10px',
+	},
+}));
 
-  const authLinks = [
-    isAuthenticated ? { title: 'Profile', path: '/me', icon: User } : null,
-    isAuthenticated ? { title: 'My Proforma', path: '/my-proforma', icon: ListIcon } : null,
-    isAuthenticated ? { title: 'My Bookings', path: '/bookings', icon: ListIcon } : null,
-    { title: 'Contact Us', path: '/contact-us', icon: Phone },
-    { title: 'About Us', path: '/about-us', icon: Info },
-  ].filter(Boolean);
+export default function ButtonAppBar() {
+	const classes = useStyles();
+	const isAuthenticated = useSelector(state => state.auth.authenticated);
+	// const user = useSelector(state => state.auth.user);
+	const userinformation = JSON.parse(localStorage.getItem('userInfo'));
+	const [state, setState] = React.useState({
+		top: false,
+		left: false,
+		bottom: false,
+		right: false,
+	});
 
-  return (
-    <Fragment>
-      {/* Top Bar - Micro Info */}
-      <div className="bg-white border-b border-slate-50 py-2 hidden md:block">
-        <Container>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              {navLinks.map(link => (
-                <Link 
-                  key={link.title} 
-                  to={link.path} 
-                  className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${
-                    location.pathname === link.path ? 'text-primary' : 'text-slate-400 hover:text-secondary'
-                  }`}
-                >
-                  {link.title}
-                </Link>
-              ))}
-              <div className="flex items-center gap-2 text-[11px] font-bold text-slate-400">
-                <Phone size={12} className="text-primary" />
-                <span>+250 788 550 184</span>
-              </div>
-            </div>
+	const toggleDrawer = (anchor, open) => event => {
+		if (
+			event.type === 'keydown' &&
+			(event.key === 'Tab' || event.key === 'Shift')
+		) {
+			return;
+		}
 
-            <div className="flex items-center gap-4">
-              {isAuthenticated ? (
-                <div className="flex items-center gap-4 text-[11px] font-bold">
-                  <div className="flex items-center gap-1.5 text-slate-400">
-                    <Mail size={12} />
-                    <span>{userinformation?.email}</span>
-                  </div>
-                  <span className="text-slate-200">|</span>
-                  <span className="text-secondary uppercase tracking-tight">{userinformation?.names}</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Link to="/login">
-                    <Button variant="ghost" size="sm" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">
-                      Login
-                    </Button>
-                  </Link>
-                  <Link to="/signup">
-                    <Button size="sm" className="text-[10px] font-black uppercase tracking-widest rounded-full px-6">
-                      Join Free
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-        </Container>
-      </div>
+		setState({ ...state, [anchor]: open });
+	};
 
-      {/* Main Bar - Branding */}
-      <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 shadow-sm">
-        <Container>
-          <div className="h-16 md:h-20 flex items-center justify-between">
-            {/* Mobile Menu Trigger */}
-            <button 
-              onClick={() => setIsDrawerOpen(true)}
-              className="md:hidden p-2 -ml-2 text-secondary hover:bg-slate-50 rounded-xl transition-all"
-            >
-              <Menu size={24} />
-            </button>
+	// const token = localStorage.IdToken;
 
-            {/* Centered/Left Logo */}
-            <div className="flex-grow flex justify-center md:justify-start">
-              <Link to="/" className="block">
-                <img src={Hadiwa_logo} alt="Hadiwa" className="h-10 md:h-12 w-auto object-contain" />
-              </Link>
-            </div>
+	const dispatch = useDispatch();
 
-            {/* Action Group (User/Search/Cart can go here) */}
-            <div className="flex items-center gap-2 md:hidden w-10" />
-          </div>
-        </Container>
-      </nav>
+	const handleLogout = () => {
+		dispatch(logoutUser());
+	};
 
-      {/* Mobile Drawer */}
-      <div className={`fixed inset-0 z-[100] transition-all duration-500 overflow-hidden ${isDrawerOpen ? 'visible' : 'invisible'}`}>
-        <div 
-          className={`absolute inset-0 bg-secondary/40 backdrop-blur-sm transition-opacity duration-500 ${isDrawerOpen ? 'opacity-100' : 'opacity-0'}`}
-          onClick={() => setIsDrawerOpen(false)}
-        />
-        <div className={`absolute top-0 left-0 bottom-0 w-[280px] bg-white shadow-2xl transition-transform duration-500 flex flex-col ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <div className="p-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
-            <h2 className="font-black text-secondary tracking-tight">Navigation</h2>
-            <button onClick={() => setIsDrawerOpen(false)} className="p-2 hover:bg-white rounded-xl text-slate-400 transition-all">
-              <X size={20} />
-            </button>
-          </div>
+	const list = anchor => (
+		<div
+			className={clsx(classes.list, {
+				[classes.fullList]: anchor === 'top' || anchor === 'bottom',
+			})}
+			role='presentation'
+			onClick={toggleDrawer(anchor, false)}
+			onKeyDown={toggleDrawer(anchor, false)}
+		>
+			<List>
+				<ListItem button>
+					<ListItemIcon>
+						<MailIcon />
+					</ListItemIcon>
+					<ListItemText primary='QuincaParadi' />
+				</ListItem>
+			</List>
+			<Divider />
+			<List>
+				{[
+					isAuthenticated
+						? { title: 'Profile', path: '/me', icon: <AccountBoxIcon /> }
+						: null,
+					isAuthenticated
+						? {
+								title: 'My Proforma',
+								path: '/my-proforma',
+								icon: <FeaturedPlayListIcon />,
+						  }
+						: null,
+					isAuthenticated
+						? {
+								title: 'My Bookings',
+								path: '/bookings',
+								icon: <FeaturedPlayListIcon />,
+						  }
+						: null,
+					{ title: 'Contact Us', path: '/', icon: <ContactPhoneIcon /> },
+					{ title: 'About Us', path: '/', icon: <InfoIcon /> },
+				]
+					.filter(e => e !== null)
+					.map(link => (
+						<ListItem button key={link.title}>
+							<ListItemIcon>{link.icon}</ListItemIcon>
+							<Link to={link.path} className={classes.links}>
+								<ListItemText primary={link.title} />
+							</Link>
+						</ListItem>
+					))}
+				{isAuthenticated ? (
+					<ListItem button onClick={handleLogout}>
+						<ListItemIcon>
+							<ExitToAppIcon />
+						</ListItemIcon>
+						<ListItemText primary='Logout' />
+					</ListItem>
+				) : null}
+			</List>
+		</div>
+	);
 
-          <div className="flex-grow overflow-y-auto p-4 space-y-1">
-            {authLinks.map(link => (
-              <Link 
-                key={link.title} 
-                to={link.path} 
-                onClick={() => setIsDrawerOpen(false)}
-                className="flex items-center gap-4 p-4 rounded-2xl hover:bg-primary/5 group transition-all"
-              >
-                <div className="p-2 rounded-xl bg-slate-50 text-slate-500 group-hover:bg-primary group-hover:text-white transition-all">
-                  <link.icon size={20} />
-                </div>
-                <span className="font-bold text-slate-600 group-hover:text-primary transition-colors">{link.title}</span>
-                <ChevronRight size={16} className="ml-auto text-slate-300 group-hover:text-primary transition-all group-hover:translate-x-1" />
-              </Link>
-            ))}
-            
-            {isAuthenticated && (
-              <button 
-                onClick={handleLogout}
-                className="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-accent/5 group transition-all text-left"
-              >
-                <div className="p-2 rounded-xl bg-slate-50 text-slate-500 group-hover:bg-accent group-hover:text-white transition-all">
-                  <LogOut size={20} />
-                </div>
-                <span className="font-bold text-slate-600 group-hover:text-accent transition-colors">Logout</span>
-              </button>
-            )}
-          </div>
+	return (
+		<Fragment>
+			<AppBar
+				component='div'
+				color='default'
+				position='sticky'
+				indicatorColor='primary'
+				style={{ backgroundColor: '#fff', backgroundSize: 'cover', height: 40 }}
+				elevation={0}
+			>
+				<Toolbar style={{ marginTop: -15 }}>
+					<Link to='/' className={classes.links}>
+						<Typography variant='body2' color='textSecondary' align='center'>
+							Home
+						</Typography>
+					</Link>
+					<Typography
+						variant='body1'
+						color='textPrimary'
+						align='center'
+						style={{ paddingLeft: 5, paddingRight: 5 }}
+					>
+						|
+					</Typography>{' '}
+					<Link to='/contact-us' className={classes.links}>
+						<Typography variant='body2' color='textSecondary' align='center'>
+							Help
+						</Typography>
+					</Link>
+					<Typography
+						variant='body1'
+						color='textPrimary'
+						align='center'
+						style={{ paddingLeft: 5, paddingRight: 5 }}
+					>
+						|
+					</Typography>{' '}
+					<Typography variant='body2' color='textSecondary' align='center'>
+						<CallIcon style={{ marginBottom: -8 }} /> +250 788 550 184
+					</Typography>{' '}
+					<div className={classes.grow} />
+					<div className={classes.sectionDesktop}>
+						{isAuthenticated ? (
+							<>
+								<Typography
+									variant='body2'
+									color='textSecondary'
+									align='center'
+								>
+									<EmailIcon style={{ marginBottom: -8 }} />{' '}
+									{userinformation.email}
+								</Typography>
+								<Typography
+									variant='body1'
+									color='textPrimary'
+									align='center'
+									style={{ paddingLeft: 5, paddingRight: 5 }}
+								>
+									|
+								</Typography>{' '}
+								<Typography
+									variant='body2'
+									color='textSecondary'
+									align='center'
+								>
+									{userinformation.names}
+								</Typography>
+							</>
+						) : (
+							<>
+								<Link to='/login' className={classes.links}>
+									<Button
+										color='inherit'
+										className={[classes.buttonFontSize, classes.loginButton]}
+									>
+										Login
+									</Button>
+								</Link>
+								<Link to='/signup' className={classes.links}>
+									<Button
+										color='inherit'
+										className={[classes.buttonFontSize, classes.loginButton]}
+									>
+										Join
+									</Button>
+								</Link>
+							</>
+						)}
+					</div>
+				</Toolbar>
+			</AppBar>
+			<AppBar
+				component='div'
+				color='default'
+				style={{ backgroundColor: '#fff', backgroundSize: 'cover' }}
+				position='sticky'
+				elevation={2}
+			>
+				<Toolbar>
+					<div className={classes.sectionMobile}>
+						<IconButton
+							onClick={toggleDrawer('left', true)}
+							edge='start'
+							className={classes.menuButton}
+							color='inherit'
+							aria-label='menu'
+						>
+							<MenuIcon />
+						</IconButton>
+						<Drawer
+							anchor='left'
+							open={state['left']}
+							onClose={toggleDrawer('left', false)}
+						>
+							{list('left')}
+						</Drawer>
+					</div>
+					{/* <div className={classes.sectionDesktop}> */}
 
-          {!isAuthenticated && (
-            <div className="p-6 border-t border-slate-50 space-y-3">
-              <Link to="/login" onClick={() => setIsDrawerOpen(false)} className="block">
-                <Button variant="outline" className="w-full rounded-2xl font-black">Login</Button>
-              </Link>
-              <Link to="/signup" onClick={() => setIsDrawerOpen(false)} className="block">
-                <Button className="w-full rounded-2xl font-black shadow-premium">Join Now</Button>
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
-    </Fragment>
-  );
+					<Typography variant='h6' className={classes.title} align='center'>
+						<Link to='/' className={classes.links}>
+							<img
+								src={Quinca_logo}
+								alt='Quinca Paradi'
+								className={classes.logo}
+							/>
+						</Link>
+					</Typography>
+				</Toolbar>
+			</AppBar>
+		</Fragment>
+	);
 }

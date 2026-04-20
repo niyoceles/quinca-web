@@ -2,7 +2,7 @@ import React from 'react';
 import AuthLayout from '../../layouts/AuthLayout';
 import Signup from '../../components/Auth/Signup';
 
-const SignupPage = props => {
+const LoginPage = props => {
 	return (
 		<AuthLayout>
 			<Signup />
@@ -10,4 +10,4 @@ const SignupPage = props => {
 	);
 };
 
-export default SignupPage;
+export default LoginPage;

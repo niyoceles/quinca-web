@@ -1,159 +1,232 @@
-import React, { useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import { 
-  Menu, 
-  Bell, 
-  User, 
-  LogOut, 
-  ChevronDown, 
-  BellDot,
-  Search,
-  Settings,
-  X
-} from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { MainNav, SecondaryNav } from './LeftSideBar';
-import { toggleSidebar } from '../../redux/actions/uiActions';
+import React from 'react';
+import clsx from 'clsx';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import jwtDecode from 'jwt-decode';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import Link from '@material-ui/core/Link';
+import { mainActionButtons, secondaryActionButtons } from './LeftSideBar';
 import Logout from '../Auth/Logout';
-import Hadiwa_logo from '../../assets/images/hadiwa-logo.png';
+
+const drawerWidth = 240;
+const useStyles = makeStyles(theme => ({
+	root: {
+		display: 'flex',
+	},
+	toolbar: {
+		paddingRight: 24, // keep right padding when drawer closed
+	},
+	toolbarIcon: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+		padding: '0 8px',
+		...theme.mixins.toolbar,
+	},
+	appBar: {
+		zIndex: theme.zIndex.drawer + 1,
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		}),
+	},
+	appBarShift: {
+		marginLeft: drawerWidth,
+		width: `calc(100% - ${drawerWidth}px)`,
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	},
+	menuButton: {
+		marginRight: theme.spacing(2),
+	},
+	menuButtonHidden: {
+		display: 'none',
+	},
+	title: {
+		flexGrow: 1,
+	},
+	drawerPaper: {
+		position: 'relative',
+		whiteSpace: 'nowrap',
+		width: drawerWidth,
+		transition: theme.transitions.create('width', {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	},
+	drawerPaperClose: {
+		overflowX: 'hidden',
+		transition: theme.transitions.create('width', {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		}),
+		width: theme.spacing(7),
+		[theme.breakpoints.up('sm')]: {
+			width: theme.spacing(9),
+		},
+	},
+	appBarSpacer: theme.mixins.toolbar,
+	content: {
+		flexGrow: 1,
+		height: '100vh',
+		overflow: 'auto',
+	},
+	container: {
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(4),
+	},
+	paper: {
+		padding: theme.spacing(2),
+		display: 'flex',
+		overflow: 'auto',
+		flexDirection: 'column',
+	},
+	fixedHeight: {
+		height: 240,
+	},
+}));
 
 export default function AuthNavbar() {
-  const dispatch = useDispatch();
-  const isSidebarOpen = useSelector(state => state.ui.isSidebarOpen);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const classes = useStyles();
+	const [open, setOpen] = React.useState(true);
+	const handleDrawerOpen = () => {
+		setOpen(true);
+	};
+	const handleDrawerClose = () => {
+		setOpen(false);
+	};
 
-  // Safety check for token
-  let decodedToken = { email: 'Supplier' };
-  try {
-    if (localStorage.IdToken) {
-      decodedToken = jwtDecode(localStorage.IdToken);
-    }
-  } catch (err) {
-    console.error('Invalid token');
-  }
+	const [auth] = React.useState(true);
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const opened = Boolean(anchorEl);
 
-  const handleToggleSidebar = () => dispatch(toggleSidebar());
+	// const handleChange = event => {
+	// 	setAuth(event.target.checked);
+	// };
 
-  return (
-    <Fragment>
-      {/* Top Navbar */}
-      <nav className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-100 z-[60] px-6">
-        <div className="h-full flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <button 
-              onClick={handleToggleSidebar}
-              className="p-2.5 rounded-2xl hover:bg-slate-50 text-slate-400 hover:text-secondary transition-all active:scale-95"
-            >
-              <Menu size={22} />
-            </button>
-            <Link to="/" className="flex items-center gap-3 group">
-              <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
-              <div className="hidden md:block">
-                <span className="font-black text-secondary tracking-tight block leading-none">Hadiwa</span>
-                <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Supplier Center</span>
-              </div>
-            </Link>
-          </div>
+	const handleMenu = event => {
+		setAnchorEl(event.currentTarget);
+	};
 
-          <div className="flex items-center gap-3">
-            {/* Search - Desktop */}
-            <div className="hidden md:flex items-center bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary/20 transition-all">
-              <Search size={16} className="text-slate-400" />
-              <input 
-                type="text" 
-                placeholder="Search orders..." 
-                className="bg-transparent border-none text-sm font-medium w-full focus:ring-0 placeholder:text-slate-300"
-              />
-            </div>
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 
-            {/* Notifications */}
-            <button className="p-3 rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-primary hover:border-primary/20 transition-all relative">
-              <Bell size={20} />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-white shadow-sm" />
-            </button>
+	const decodedToken = jwtDecode(localStorage.IdToken);
+	if (!decodedToken) {
+		window.location.href = '/login';
+	}
 
-            {/* User Profile Dropdown */}
-            <div className="relative">
-              <button 
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className={`flex items-center gap-3 p-1.5 pr-4 rounded-full border transition-all ${
-                  isProfileOpen ? 'bg-slate-50 border-primary/20 bg-primary/5' : 'bg-white border-slate-100 hover:border-slate-200'
-                }`}
-              >
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-primary/20">
-                  {decodedToken.email[0].toUpperCase()}
-                </div>
-                <div className="hidden lg:block text-left">
-                  <p className="text-xs font-black text-secondary truncate max-w-[120px] uppercase tracking-tight">{decodedToken.email.split('@')[0]}</p>
-                </div>
-                <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isProfileOpen ? 'rotate-180 text-primary' : ''}`} />
-              </button>
-
-              {isProfileOpen && (
-                <div className="absolute top-full right-0 mt-3 w-64 bg-white rounded-3xl shadow-2xl border border-slate-50 overflow-hidden py-3 animate-in fade-in slide-in-from-top-2 duration-300 z-[100]">
-                  <div className="px-6 py-4 border-b border-slate-50 mb-2">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Signed in as</p>
-                    <p className="font-bold text-secondary truncate">{decodedToken.email}</p>
-                  </div>
-                  <Link to="/account/supplier/myaccount" className="flex items-center gap-4 px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition-all">
-                    <User size={18} className="text-slate-400" />
-                    <span className="font-bold text-sm">My Profile</span>
-                  </Link>
-                  <Link to="/account/supplier/settings" className="flex items-center gap-4 px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition-all">
-                    <Settings size={18} className="text-slate-400" />
-                    <span className="font-bold text-sm">Settings</span>
-                  </Link>
-                  <div className="mt-2 pt-2 border-t border-slate-50">
-                    <Logout variant="sidebar" />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Backdrop for mobile */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-secondary/40 backdrop-blur-sm z-[70] md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside 
-        className={`fixed top-20 bottom-0 left-0 bg-white border-r border-slate-100 z-[50] transition-all duration-500 overflow-y-auto ${
-          isSidebarOpen ? 'w-[280px]' : 'w-0 -translate-x-full md:w-0'
-        }`}
-      >
-        <div className="h-full flex flex-col pt-4">
-          <MainNav />
-          <div className="flex-grow" />
-          <SecondaryNav />
-          <div className="p-8 border-t border-slate-50">
-            <div className="bg-slate-50/50 rounded-2xl p-4 border border-slate-100/50">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                <BellDot size={12} className="text-primary" /> System Status
-              </p>
-              <p className="text-[11px] font-bold text-emerald-500 uppercase flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                Operational
-              </p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Mobile Menu FAB */}
-      <button 
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-2xl shadow-2xl flex items-center justify-center md:hidden z-[100] active:scale-95 transition-all"
-      >
-        <Menu size={24} />
-      </button>
-    </Fragment>
-  );
+	return (
+		<React.Fragment>
+			<AppBar
+				position='absolute'
+				className={clsx(classes.appBar, open && classes.appBarShift)}
+			>
+				<Toolbar className={classes.toolbar}>
+					<IconButton
+						edge='start'
+						color='inherit'
+						aria-label='open drawer'
+						onClick={handleDrawerOpen}
+						className={clsx(
+							classes.menuButton,
+							open && classes.menuButtonHidden
+						)}
+					>
+						<MenuIcon />
+					</IconButton>
+					<Typography
+						component='h1'
+						variant='h6'
+						color='inherit'
+						noWrap
+						className={classes.title}
+					>
+						Quinca Paradi
+					</Typography>
+					<IconButton color='inherit'>
+						<Badge badgeContent={4} color='secondary'>
+							<AccountBoxIcon />
+						</Badge>
+					</IconButton>
+					<IconButton
+						edge='start'
+						className={classes.menuButton}
+						color='inherit'
+						aria-label='menu'
+					></IconButton>
+					{auth && (
+						<div>
+							<IconButton
+								aria-label='account of current user'
+								aria-controls='menu-appbar'
+								aria-haspopup='true'
+								onClick={handleMenu}
+								color='inherit'
+							>
+								<AccountCircle style={{ fontSize: 30 }} />
+							</IconButton>
+							<Menu
+								id='menu-appbar'
+								anchorEl={anchorEl}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={opened}
+								onClose={handleClose}
+							>
+								<MenuItem onClick={handleClose}>{decodedToken.email}</MenuItem>
+								<MenuItem>
+									<Link variant='body2' href='/account/supplier/myaccount'>
+										My profile
+									</Link>
+								</MenuItem>
+								<Logout />
+							</Menu>
+						</div>
+					)}
+				</Toolbar>
+			</AppBar>
+			<Drawer
+				variant='permanent'
+				classes={{
+					paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+				}}
+				open={open}
+			>
+				<div className={classes.toolbarIcon}>
+					<h3>Categories</h3>
+					<IconButton onClick={handleDrawerClose}>
+						<ChevronLeftIcon />
+					</IconButton>
+				</div>
+				<Divider />
+				<List>{mainActionButtons}</List>
+				<Divider />
+				<List>{secondaryActionButtons}</List>
+			</Drawer>
+		</React.Fragment>
+	);
 }

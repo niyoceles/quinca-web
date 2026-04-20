@@ -1,63 +1,77 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { 
-  FileText, 
-  Trash2, 
-  CheckCircle, 
-  AlertCircle, 
-  X, 
-  ChevronRight,
-  ShoppingCart,
-  Send
-} from 'lucide-react';
-import moment from 'moment';
-import { useNavigate } from 'react-router-dom';
-import { getAllItems, requestProforma, resetRequestStatus } from '../../redux/actions';
+import React, { useEffect, useState } from 'react';
+import Button from '@material-ui/core/Button';
+import CardActions from '@material-ui/core/CardActions';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
 import ProformaItems from '../../components/client/ProformaItems';
-import PersonalInfoWidget from '../../components/SidebarWidget/PersonalInfoWidget';
-import CartLayout from '../../layouts/ClientLayout';
-import { Container, Grid, Divider } from '../../components/Ui/Layout';
-import { Typography } from '../../components/Ui/Typography';
-import { Card } from '../../components/Ui/Card';
-import Button from '../../components/Ui/Button';
+import {
+  createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import '@brainhubeu/react-carousel/lib/style.css';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getAllItems,
+  requestProforma,
+} from '../../redux/actions';
+import { green } from '@material-ui/core/colors';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import MuiAlert from '@material-ui/lab/Alert';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableRow from '@material-ui/core/TableRow';
 import Spinner from '../../components/Ui/Spinner/Spinner';
+import moment from 'moment';
+import PersonalInfoWidget from '../../components/SidebarWidget/PersonalInfoWidget';
+import CartLayout from '../../layouts/CartLayout';
 
-const SuccessView = ({ names, onReset }) => (
-  <div className="flex flex-col items-center justify-center py-20 animate-in fade-in zoom-in duration-700">
-    <div className="w-24 h-24 bg-emerald-100 rounded-[2rem] flex items-center justify-center text-emerald-500 mb-8 shadow-xl shadow-emerald-500/10">
-      <CheckCircle size={48} strokeWidth={2.5} />
-    </div>
-    <Typography variant="h1" className="text-center mb-4 text-secondary">Request <span className="text-primary italic">Sent!</span></Typography>
-    <p className="text-slate-500 font-medium text-center max-w-md mx-auto mb-10 leading-relaxed">
-      Thank you, <span className="text-secondary font-black">{names || 'valued customer'}</span>! Your request has been successfully dispatched to our procurement experts. We'll review your material list and get back to you within 24 hours.
-    </p>
-    <div className="flex flex-col sm:flex-row gap-4 w-full max-w-xs">
-      <Button 
-        variant="primary" 
-        className="w-full rounded-2xl h-14 font-black shadow-lg shadow-primary/20"
-        onClick={onReset}
-      >
-        Track My Requests
-      </Button>
-      <Button 
-        variant="ghost" 
-        className="w-full rounded-2xl h-14 font-bold text-slate-400"
-        onClick={() => window.location.href = '/'}
-      >
-        Back to Home
-      </Button>
-    </div>
-  </div>
-);
+function Alert(props) {
+  return (
+    <MuiAlert elevation={6} variant="filled" {...props} />
+  );
+}
 
-const RequestProforma = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const requestedItems = JSON.parse(localStorage.getItem('proformaSummary'));
-  
-  const [selectedDate] = useState(moment());
+const useStyles = makeStyles((theme) => ({
+  cardGrid: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
+    marginBottom: 40,
+    borderRadius: '10px',
+  },
+  btnSize: {
+    margin: theme.spacing(1),
+    width: '98%',
+    color: 'white',
+  },
+}));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
+
+const RequestProforma = (props) => {
+  const classes = useStyles();
+  const requestedItems = JSON.parse(
+    localStorage.getItem('proformaSummary')
+  );
+  const totalPrice =
+    (localStorage.getItem('totalPrice') || 0) * 1;
+  const [selectedDate, setSelectedDate] = useState(
+    moment()
+  );
   const [checkInDate, setCheckInDate] = useState(moment());
-  const [checkOutDate, setCheckOutDate] = useState(moment());
+  const [checkOutDate, setCheckOutDate] = useState(
+    moment()
+  );
+
+  // const [open, setOpen] = useState(false);
   const [snack, setSnack] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -70,25 +84,15 @@ const RequestProforma = () => {
     address: '',
     location: '',
   });
-
   const items = useSelector((state) => state.item.allItems);
-  const requestSuccess = useSelector((state) => state.client.requestSuccess);
-  
+  // const metadata = useSelector(state => stateallItemsItems);
+  // const cont = useSelector(state => state.item.relatedItems);
+
+  const dispatch = useDispatch();
+
   const [proformaSummary, setProformaSummary] = useState(
     requestedItems !== null ? requestedItems : []
   );
-
-  useEffect(() => {
-    dispatch(getAllItems());
-    return () => {
-      dispatch(resetRequestStatus());
-    };
-  }, [dispatch]);
-
-  const handleReset = () => {
-    dispatch(resetRequestStatus());
-    navigate('/account/client/proforma');
-  };
 
   const handleAddItem = (e, item, itemNumber) => {
     const { id, itemName, itemPrice } = item;
@@ -99,57 +103,92 @@ const RequestProforma = () => {
       itemNumber,
     };
     if (itemNumber) {
-      const requestedIndex = proformaSummary.findIndex((bk) => bk.id === id);
-      let updatedProforma = [...proformaSummary];
-      
-      if (requestedIndex >= 0) {
-        updatedProforma[requestedIndex] = requestItem;
-      } else {
-        updatedProforma = [...proformaSummary, requestItem];
+      const requested = proformaSummary.findIndex(
+        (bk) => bk.id === id
+      );
+      let updatedProforma = [
+        ...proformaSummary,
+        requestItem,
+      ];
+      if (requested >= 0) {
+        // updatedProforma = proformaSummary.filter(
+        //   (bk) => bk.id === item.id
+        // );
+        updatedProforma[requested] = requestItem;
       }
-      
       setProformaSummary(updatedProforma);
-      localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
+      localStorage.setItem(
+        'proformaSummary',
+        JSON.stringify(updatedProforma)
+      );
       setSnack(true);
-      setTimeout(() => setSnack(false), 3000);
     }
   };
 
-  const handleRemoveItem = (e, itemId) => {
-    const updatedProforma = proformaSummary.filter((bk) => bk.id !== itemId);
-    setProformaSummary(updatedProforma);
-    localStorage.setItem('proformaSummary', JSON.stringify(updatedProforma));
-  };
-
-  const handleOnChange = (e) => {
-    setProformaInfo({ ...proformaInfo, [e.target.name]: e.target.value });
-  };
-
-  const onDateChange = (name, dateValue) => {
-    if (name === 'pickupDate') setCheckInDate(dateValue);
-    else setCheckOutDate(dateValue);
-
-    setProformaInfo({
-      ...proformaInfo,
-      [name]: moment(dateValue).format('YYYY-MM-DD HH:mm:ss')
-    });
+  const handleRemoveItem = (e, item) => {
+    if (item) {
+      const requested = proformaSummary.find(
+        (bk) => bk.id === item
+      );
+      let updatedProforma = [...proformaSummary, item];
+      if (requested) {
+        updatedProforma = proformaSummary.filter(
+          (bk) => bk.id !== item
+        );
+      }
+      setProformaSummary(updatedProforma);
+      localStorage.setItem(
+        'proformaSummary',
+        JSON.stringify(updatedProforma)
+      );
+    }
   };
 
   useEffect(() => {
-    localStorage.setItem('proformaExtras', JSON.stringify(proformaInfo));
+    dispatch(getAllItems());
+  }, [dispatch]);
+
+  const handleOnChange = (e) => {
+    const updatedProformaInfo = { ...proformaInfo };
+    updatedProformaInfo[e.target.name] = e.target.value;
+    setProformaInfo(updatedProformaInfo);
+  };
+
+  const onDateChange = (name, dateValue) => {
+    name === 'pickupDate'
+      ? setCheckInDate(dateValue)
+      : setCheckOutDate(dateValue);
+
+    const updatedProformaInfo = { ...proformaInfo };
+    const realDate = moment(dateValue).format(
+      'YYYY-MM-DD HH:mm:ss'
+    );
+    updatedProformaInfo[name] = realDate;
+    setProformaInfo(updatedProformaInfo);
+    return;
+  };
+
+  useEffect(() => {
+    localStorage.setItem(
+      'proformaExtras',
+      JSON.stringify(proformaInfo)
+    );
   }, [proformaInfo]);
 
   const handlePayLater = async () => {
-    if (!proformaInfo.names || !proformaInfo.email || !proformaInfo.phoneNumber) {
-      setSubmitted(true);
-      return;
-    }
+    const tempProformaInfo = JSON.parse(
+      localStorage.getItem('proformaSummary')
+    );
+    const tempProformaEtras = JSON.parse(
+      localStorage.getItem('proformaExtras')
+    );
 
     const requestInfo = {
-      ...proformaInfo,
-      itemsArray: proformaSummary,
+      ...tempProformaEtras,
+      itemsArray: tempProformaInfo,
     };
-    dispatch(requestProforma(requestInfo));
+    setSubmitted(true);
+    await dispatch(requestProforma(requestInfo));
   };
 
   const handleCancelProforma = () => {
@@ -157,171 +196,179 @@ const RequestProforma = () => {
     setProformaSummary([]);
   };
 
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnack(false);
+  };
+
   const handleToggleModal = (item) => {
     setSubmitted(false);
     setSelectedItem(item);
   };
 
-  if (!items || items.length === 0) return <Spinner />;
+  const handleClose = () => {
+    setSubmitted(false);
+  };
 
   return (
     <CartLayout>
-      <main className="min-h-screen bg-slate-50 pb-24 pt-10">
-        <Container>
-          {requestSuccess ? (
-            <SuccessView names={proformaInfo.names} onReset={handleReset} />
-          ) : (
-            <Fragment>
-              {/* Page Header */}
-              <div className="flex items-center justify-between mb-12">
-                <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-4 rounded-[1.5rem] text-primary">
-                    <FileText size={32} />
-                  </div>
-                  <div>
-                    <Typography variant="h2">Request <span className="text-primary italic">Proforma</span></Typography>
-                    <p className="text-slate-400 font-medium">Add materials to your list and get a custom quote.</p>
-                  </div>
-                </div>
-                {proformaSummary.length > 0 && (
-                  <button 
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={snack}
+        message="I love snacks"
+        autoHideDuration={3000}
+        onClose={handleCloseSnack}
+        style={{ marginTop: 80 }}
+      >
+        <Alert
+          onClose={handleCloseSnack}
+          severity="success"
+        >
+          Item added on cart
+        </Alert>
+      </Snackbar>
+      <br />
+      {items && items.length ? (
+        <Container
+          item
+          className={classes.cardGrid}
+          maxWidth="lg"
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={8}>
+              <ProformaItems
+                items={items ? items : null}
+                addItem={handleAddItem}
+                openDialog={handleToggleModal}
+                closeDialog={handleClose}
+                selected={selectedItem}
+                checkSubmitted={submitted}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={4}>
+              <Typography
+                component="h3"
+                variant="h6"
+                color="textPrimary"
+                gutterBottom
+                item
+                md={12}
+                align="center"
+              >
+                Your Proforma summary
+              </Typography>
+              <TableContainer>
+                <Table
+                  className={classes.table}
+                  aria-label="customized table"
+                >
+                  <TableBody>
+                    {requestedItems !== null ? (
+                      // &&
+                      // totalPrice !== 0
+                      proformaSummary.map((item) => (
+                        <TableRow key={item.key}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                          >
+                            {item.itemName}
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                          >
+                            {item.itemNumber} X
+                          </TableCell>
+                          <TableCell align="right">
+                            {item.itemPrice} Rwf
+                          </TableCell>
+                          <TableCell align="right">
+                            <Button color="secondary">
+                              <CancelIcon
+                                onClick={(e) =>
+                                  handleRemoveItem(
+                                    e,
+                                    item.id
+                                  )
+                                }
+                              />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <Typography
+                        component="h6"
+                        variant="body1"
+                        color="textPrimary"
+                        gutterBottom
+                        item
+                        md={12}
+                        align="center"
+                        style={{ marginTop: '20px' }}
+                      >
+                        Oops! You haven't requested anything
+                        yet!,
+                        <br /> Please add product item
+                      </Typography>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <hr />
+              <PersonalInfoWidget
+                selectedDate={selectedDate}
+                checkInDate={checkInDate}
+                checkOutDate={checkOutDate}
+                onDateChange={onDateChange}
+                handleOnChange={handleOnChange}
+                onSubmitForm={handlePayLater}
+                checkValue={proformaInfo}
+                checkHelperText={proformaInfo}
+                checkSubmitted={submitted}
+                error={proformaInfo}
+              />
+              <hr />
+              {requestedItems ? (
+                <CardActions
+                  style={{
+                    position: 'relative',
+                    bottom: '0',
+                  }}
+                >
+                  <ThemeProvider theme={theme}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      className={classes.btnSize}
+                      onClick={() => handlePayLater()}
+                      onSubmit={() => handlePayLater()}
+                    >
+                      Request Now
+                    </Button>
+                  </ThemeProvider>
+                  <Button
+                    color="secondary"
+                    size="small"
+                    variant="contained"
+                    style={{ width: '33%' }}
                     onClick={handleCancelProforma}
-                    className="hidden md:flex items-center gap-2 text-xs font-black text-slate-400 hover:text-accent uppercase tracking-widest transition-colors"
                   >
-                    <X size={14} /> Clear List
-                  </button>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                {/* Left Column: Items Browser */}
-                <div className="lg:col-span-8">
-                  <ProformaItems
-                    items={items}
-                    addItem={handleAddItem}
-                    openDialog={handleToggleModal}
-                    closeDialog={() => setSubmitted(false)}
-                    selected={selectedItem}
-                    checkSubmitted={submitted}
-                  />
-                </div>
-
-                {/* Right Column: Sidebar Summary */}
-                <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit space-y-8">
-                  <Card className="p-8 border-none shadow-premium bg-white rounded-[2.5rem] overflow-hidden relative">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
-                    
-                    <h3 className="font-black text-secondary flex items-center gap-2 mb-8">
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">1</span>
-                      Selected Materials
-                    </h3>
-
-                    <div className="space-y-4 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                      {proformaSummary.length > 0 ? (
-                        proformaSummary.map((item) => (
-                          <div key={item.id} className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-50 hover:border-slate-100 transition-all group">
-                            <div className="flex-grow">
-                              <p className="font-bold text-secondary text-sm group-hover:text-primary transition-colors line-clamp-1">{item.itemName}</p>
-                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mt-1">
-                                 RWF {item.itemPrice.toLocaleString()} <span className="mx-1 text-slate-300">|</span> <span className="text-primary">{item.itemNumber} Units</span>
-                              </p>
-                            </div>
-                            <button 
-                              onClick={(e) => handleRemoveItem(e, item.id)}
-                              className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-300 hover:text-accent hover:shadow-md transition-all"
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-center py-10">
-                          <div className="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-4 text-slate-200">
-                            <ShoppingCart size={24} />
-                          </div>
-                          <p className="text-xs font-bold text-slate-400">Your list is currently empty.</p>
-                        </div>
-                      )}
-                    </div>
-
-                    <Divider className="border-slate-50 mb-8" />
-                    
-                    <h3 className="font-black text-secondary flex items-center gap-2 mb-8">
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">2</span>
-                       Procurement Details
-                    </h3>
-
-                    <PersonalInfoWidget
-                      selectedDate={selectedDate}
-                      checkInDate={checkInDate}
-                      checkOutDate={checkOutDate}
-                      onDateChange={onDateChange}
-                      handleOnChange={handleOnChange}
-                      onSubmitForm={handlePayLater}
-                      checkValue={proformaInfo}
-                      checkHelperText={proformaInfo}
-                      checkSubmitted={submitted}
-                      error={proformaInfo}
-                    />
-
-                    <div className="pt-10 space-y-4">
-                      <Button
-                        variant="primary"
-                        className="w-full rounded-2xl h-14 font-black text-lg shadow-premium"
-                        onClick={handlePayLater}
-                        disabled={proformaSummary.length === 0}
-                        icon={Send}
-                      >
-                        Send Request
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full text-slate-400 font-bold"
-                        onClick={handleCancelProforma}
-                      >
-                        Discard Selections
-                      </Button>
-                    </div>
-                  </Card>
-
-                  {/* Trust Tag */}
-                  <div className="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-center gap-4 group">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm transition-transform group-hover:scale-110">
-                      <CheckCircle size={24} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-emerald-700 uppercase tracking-widest">Verified Quote</p>
-                      <p className="text-[10px] text-emerald-600 font-medium">Review by experts within 24h.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Fragment>
-          )}
+                    Cancel
+                  </Button>
+                </CardActions>
+              ) : null}
+            </Grid>
+          </Grid>
         </Container>
-      </main>
-
-      {/* Custom Toast Notification */}
-      {snack && (
-        <div className="fixed bottom-10 left-10 z-[100] animate-in slide-in-from-left-10 duration-500">
-          <div className="bg-secondary text-white px-8 py-5 rounded-[2rem] shadow-2xl flex items-center gap-4 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
-            <div className="bg-emerald-500 p-2 rounded-xl text-white shadow-lg">
-              <CheckCircle size={20} />
-            </div>
-            <div>
-              <p className="font-black text-sm tracking-tight text-white">Item Added!</p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Added to proforma summary</p>
-            </div>
-            <button 
-              onClick={() => setSnack(false)}
-              className="ml-4 p-1 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <X size={14} className="text-slate-500" />
-            </button>
-          </div>
-        </div>
+      ) : (
+        <Spinner />
       )}
     </CartLayout>
   );
