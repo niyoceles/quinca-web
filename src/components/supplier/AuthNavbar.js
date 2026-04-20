@@ -83,10 +83,12 @@ export default function AuthNavbar() {
                 }`}
               >
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-primary/20">
-                  {decodedToken.email[0].toUpperCase()}
+                  {decodedToken?.email ? decodedToken.email[0].toUpperCase() : 'S'}
                 </div>
                 <div className="hidden lg:block text-left">
-                  <p className="text-xs font-black text-secondary truncate max-w-[120px] uppercase tracking-tight">{decodedToken.email.split('@')[0]}</p>
+                  <p className="text-xs font-black text-secondary truncate max-w-[120px] uppercase tracking-tight">
+                    {decodedToken?.email ? decodedToken.email.split('@')[0] : 'Supplier'}
+                  </p>
                 </div>
                 <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isProfileOpen ? 'rotate-180 text-primary' : ''}`} />
               </button>

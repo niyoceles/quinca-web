@@ -7,6 +7,12 @@ import {
 	LOGIN_FAILURE,
 	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
+	FORGOT_PASSWORD_REQUEST,
+	FORGOT_PASSWORD_SUCCESS,
+	FORGOT_PASSWORD_FAILURE,
+	RESET_PASSWORD_REQUEST,
+	RESET_PASSWORD_SUCCESS,
+	RESET_PASSWORD_FAILURE,
 } from '../types';
 import { jwtDecode } from 'jwt-decode';
 
@@ -19,7 +25,13 @@ const initialState = {
 	signupSuccess: null,
 	authenticated: false,
 	credentials: {},
-	user: {}
+	user: {},
+	forgotPasswordLoading: false,
+	forgotPasswordSuccess: null,
+	forgotPasswordFailure: null,
+	resetPasswordLoading: false,
+	resetPasswordSuccess: null,
+	resetPasswordFailure: null,
 };
 
 export default function (state = initialState, action) {
@@ -71,6 +83,48 @@ export default function (state = initialState, action) {
 			};
 		case SET_UNAUTHENTICATED:
 			return initialState;
+		case FORGOT_PASSWORD_REQUEST:
+			return {
+				...state,
+				forgotPasswordLoading: true,
+				forgotPasswordSuccess: null,
+				forgotPasswordFailure: null,
+			};
+		case FORGOT_PASSWORD_SUCCESS:
+			return {
+				...state,
+				forgotPasswordLoading: false,
+				forgotPasswordSuccess: action.payload,
+				forgotPasswordFailure: null,
+			};
+		case FORGOT_PASSWORD_FAILURE:
+			return {
+				...state,
+				forgotPasswordLoading: false,
+				forgotPasswordFailure: action.payload,
+				forgotPasswordSuccess: null,
+			};
+		case RESET_PASSWORD_REQUEST:
+			return {
+				...state,
+				resetPasswordLoading: true,
+				resetPasswordSuccess: null,
+				resetPasswordFailure: null,
+			};
+		case RESET_PASSWORD_SUCCESS:
+			return {
+				...state,
+				resetPasswordLoading: false,
+				resetPasswordSuccess: action.payload,
+				resetPasswordFailure: null,
+			};
+		case RESET_PASSWORD_FAILURE:
+			return {
+				...state,
+				resetPasswordLoading: false,
+				resetPasswordFailure: action.payload,
+				resetPasswordSuccess: null,
+			};
 		default:
 			return state; //or return initialState
 	}

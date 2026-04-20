@@ -51,8 +51,10 @@ const Profile = () => {
           <div>
             <div className="flex items-center gap-3">
               <Typography variant="h2">{profile.names}</Typography>
-              <div className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-tight flex items-center gap-1">
-                <ShieldCheck size={12} /> Verified Supplier
+              <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tight flex items-center gap-1 ${
+                profile.userType === 'supplier' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
+              }`}>
+                <ShieldCheck size={12} /> {profile.userType === 'supplier' ? 'Verified Supplier' : 'Verified Client'}
               </div>
             </div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -81,24 +83,30 @@ const Profile = () => {
           <Card className="lg:col-span-2 border-none shadow-premium rounded-[2.5rem] bg-white p-10 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-12">
               <InfoItem icon={Mail} label="Email Address" value={profile.email} />
-              <InfoItem icon={Building} label="Organization" value={profile.organization} />
               <InfoItem icon={Phone} label="Phone Number" value={profile.phoneNumber} />
-              <InfoItem icon={Fingerprint} label="National ID" value={profile.nationalId} />
-              <InfoItem icon={Globe} label="Region" value={`${profile.state}, ${profile.country}`} />
-              <InfoItem icon={MapPin} label="Exact Location" value={profile.location} />
+              {profile.userType === 'supplier' && (
+                <>
+                  <InfoItem icon={Building} label="Company Name" value={profile.organization} />
+                  <InfoItem icon={Fingerprint} label="TIN NUMBER" value={profile.nationalId} />
+                  <InfoItem icon={Globe} label="Region" value={`${profile.state}, ${profile.country}`} />
+                  <InfoItem icon={MapPin} label="Exact Location" value={profile.location} />
+                </>
+              )}
             </div>
             
-            <div className="pt-10 border-t border-slate-50">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
-                  <MapPin size={16} />
+            {profile.userType === 'supplier' && (
+              <div className="pt-10 border-t border-slate-50">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400">
+                    <MapPin size={16} />
+                  </div>
+                  <Typography variant="h4">Street Address</Typography>
                 </div>
-                <Typography variant="h4">Street Address</Typography>
+                <p className="text-sm font-bold text-secondary leading-relaxed bg-slate-50 p-6 rounded-3xl border border-slate-100/50 italic">
+                  "{profile.address || 'No detailed address provided.'}"
+                </p>
               </div>
-              <p className="text-sm font-bold text-secondary leading-relaxed bg-slate-50 p-6 rounded-3xl border border-slate-100/50 italic">
-                "{profile.address || 'No detailed address provided.'}"
-              </p>
-            </div>
+            )}
           </Card>
 
           {/* Account Status Card */}

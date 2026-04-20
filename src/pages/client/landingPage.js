@@ -219,24 +219,6 @@ export default function LandingPage() {
         </div>
       </Container>
 
-      {/* Newsletter / CTA */}
-      <div className="bg-primary pt-16 pb-20 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <Container className="relative z-10 text-center text-white">
-          <h2 className="text-4xl font-black mb-6">Ready to start your next big build?</h2>
-          <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
-            Get instant proforma invoices and professional support from our network of verified suppliers.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="bg-white text-primary px-12 rounded-xl font-black shadow-2xl">
-              Get Started Now
-            </Button>
-            <Button size="lg" variant="ghost" className="text-white hover:bg-white/10 px-10 rounded-xl font-black">
-              Speak to an Expert
-            </Button>
-          </div>
-        </Container>
-      </div>
     </ClientLayout>
   );
 }

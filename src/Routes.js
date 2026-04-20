@@ -20,7 +20,9 @@ import SingleProformaPage from './pages/client/SingleProformaPage';
 import MyProfile from './pages/client/MyProfile';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
-// import SignupPage from './pages/Auth/SignupPage';
+import SignupPage from './pages/Auth/SignupPage';
+import ForgotPasswordPage from './pages/Auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/Auth/ResetPasswordPage';
 import CategoryItems from './pages/client/CategoryItems';
 import ViewItem from './pages/client/ViewItem';
 import Cart from './pages/client/Cart';
@@ -40,6 +42,9 @@ export const Routes = () => {
 				<Route path='/' element={<LandingPage />} />
 				<Route path='/categories' element={<CategoriesPage />} />
 				<Route path='/login' element={<LoginPage />} />
+				<Route path='/signup' element={<SignupPage />} />
+				<Route path='/forgot-password' element={<ForgotPasswordPage />} />
+				<Route path='/reset-password/:token' element={<ResetPasswordPage />} />
 				<Route path='/account/verified' element={<VerifiedAccount />} />
 				<Route path='/view/:id' element={<ViewItem />} />
 				<Route path='/cart' element={<Cart />} />

@@ -1,10 +1,13 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Typography } from '../Ui/Typography';
 import Button from '../Ui/Button';
 import { Building, Users, CheckCircle2 } from 'lucide-react';
 import BackgroundImg from '../../assets/images/construction.jpg';
 
 export default function Informing() {
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div 
       className="hidden md:flex md:col-span-7 relative flex-col items-center justify-center p-12 overflow-hidden bg-secondary text-white"
@@ -41,12 +44,14 @@ export default function Informing() {
           <Button 
             className="rounded-2xl py-4 bg-gradient-to-r from-primary to-orange-600 text-white hover:to-primary hover:shadow-primary/30 shadow-2xl font-black ring-4 ring-primary/10 transition-all duration-300 transform hover:scale-[1.02]"
             icon={Users}
+            onClick={() => navigate('/signup?type=client')}
           >
             I'm a Client
           </Button>
           <Button 
             className="rounded-2xl py-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white hover:bg-white hover:text-secondary shadow-2xl transition-all duration-500 group/supplier"
             icon={Building}
+            onClick={() => navigate('/signup?type=supplier')}
           >
             I'm a Supplier
           </Button>

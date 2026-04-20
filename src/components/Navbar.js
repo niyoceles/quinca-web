@@ -242,6 +242,11 @@ export default function Navbar() {
                     <Link to="/me" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors">
                       <User size={18} /> My Profile
                     </Link>
+                    {userInformation?.userType === 'supplier' && (
+                      <Link to="/account/supplier/dashboard" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors font-black text-primary">
+                        <Settings size={18} /> Supplier Dashboard
+                      </Link>
+                    )}
                     <Link to="/my-proforma" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors">
                       <ClipboardList size={18} /> My Proforma
                     </Link>
