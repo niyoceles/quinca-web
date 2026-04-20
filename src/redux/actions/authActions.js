@@ -1,16 +1,18 @@
 import {
-	REGISTER_REQUEST,
-	REGISTER_SUCCESS,
-	REGISTER_FAILURE,
+	LOGIN_FAILURE,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
-	LOGIN_FAILURE,
+	REGISTER_FAILURE,
+	REGISTER_REQUEST,
+	REGISTER_SUCCESS,
 	SET_UNAUTHENTICATED,
 } from '../types';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-const { REACT_APP_BACKEND } = process.env;
+const {
+    REACT_APP_BACKEND
+} = process.env;
 
 export const loginUser = loginData => dispatch => {
 	// dispatch({ type: LOADING_UI });
@@ -62,9 +64,11 @@ export const setAuthorization = token => {
 };
 
 export const logoutUser = () => dispatch => {
-	// set logout on backend later
-	localStorage.removeItem('IdToken');
-	localStorage.removeItem('userInfo');
-	delete axios.defaults.headers.common['Authorization'];
-	dispatch({ type: SET_UNAUTHENTICATED });
+    // set logout on backend later
+    localStorage.removeItem('IdToken');
+    localStorage.removeItem('userInfo');
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({
+        type: SET_UNAUTHENTICATED
+    });
 };
