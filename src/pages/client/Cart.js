@@ -123,7 +123,7 @@ const Cart = () => {
           </div>
           <div>
             <Typography variant="h2" className="leading-tight">Checkout</Typography>
-            <p className="text-slate-600 font-bold">Finalize your proforma request</p>
+            <p className="text-slate-600 font-bold text-xs">Finalize your proforma request</p>
           </div>
         </div>
 
@@ -205,31 +205,31 @@ const Cart = () => {
           {/* Right Column: Summary */}
           {orderSummary.length > 0 && (
             <div className="lg:col-span-4 sticky top-24 space-y-6">
-              <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem] bg-secondary text-white overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+              <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem] bg-white text-secondary overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
                 
-                <h3 className="font-black text-sm uppercase tracking-widest opacity-80 mb-4">Order Summary</h3>
+                <h3 className="font-black text-sm uppercase tracking-widest text-slate-400 mb-4">Order Summary</h3>
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex justify-between items-center text-sm font-medium">
-                    <span className="opacity-80">Subtotal ({orderSummary.length} items)</span>
+                    <span className="text-slate-500 font-bold">Subtotal ({orderSummary.length} items)</span>
                     <span className="font-black">RWF {totalPrice}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm font-medium">
-                    <span className="opacity-80">Processing Fee</span>
-                    <span className="text-emerald-400 font-black uppercase text-[10px]">Free</span>
+                    <span className="text-slate-500 font-bold">Processing Fee</span>
+                    <span className="text-emerald-500 font-black uppercase text-[10px]">Free</span>
                   </div>
                   <div className="flex justify-between items-center text-sm font-medium">
-                    <span className="opacity-80">Estimated Tax</span>
+                    <span className="text-slate-500 font-bold">Estimated Tax</span>
                     <span className="font-black">RWF 0</span>
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-white/10 mb-6">
+                <div className="pt-6 border-t border-slate-100 mb-6">
                   <div className="flex justify-between items-end">
                     <div>
-                      <p className="text-[10px] font-black opacity-80 uppercase tracking-widest mb-1">Total Amount</p>
-                      <p className="text-3xl font-black">RWF {totalPrice}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Amount</p>
+                      <p className="text-3xl font-black text-secondary">RWF {totalPrice}</p>
                     </div>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ const Cart = () => {
                   <Button 
                     variant="primary" 
                     size="lg" 
-                    className="w-full rounded-2xl bg-primary hover:bg-orange-600 border-none font-black shadow-2xl h-14"
+                    className="w-full rounded-2xl bg-primary hover:bg-orange-600 border-none font-black shadow-premium h-14"
                     onClick={handlePayLater}
                     disabled={isButtonDisabled}
                     icon={Zap}
@@ -247,7 +247,7 @@ const Cart = () => {
                   </Button>
                   <Button 
                     variant="ghost" 
-                    className="w-full rounded-2xl text-white/80 hover:text-white hover:bg-white/5 font-black"
+                    className="w-full rounded-2xl text-slate-400 hover:text-secondary hover:bg-slate-50 font-black"
                     onClick={handleCancelOrder}
                   >
                     Cancel Order
@@ -255,14 +255,14 @@ const Cart = () => {
                 </div>
 
                 {/* Trust Seals */}
-                <div className="mt-8 pt-8 border-t border-white/5 flex flex-wrap gap-4 items-center justify-center opacity-80">
-                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter">
+                <div className="mt-8 pt-8 border-t border-slate-50 flex flex-wrap gap-4 items-center justify-center opacity-60">
+                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter text-slate-400">
                     <ShieldCheck size={14} /> Secure
                   </div>
-                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter">
+                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter text-slate-400">
                     <Truck size={14} /> Trusted
                   </div>
-                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter">
+                  <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter text-slate-400">
                     <CreditCard size={14} /> Verified
                   </div>
                 </div>
@@ -290,7 +290,7 @@ const Cart = () => {
         </div>
       </Container>
 
-      {/* Confirmation Modal (Future improvement: move to separate component) */}
+      {/* Confirmation Modal */}
       {open && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-secondary/40 backdrop-blur-sm animate-in fade-in" />
