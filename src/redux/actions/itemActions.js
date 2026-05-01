@@ -87,7 +87,7 @@ export const getAllItems = () => dispatch => {
 	axios
 		.get(`${REACT_APP_BACKEND}/item/all`)
 		.then(res => {
-			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data.allitems });
+			dispatch({ type: GET_ALL_ITEMS_SUCCESS, payload: res.data.allitems || res.data.data });
 		})
 		.catch(err => {
 			dispatch({

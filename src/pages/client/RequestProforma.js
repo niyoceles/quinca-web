@@ -53,17 +53,23 @@ const SuccessView = ({ names, onReset }) => (
 const RequestProforma = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const requestedItems = JSON.parse(localStorage.getItem('proformaSummary'));
+  let requestedItems = [];
+  try {
+    const stored = localStorage.getItem('proformaSummary');
+    requestedItems = stored ? JSON.parse(stored) : [];
+  } catch (e) {
+    console.error('Error parsing proformaSummary from localStorage', e);
+  }
   
-  const [selectedDate] = useState(moment());
-  const [checkInDate, setCheckInDate] = useState(moment());
-  const [checkOutDate, setCheckOutDate] = useState(moment());
+  const [selectedDate] = useState(moment().format('YYYY-MM-DD HH:mm:ss'));
+  const [checkInDate, setCheckInDate] = useState(moment().format('YYYY-MM-DD HH:mm:ss'));
+  const [checkOutDate, setCheckOutDate] = useState(moment().format('YYYY-MM-DD HH:mm:ss'));
   const [snack, setSnack] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [proformaInfo, setProformaInfo] = useState({
-    pickupDate: selectedDate,
-    deadline: selectedDate,
+    pickupDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+    deadline: moment().format('YYYY-MM-DD HH:mm:ss'),
     names: '',
     email: '',
     phoneNumber: '',

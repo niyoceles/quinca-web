@@ -76,7 +76,7 @@ const PersonalInfoWidget = (props) => {
           name="startDate"
           id="needDate"
           value={props.checkInDate ? new Date(props.checkInDate).toISOString().split('T')[0] : ''}
-          onChange={(e) => props.onDateChange('needDate', e.target.value)}
+          onChange={(e) => props.onDateChange('pickupDate', e.target.value)}
           min={new Date().toISOString().split('T')[0]}
         />
 

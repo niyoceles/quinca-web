@@ -123,11 +123,13 @@ export const requestProforma =
         toast.success(res.data.message);
       })
       .catch((err) => {
+        const errorMsg = err.response && err.response.data && err.response.data.error 
+          ? err.response.data.error 
+          : 'Failed to send request';
+        toast.error(errorMsg);
         dispatch({
           type: REQUEST_PROFORMA_FAILURE,
-          payload: err.response
-            ? err.response.data.error
-            : null,
+          payload: errorMsg,
         });
       });
   };
@@ -226,11 +228,13 @@ export const createOrder = (orderInfo) => (dispatch) => {
       toast.success(res.data.message);
     })
     .catch((err) => {
+      const errorMsg = err.response && err.response.data && err.response.data.error 
+        ? err.response.data.error 
+        : 'Failed to place order';
+      toast.error(errorMsg);
       dispatch({
         type: REQUEST_PROFORMA_FAILURE,
-        payload: err.response
-          ? err.response.data.error
-          : null,
+        payload: errorMsg,
       });
     });
 };

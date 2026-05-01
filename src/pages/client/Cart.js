@@ -97,6 +97,7 @@ const Cart = () => {
     const bookInfo = {
       ...tempOrderEtras,
       itemsArray: tempOrderInfo,
+      amount: totalPrice,
       category,
     };
     
