@@ -30,14 +30,14 @@ const FooterFeature = ({ icon: Icon, title, description, image }) => (
       )}
     </div>
     <h3 className="text-white font-bold mb-2">{title}</h3>
-    <p className="text-slate-400 text-sm">{description}</p>
+    <p className="text-slate-300 text-sm">{description}</p>
   </div>
 );
 
 const FooterLink = ({ href, children }) => (
   <a 
     href={href} 
-    className="block text-slate-400 hover:text-primary transition-colors duration-200 text-sm mb-2"
+    className="block text-slate-300 hover:text-primary transition-colors duration-200 text-sm mb-2"
   >
     {children}
   </a>
@@ -91,7 +91,7 @@ const Footer = () => {
           {/* About Section */}
           <div className="space-y-6">
             <img src={Hadiwa_logo} alt="Hadiwa" className="h-12 w-auto rounded-lg shadow-lg" />
-            <p className="text-slate-400 text-sm leading-relaxed">
+            <p className="text-slate-300 text-sm leading-relaxed">
               Hadiwa is a premium e-commerce platform by PARADI-BOUNTY Co. LTD. 
               We specialize in high-quality construction materials and tools distribution.
               <span className="block mt-2 font-medium text-slate-300">CC/TIN/VAT 111707849</span>
@@ -150,7 +150,7 @@ const Footer = () => {
         <Divider className="border-slate-700 mt-0" />
 
         {/* Bottom Bar */}
-        <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+        <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-sm font-medium">
           <p>© {new Date().getFullYear()} Hadiwa. All Rights Reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-primary transition-colors">Privacy</a>

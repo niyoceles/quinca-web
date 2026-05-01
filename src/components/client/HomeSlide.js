@@ -53,7 +53,7 @@ export const HomeSlide = () => {
           dynamicBullets: true,
         }}
         loop={true}
-        className="h-[450px] w-full"
+        className="h-[300px] w-full"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
@@ -69,19 +69,19 @@ export const HomeSlide = () => {
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex items-center px-10 md:px-20">
                   <div className="max-w-md text-white">
-                    <span className="inline-block px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
+                    <span className="inline-block px-3 py-0.5 bg-primary text-white text-[9px] font-black uppercase tracking-widest rounded-full mb-2">
                       Top Featured
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-black mb-4 leading-tight">
+                    <h2 className="text-2xl md:text-3xl font-black mb-2 leading-tight">
                       {slide.title}
                     </h2>
-                    <p className="text-slate-200 text-lg mb-8 leading-relaxed line-clamp-2">
+                    <p className="text-slate-200 text-sm mb-5 leading-relaxed line-clamp-2">
                       {slide.subtitle}
                     </p>
                     <div className="flex items-center gap-4">
-                      <button className="bg-white text-secondary px-8 py-3 rounded-xl font-bold hover:bg-primary hover:text-white transition-all duration-300 flex items-center gap-2 group/btn">
+                      <button className="bg-white text-secondary px-6 py-2 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all duration-300 flex items-center gap-2 group/btn">
                         {slide.buttonText}
-                        <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                        <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                       </button>
                     </div>
                   </div>

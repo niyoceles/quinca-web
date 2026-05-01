@@ -37,168 +37,144 @@ export default function SearchItems(props) {
     'Cement', 'Steel Bars', 'Pipes', 'Solar Panels', 'Paint', 'Safety Boots'
   ];
 
-  // Lock body scroll when search is open
-  useEffect(() => {
-    if (props.openSearch) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [props.openSearch]);
+  const [isFocused, setIsFocused] = useState(false);
+  const searchRef = React.useRef(null);
 
-  if (!props.openSearch) {
-    return (
-      <button 
-        onClick={props.handleOpenSearch}
-        className="flex items-center gap-2 px-4 py-2 text-slate-400 hover:text-primary transition-colors font-bold text-sm"
-      >
-        <SearchIcon size={18} />
-        <span>Search</span>
-      </button>
-    );
-  }
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white animate-in fade-in slide-in-from-bottom duration-500 flex flex-col">
-      {/* Header / Search Bar */}
-      <div className="bg-white border-b border-slate-100 shadow-sm px-6 py-4 md:py-8 sticky top-0 z-10">
-        <Container>
-          <div className="flex items-center gap-6">
-            <button 
-              onClick={props.closeSearch}
-              className="p-3 bg-slate-50 rounded-2xl text-slate-400 hover:text-secondary hover:bg-slate-100 transition-all"
-            >
-              <X size={24} />
-            </button>
-            
-            <form onSubmit={handleSearch} className="flex-grow flex items-center gap-3 relative">
-              <div className="absolute left-6 text-slate-400">
-                <SearchIcon size={24} />
-              </div>
-              <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="What construction materials are you looking for today?"
-                className="w-full bg-slate-50 border-none rounded-[2rem] py-5 px-16 text-lg font-bold text-secondary focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-slate-300 shadow-inner"
-                autoFocus
-              />
-              <Button 
-                type="submit" 
-                className="hidden md:flex absolute right-4 rounded-full px-10 h-10 font-black shadow-premium"
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
-            </form>
+    <div className="relative w-full" ref={searchRef}>
+      <form onSubmit={handleSearch} className="flex items-center gap-0 w-full relative">
+        <div className="flex-grow flex items-center bg-slate-50 border-2 border-primary/20 rounded-full hover:border-primary/40 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 transition-all shadow-sm overflow-hidden h-12">
+          <div className="pl-5 text-slate-400">
+            <SearchIcon size={20} />
           </div>
-        </Container>
-      </div>
+          <input
+            type="text"
+            value={searchValue}
+            onFocus={() => setIsFocused(true)}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              if (e.target.value) {
+                dispatch(searchItems({ search: e.target.value }));
+                setSubmitted(true);
+              } else {
+                setSubmitted(false);
+              }
+            }}
+            placeholder="What construction materials are you looking for today?"
+            className="w-full bg-transparent border-none py-3 px-4 text-sm font-bold text-secondary focus:ring-0 placeholder:text-slate-400"
+          />
+          <button 
+            type="submit"
+            className="bg-primary text-white px-6 h-full font-black text-sm hover:bg-primary-dark transition-colors"
+          >
+            Search
+          </button>
+        </div>
+      </form>
 
-      <div className="flex-grow overflow-y-auto bg-slate-50/50">
-        <Container className="py-12">
-          {!submitted && !searchValue ? (
-            <div className="max-w-2xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-5 duration-700">
-              {/* Trending Searches */}
-              <div>
-                <h4 className="font-black text-secondary flex items-center gap-2 mb-6 text-xs uppercase tracking-widest">
-                  <Flame size={18} className="text-primary" /> Trending Searches
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {trendingSearches.map(term => (
-                    <button 
-                      key={term}
-                      onClick={() => {
-                        setSearchValue(term);
-                        dispatch(searchItems({ search: term }));
-                        setSubmitted(true);
-                      }}
-                      className="px-6 py-3 bg-white border border-slate-100 rounded-2xl text-sm font-bold text-slate-600 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all shadow-sm"
-                    >
-                      {term}
-                    </button>
-                  ))}
+      {/* Results Dropdown */}
+      {(isFocused || searchValue) && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-300 max-h-[70vh] flex flex-col">
+          <div className="flex-grow overflow-y-auto p-6 bg-white">
+            {!searchValue ? (
+              <div className="space-y-8">
+                {/* Trending Searches */}
+                <div>
+                  <h4 className="font-black text-secondary flex items-center gap-2 mb-4 text-[10px] uppercase tracking-widest">
+                    <Flame size={14} className="text-primary" /> Trending Searches
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {trendingSearches.map(term => (
+                      <button 
+                        key={term}
+                        onClick={() => {
+                          setSearchValue(term);
+                          dispatch(searchItems({ search: term }));
+                          setSubmitted(true);
+                        }}
+                        className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold text-slate-600 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
+                      >
+                        {term}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-
-              {/* Recent History (Placeholder UI) */}
+            ) : (
               <div>
-                <h4 className="font-black text-secondary flex items-center gap-2 mb-6 text-xs uppercase tracking-widest">
-                  <History size={18} className="text-slate-400" /> Recent History
-                </h4>
-                <div className="space-y-2">
-                  <p className="text-sm text-slate-400 italic">No search history found.</p>
+                <div className="flex items-center justify-between mb-6">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    {results && results !== 'No Item found' 
+                      ? `Found ${results.length} Materials` 
+                      : 'Search Results'
+                    }
+                  </p>
                 </div>
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="flex items-center justify-between mb-10">
-                <Typography variant="h3">
-                  {results && results !== 'No Item found' 
-                    ? `Found ${results.length} Materials` 
-                    : 'Search Results'
-                  }
-                </Typography>
-                {results && results !== 'No Item found' && (
-                  <p className="text-sm font-bold text-slate-400">Results for "{searchValue}"</p>
+
+                {submitted && !results ? (
+                  <div className="space-y-4">
+                    {Array(3).fill(0).map((_, i) => (
+                      <div key={i} className="flex gap-4 animate-pulse">
+                        <div className="w-16 h-16 bg-slate-100 rounded-xl" />
+                        <div className="flex-grow space-y-2 py-2">
+                          <div className="h-4 bg-slate-100 rounded w-3/4" />
+                          <div className="h-3 bg-slate-100 rounded w-1/2" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : results && results === 'No Item found' ? (
+                  <div className="py-10 text-center">
+                    <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4 text-primary opacity-50">
+                      <SearchIcon size={24} />
+                    </div>
+                    <h3 className="text-sm font-black text-secondary mb-2">No Materials Found</h3>
+                    <p className="text-xs text-slate-500">
+                      Try adjusting your keywords for "{searchValue}".
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {results && results.slice(0, 6).map(item => (
+                      <ReactLink 
+                        to={`/view/${item.id}`} 
+                        key={item.id}
+                        onClick={() => setIsFocused(false)}
+                        className="flex gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100 group"
+                      >
+                        <div className="w-16 h-16 bg-white rounded-xl overflow-hidden shadow-sm flex-shrink-0 border border-slate-100">
+                          <img src={item.itemImage} alt={item.itemName} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <div className="py-1">
+                          <p className="text-sm font-black text-secondary group-hover:text-primary transition-colors line-clamp-1">{item.itemName}</p>
+                          <p className="text-xs font-bold text-slate-500 mt-1">RWF {item.itemPrice.toLocaleString()}</p>
+                          <p className="text-[10px] font-black text-primary uppercase tracking-tighter mt-1">{item.category}</p>
+                        </div>
+                      </ReactLink>
+                    ))}
+                  </div>
+                )}
+                {results && results.length > 6 && (
+                   <button className="w-full mt-6 py-3 text-[10px] font-black text-slate-400 uppercase tracking-widest border-t border-slate-50 hover:text-primary transition-colors">
+                     View All Results
+                   </button>
                 )}
               </div>
-
-              {submitted && !results ? (
-                <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                  {Array(10).fill(0).map((_, i) => <ProductSkeleton key={i} />)}
-                </div>
-              ) : results && results === 'No Item found' ? (
-                <div className="py-20 text-center animate-in zoom-in-95 duration-500">
-                  <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
-                    <SearchIcon size={40} />
-                  </div>
-                  <h3 className="text-2xl font-black text-secondary mb-4">No Materials Found</h3>
-                  <p className="text-slate-500 max-w-md mx-auto mb-10 text-lg">
-                    We couldn't find any items matching "{searchValue}". Try adjusting your keywords.
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="rounded-full px-12"
-                    onClick={() => {
-                      setSubmitted(false);
-                      setSearchValue('');
-                    }}
-                  >
-                    Clear Search
-                  </Button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 animate-in fade-in duration-700">
-                  {results && results.map(card => (
-                    <ProductCard 
-                      key={card.id} 
-                      {...card} 
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </Container>
-      </div>
-
-      {/* Quick Footer for Search */}
-      <div className="bg-white border-t border-slate-100 p-6">
-        <Container>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-4">
-            <p className="text-xs font-bold text-slate-400 flex items-center gap-2">
-              <ShieldCheck size={16} /> Verified regional construction material suppliers
-            </p>
-            <div className="flex items-center gap-6">
-              <button className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors">Privacy Policy</button>
-              <button className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors">Help Center</button>
-            </div>
+            )}
           </div>
-        </Container>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

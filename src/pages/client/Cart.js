@@ -117,27 +117,27 @@ const Cart = () => {
   return (
     <CartLayout>
       <Container>
-        <div className="flex items-center gap-3 mb-10">
+        <div className="flex items-center gap-3 mb-6">
           <div className="bg-primary/10 p-3 rounded-2xl text-primary">
             <ShoppingCart size={28} />
           </div>
           <div>
             <Typography variant="h2" className="leading-tight">Checkout</Typography>
-            <p className="text-slate-400 font-medium">Finalize your proforma request</p>
+            <p className="text-slate-600 font-bold">Finalize your proforma request</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Items and Shipping */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-4">
             {/* 1. Review Items */}
-            <Card hover={false} className="p-8 border-none shadow-premium rounded-[2rem]">
-              <div className="flex items-center justify-between mb-8">
+            <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem]">
+              <div className="flex items-center justify-between mb-4">
                 <h3 className="font-black text-secondary flex items-center gap-2">
                   <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">1</span>
                   Review your items
                 </h3>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <span className="text-xs font-black text-slate-500 uppercase tracking-widest">
                   {orderSummary.length} {orderSummary.length === 1 ? 'Item' : 'Items'} selected
                 </span>
               </div>
@@ -149,15 +149,15 @@ const Cart = () => {
                       <div className="flex-grow">
                         <p className="font-bold text-secondary group-hover:text-primary transition-colors">{item.itemName}</p>
                         <div className="flex items-center gap-4 mt-2">
-                          <p className="text-xs font-medium text-slate-400">Qty: <span className="text-secondary font-black">{item.itemNumber}</span></p>
-                          <p className="text-xs font-medium text-slate-400">Price: <span className="text-secondary font-black">RWF {item.itemPrice}</span></p>
+                          <p className="text-xs font-bold text-slate-500">Qty: <span className="text-secondary font-black">{item.itemNumber}</span></p>
+                          <p className="text-xs font-bold text-slate-500">Price: <span className="text-secondary font-black">RWF {item.itemPrice}</span></p>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="font-black text-secondary">RWF {item.itemPrice * item.itemNumber}</p>
                         <button 
                           onClick={(e) => handleRemoveItem(e, item)}
-                          className="mt-1 text-xs font-bold text-slate-400 hover:text-accent flex items-center gap-1 transition-colors ml-auto"
+                          className="mt-1 text-xs font-black text-slate-500 hover:text-accent flex items-center gap-1 transition-colors ml-auto"
                         >
                           <Trash2 size={12} /> Remove
                         </button>
@@ -169,8 +169,8 @@ const Cart = () => {
                     <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                       <ShoppingCart size={32} />
                     </div>
-                    <Typography variant="h4" className="text-slate-400 mb-2">Your cart is empty</Typography>
-                    <p className="text-slate-400 text-sm mb-6">Looks like you haven't added anything yet.</p>
+                    <Typography variant="h4" className="text-slate-500 mb-2 font-black">Your cart is empty</Typography>
+                    <p className="text-slate-600 text-sm font-bold mb-6">Looks like you haven't added anything yet.</p>
                     <Button variant="primary" className="rounded-full px-8" onClick={() => window.location.href = '/'}>
                       Start Shopping
                     </Button>
@@ -181,8 +181,8 @@ const Cart = () => {
 
             {/* 2. Shipping Info */}
             {orderSummary.length > 0 && (
-              <Card hover={false} className="p-8 border-none shadow-premium rounded-[2rem]">
-                <h3 className="font-black text-secondary flex items-center gap-2 mb-8">
+              <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem]">
+                <h3 className="font-black text-secondary flex items-center gap-2 mb-4">
                   <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">2</span>
                   Shipping & Delivery Info
                 </h3>
@@ -205,30 +205,30 @@ const Cart = () => {
           {/* Right Column: Summary */}
           {orderSummary.length > 0 && (
             <div className="lg:col-span-4 sticky top-24 space-y-6">
-              <Card hover={false} className="p-8 border-none shadow-premium rounded-[2rem] bg-secondary text-white overflow-hidden relative">
+              <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem] bg-secondary text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
                 
-                <h3 className="font-black text-sm uppercase tracking-widest opacity-60 mb-8">Order Summary</h3>
+                <h3 className="font-black text-sm uppercase tracking-widest opacity-80 mb-4">Order Summary</h3>
                 
                 <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="opacity-60">Subtotal ({orderSummary.length} items)</span>
-                    <span className="font-bold">RWF {totalPrice}</span>
+                  <div className="flex justify-between items-center text-sm font-medium">
+                    <span className="opacity-80">Subtotal ({orderSummary.length} items)</span>
+                    <span className="font-black">RWF {totalPrice}</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="opacity-60">Processing Fee</span>
-                    <span className="text-emerald-400 font-bold uppercase text-[10px]">Free</span>
+                  <div className="flex justify-between items-center text-sm font-medium">
+                    <span className="opacity-80">Processing Fee</span>
+                    <span className="text-emerald-400 font-black uppercase text-[10px]">Free</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="opacity-60">Estimated Tax</span>
-                    <span className="font-bold">RWF 0</span>
+                  <div className="flex justify-between items-center text-sm font-medium">
+                    <span className="opacity-80">Estimated Tax</span>
+                    <span className="font-black">RWF 0</span>
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-white/10 mb-10">
+                <div className="pt-6 border-t border-white/10 mb-6">
                   <div className="flex justify-between items-end">
                     <div>
-                      <p className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-1">Total Amount</p>
+                      <p className="text-[10px] font-black opacity-80 uppercase tracking-widest mb-1">Total Amount</p>
                       <p className="text-3xl font-black">RWF {totalPrice}</p>
                     </div>
                   </div>
@@ -247,7 +247,7 @@ const Cart = () => {
                   </Button>
                   <Button 
                     variant="ghost" 
-                    className="w-full rounded-2xl text-white/40 hover:text-white hover:bg-white/5 font-bold"
+                    className="w-full rounded-2xl text-white/80 hover:text-white hover:bg-white/5 font-black"
                     onClick={handleCancelOrder}
                   >
                     Cancel Order
@@ -255,7 +255,7 @@ const Cart = () => {
                 </div>
 
                 {/* Trust Seals */}
-                <div className="mt-8 pt-8 border-t border-white/5 flex flex-wrap gap-4 items-center justify-center opacity-40">
+                <div className="mt-8 pt-8 border-t border-white/5 flex flex-wrap gap-4 items-center justify-center opacity-80">
                   <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter">
                     <ShieldCheck size={14} /> Secure
                   </div>

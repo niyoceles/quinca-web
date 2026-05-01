@@ -16,9 +16,9 @@ export const Typography = ({
     h6: 'text-base md:text-lg font-bold text-secondary uppercase tracking-wider',
     subtitle1: 'text-lg font-semibold text-secondary leading-relaxed',
     subtitle2: 'text-base font-semibold text-secondary leading-relaxed',
-    body: 'text-base text-slate-600 leading-relaxed',
-    body2: 'text-sm text-slate-500 leading-relaxed',
-    caption: 'text-xs text-slate-400 font-medium tracking-wide uppercase',
+    body: 'text-base text-slate-700 leading-relaxed',
+    body2: 'text-sm text-slate-600 leading-relaxed',
+    caption: 'text-xs text-slate-500 font-bold tracking-wide uppercase',
   };
 
   const ResolvedComponent = Component || (variant.startsWith('h') ? variant : 'p');

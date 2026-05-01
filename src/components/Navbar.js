@@ -38,7 +38,6 @@ export default function Navbar() {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const dispatch = useDispatch();
@@ -66,8 +65,8 @@ export default function Navbar() {
   return (
     <header className="relative w-full z-50">
       {/* Top Utility Bar */}
-      <div className="bg-slate-50 border-b border-slate-100 hidden md:block py-2">
-        <Container className="flex justify-between items-center text-slate-500 text-xs font-medium">
+      <div className="bg-slate-50 border-b border-slate-100 hidden md:block py-1">
+        <Container className="flex justify-between items-center text-slate-600 text-xs font-bold">
           <div className="flex items-center gap-6">
             <NavLink to="/">{t('home')}</NavLink>
             <NavLink to="/contact-us">{t('help')}</NavLink>
@@ -108,7 +107,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2 text-slate-700">
                 <Mail size={14} className="text-primary" />
                 <span>{userInformation.email}</span>
-                <span className="mx-1 text-slate-300">|</span>
+                <span className="mx-1 text-slate-500">|</span>
                 <span className="font-bold">{userInformation.names}</span>
               </div>
             )}
@@ -129,8 +128,8 @@ export default function Navbar() {
       <div 
         className={`w-full transition-all duration-300 ${
           scrolled 
-            ? 'bg-white/80 backdrop-blur-lg shadow-md py-3 sticky top-0' 
-            : 'bg-white py-5'
+            ? 'bg-white/80 backdrop-blur-lg shadow-md py-2 sticky top-0' 
+            : 'bg-white py-3'
         }`}
       >
         <Container className="flex items-center gap-8">
@@ -144,16 +143,12 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <img src={Hadiwa_logo} alt="Hadiwa" className="h-10 md:h-12 w-auto rounded-lg shadow-sm" />
+            <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 md:h-10 w-auto rounded-lg shadow-sm" />
           </Link>
 
-          {/* Search Bar - AliExpress Style (Prominent) */}
+          {/* Search Bar - Permanent */}
           <div className="flex-grow max-w-2xl hidden md:block">
-            <SearchItems
-              handleOpenSearch={() => setOpenSearch(true)}
-              openSearch={openSearch}
-              closeSearch={() => setOpenSearch(false)}
-            />
+            <SearchItems />
           </div>
 
           {/* Actions */}
@@ -206,13 +201,13 @@ export default function Navbar() {
                             className={`p-4 border-b border-slate-50 hover:bg-slate-50 cursor-pointer transition-colors ${!notif.isRead ? 'bg-primary/5' : ''}`}
                           >
                             <p className="text-sm font-bold text-secondary">{notif.title}</p>
-                            <p className="text-xs text-slate-500 line-clamp-2 mt-1">{notif.message}</p>
-                            <span className="text-[10px] text-slate-400 mt-2 block">{new Date(notif.createdAt).toLocaleDateString()}</span>
+                            <p className="text-xs text-slate-600 line-clamp-2 mt-1">{notif.message}</p>
+                            <span className="text-[10px] text-slate-600 font-bold mt-2 block">{new Date(notif.createdAt).toLocaleDateString()}</span>
                           </div>
                         ))
                       ) : (
-                        <div className="p-10 text-center text-slate-400">
-                          <Bell className="mx-auto mb-3 opacity-20" size={40} />
+                        <div className="p-10 text-center text-slate-600 font-bold">
+                          <Bell className="mx-auto mb-3 opacity-40 text-primary" size={40} />
                           <p className="text-sm">Stay tuned! No notifications yet.</p>
                         </div>
                       )}
@@ -231,12 +226,12 @@ export default function Navbar() {
                 >
                   <img src={userImage} alt="" className="h-7 w-7 opacity-75" />
                   <span className="text-xs font-bold text-secondary hidden md:block">Account</span>
-                  <ChevronDown size={14} className="text-slate-400" />
+                  <ChevronDown size={14} className="text-slate-600" />
                 </button>
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-4 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 py-2 z-50">
                     <div className="px-4 py-3 border-b border-slate-50 mb-2">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Signed in as</p>
+                      <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest">Signed in as</p>
                       <p className="text-sm font-bold text-secondary truncate">{userInformation?.names || 'User'}</p>
                     </div>
                     <Link to="/me" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors">

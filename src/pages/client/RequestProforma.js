@@ -172,27 +172,27 @@ const RequestProforma = () => {
 
   return (
     <CartLayout>
-      <main className="min-h-screen bg-slate-50 pb-24 pt-10">
+      <main className="min-h-screen bg-slate-50 pb-12 pt-6">
         <Container>
           {requestSuccess ? (
             <SuccessView names={proformaInfo.names} onReset={handleReset} />
           ) : (
             <Fragment>
               {/* Page Header */}
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
                   <div className="bg-primary/10 p-4 rounded-[1.5rem] text-primary">
                     <FileText size={32} />
                   </div>
                   <div>
                     <Typography variant="h2">Request <span className="text-primary italic">Proforma</span></Typography>
-                    <p className="text-slate-400 font-medium">Add materials to your list and get a custom quote.</p>
+                    <p className="text-slate-600 font-bold">Add materials to your list and get a custom quote.</p>
                   </div>
                 </div>
                 {proformaSummary.length > 0 && (
                   <button 
                     onClick={handleCancelProforma}
-                    className="hidden md:flex items-center gap-2 text-xs font-black text-slate-400 hover:text-accent uppercase tracking-widest transition-colors"
+                    className="hidden md:flex items-center gap-2 text-xs font-black text-slate-500 hover:text-accent uppercase tracking-widest transition-colors"
                   >
                     <X size={14} /> Clear List
                   </button>
@@ -214,10 +214,10 @@ const RequestProforma = () => {
 
                 {/* Right Column: Sidebar Summary */}
                 <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit space-y-8">
-                  <Card className="p-8 border-none shadow-premium bg-white rounded-[2.5rem] overflow-hidden relative">
+                  <Card className="p-6 border-none shadow-premium bg-white rounded-[2.5rem] overflow-hidden relative">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
                     
-                    <h3 className="font-black text-secondary flex items-center gap-2 mb-8">
+                    <h3 className="font-black text-secondary flex items-center gap-2 mb-4">
                       <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">1</span>
                       Selected Materials
                     </h3>
@@ -228,13 +228,13 @@ const RequestProforma = () => {
                           <div key={item.id} className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-50 hover:border-slate-100 transition-all group">
                             <div className="flex-grow">
                               <p className="font-bold text-secondary text-sm group-hover:text-primary transition-colors line-clamp-1">{item.itemName}</p>
-                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-tighter mt-1">
-                                 RWF {item.itemPrice.toLocaleString()} <span className="mx-1 text-slate-300">|</span> <span className="text-primary">{item.itemNumber} Units</span>
+                              <p className="text-[10px] font-black text-slate-600 uppercase tracking-tighter mt-1">
+                                 RWF {item.itemPrice.toLocaleString()} <span className="mx-1 text-slate-500">|</span> <span className="text-primary">{item.itemNumber} Units</span>
                               </p>
                             </div>
                             <button 
                               onClick={(e) => handleRemoveItem(e, item.id)}
-                              className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-300 hover:text-accent hover:shadow-md transition-all"
+                              className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-500 hover:text-accent hover:shadow-md transition-all"
                             >
                               <Trash2 size={14} />
                             </button>
@@ -242,17 +242,17 @@ const RequestProforma = () => {
                         ))
                       ) : (
                         <div className="text-center py-10">
-                          <div className="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-4 text-slate-200">
+                          <div className="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-4 text-slate-300">
                             <ShoppingCart size={24} />
                           </div>
-                          <p className="text-xs font-bold text-slate-400">Your list is currently empty.</p>
+                          <p className="text-xs font-black text-slate-500">Your list is currently empty.</p>
                         </div>
                       )}
                     </div>
 
-                    <Divider className="border-slate-50 mb-8" />
+                    <Divider className="border-slate-50 mb-4" />
                     
-                    <h3 className="font-black text-secondary flex items-center gap-2 mb-8">
+                    <h3 className="font-black text-secondary flex items-center gap-2 mb-4">
                       <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">2</span>
                        Procurement Details
                     </h3>
@@ -283,7 +283,7 @@ const RequestProforma = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="w-full text-slate-400 font-bold"
+                        className="w-full text-slate-500 font-black"
                         onClick={handleCancelProforma}
                       >
                         Discard Selections
@@ -318,7 +318,7 @@ const RequestProforma = () => {
             </div>
             <div>
               <p className="font-black text-sm tracking-tight text-white">Item Added!</p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Added to proforma summary</p>
+              <p className="text-[10px] text-slate-300 font-black uppercase tracking-widest">Added to proforma summary</p>
             </div>
             <button 
               onClick={() => setSnack(false)}

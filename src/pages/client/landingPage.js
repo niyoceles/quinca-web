@@ -63,8 +63,8 @@ export default function LandingPage() {
 
   return (
     <ClientLayout>
-      {/* Hero Section - 3 Column Layout */}
-      <section className="bg-slate-50 pt-6 pb-12">
+      {/* Hero & Content Section */}
+      <section className="bg-slate-50 pt-4 pb-12">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {/* Left Sidebar: Categories */}
@@ -89,136 +89,140 @@ export default function LandingPage() {
               </Card>
             </div>
 
-            {/* Middle: Slider */}
-            <div className="col-span-1 md:col-span-9 lg:col-span-7">
-              <HomeSlide />
-              
-              {/* Quick Perks Bar */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-                <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
-                  <Zap className="text-orange-500 fill-orange-500/20" size={24} />
-                  <div>
-                    <p className="text-xs font-black text-secondary">Flash Deals</p>
-                    <p className="text-[10px] text-slate-400">Ends in 04:22:10</p>
+            {/* Main Content Area (Slide + Featured Sections) */}
+            <div className="col-span-1 md:col-span-9 lg:col-span-10">
+              <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+                {/* Middle: Slider */}
+                <div className="lg:col-span-7">
+                  <HomeSlide />
+                  
+                  {/* Quick Perks Bar */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                    <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
+                      <Zap className="text-orange-500 fill-orange-500/20" size={24} />
+                      <div>
+                        <p className="text-xs font-black text-secondary">Flash Deals</p>
+                        <p className="text-[10px] text-slate-400">Ends in 04:22:10</p>
+                      </div>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
+                      <Flame className="text-accent fill-accent/20" size={24} />
+                      <div>
+                        <p className="text-xs font-black text-secondary">Hot Materials</p>
+                        <p className="text-[10px] text-slate-400">Low stock alert</p>
+                      </div>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
+                      <Star className="text-yellow-500 fill-yellow-500/20" size={24} />
+                      <div>
+                        <p className="text-xs font-black text-secondary">Best Choice</p>
+                        <p className="text-[10px] text-slate-400">Top rated items</p>
+                      </div>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
+                      <ShieldCheck className="text-emerald-500 fill-emerald-500/20" size={24} />
+                      <div>
+                        <p className="text-xs font-black text-secondary">Verified Shop</p>
+                        <p className="text-[10px] text-slate-400">RCA Certified</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
-                  <Flame className="text-accent fill-accent/20" size={24} />
-                  <div>
-                    <p className="text-xs font-black text-secondary">Hot Materials</p>
-                    <p className="text-[10px] text-slate-400">Low stock alert</p>
-                  </div>
-                </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
-                  <Star className="text-yellow-500 fill-yellow-500/20" size={24} />
-                  <div>
-                    <p className="text-xs font-black text-secondary">Best Choice</p>
-                    <p className="text-[10px] text-slate-400">Top rated items</p>
-                  </div>
-                </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3 border border-slate-50">
-                  <ShieldCheck className="text-emerald-500 fill-emerald-500/20" size={24} />
-                  <div>
-                    <p className="text-xs font-black text-secondary">Verified Shop</p>
-                    <p className="text-[10px] text-slate-400">RCA Certified</p>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Right: Featured Banners */}
-            <div className="hidden lg:block lg:col-span-3 space-y-6">
-              <div className="relative group overflow-hidden rounded-2xl h-[210px] shadow-sm">
-                <img src={itemImage} alt="Construction" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end">
-                  <p className="text-primary text-xs font-black uppercase mb-1">Big Sale</p>
-                  <h4 className="text-white font-black text-lg mb-2">Construction Essentials</h4>
-                  <ReactLink to="/category/construction" className="text-white/80 text-xs font-bold flex items-center gap-1 hover:text-white transition-colors">
-                    Explore Now <ArrowRight size={14} />
-                  </ReactLink>
+                {/* Right: Featured Banners */}
+                <div className="hidden lg:block lg:col-span-3 space-y-4">
+                  <div className="relative group overflow-hidden rounded-2xl h-[142px] shadow-sm">
+                    <img src={itemImage} alt="Construction" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end">
+                      <p className="text-primary text-xs font-black uppercase mb-1">Big Sale</p>
+                      <h4 className="text-white font-black text-lg mb-2">Construction Essentials</h4>
+                      <ReactLink to="/category/construction" className="text-white/80 text-xs font-bold flex items-center gap-1 hover:text-white transition-colors">
+                        Explore Now <ArrowRight size={14} />
+                      </ReactLink>
+                    </div>
+                  </div>
+                  <div className="relative group overflow-hidden rounded-2xl h-[142px] shadow-sm">
+                    <img src={materials} alt="Plumbing" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end">
+                      <p className="text-emerald-400 text-xs font-black uppercase mb-1">New Arrival</p>
+                      <h4 className="text-white font-black text-lg mb-2">Modern Plumbing Kit</h4>
+                      <ReactLink to="/category/plumbing" className="text-white/80 text-xs font-bold flex items-center gap-1 hover:text-white transition-colors">
+                        Explore Now <ArrowRight size={14} />
+                      </ReactLink>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="relative group overflow-hidden rounded-2xl h-[210px] shadow-sm">
-                <img src={materials} alt="Plumbing" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end">
-                  <p className="text-emerald-400 text-xs font-black uppercase mb-1">New Arrival</p>
-                  <h4 className="text-white font-black text-lg mb-2">Modern Plumbing Kit</h4>
-                  <ReactLink to="/category/plumbing" className="text-white/80 text-xs font-bold flex items-center gap-1 hover:text-white transition-colors">
-                    Explore Now <ArrowRight size={14} />
+
+              {/* Most Featured Materials - Now Under Slider */}
+              <div className="mt-12">
+                <SectionTitle 
+                  title="Most Featured Materials" 
+                  subtitle="Direct from the best regional suppliers at unbeatable factory prices."
+                  className="mb-8"
+                />
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {constructionItems ? (
+                    constructionItems.map(card => (
+                      <ProductCard key={card.id} {...card} />
+                    ))
+                  ) : (
+                    Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />)
+                  )}
+                </div>
+                
+                <div className="mt-8 flex justify-start">
+                  <Button variant="outline" className="px-10 rounded-full font-black">
+                    View All Materials
+                  </Button>
+                </div>
+              </div>
+
+              {/* Featured Professional Tools - Now Under Slider */}
+              <div className="mt-12 pt-12 border-t border-slate-100">
+                <SectionTitle 
+                  title="Featured Professional Tools" 
+                  subtitle="Equip your team with industrial-grade tools designed for durability."
+                  className="mb-8"
+                />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {plumbingItems ? (
+                    plumbingItems.map(card => (
+                      <ProductCard key={card.id} {...card} />
+                    ))
+                  ) : (
+                    Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />)
+                  )}
+                </div>
+              </div>
+
+              {/* More For You - Now Under Slider */}
+              <div className="mt-12 pt-12 border-t border-slate-100">
+                <div className="flex justify-between items-end mb-8">
+                  <div>
+                    <h2 className="text-2xl font-black text-secondary uppercase tracking-tight">More For You</h2>
+                    <p className="text-slate-500 text-sm mt-1">Personalized recommendations based on your recent activity.</p>
+                  </div>
+                  <ReactLink to="/categories" className="text-primary font-bold text-sm flex items-center gap-2 hover:underline">
+                    View more <ArrowRight size={18} />
                   </ReactLink>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {electricityItems ? (
+                    electricityItems.map(card => (
+                      <ProductCard key={card.id} {...card} />
+                    ))
+                  ) : (
+                    Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />)
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </Container>
       </section>
-
-      {/* Featured Sections */}
-      <Container className="py-16">
-        <SectionTitle 
-          title="Most Featured Materials" 
-          subtitle="Direct from the best regional suppliers at unbeatable factory prices."
-          className="mb-12"
-        />
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {constructionItems ? (
-            constructionItems.map(card => (
-              <ProductCard key={card.id} {...card} />
-            ))
-          ) : (
-            Array(5).fill(0).map((_, i) => <ProductSkeleton key={i} />)
-          )}
-        </div>
-        
-        <div className="mt-12 flex justify-center">
-          <Button variant="outline" className="px-10 rounded-full font-black">
-            View All Materials
-          </Button>
-        </div>
-      </Container>
-
-      <div className="bg-slate-50 border-y border-slate-100 py-20">
-        <Container>
-          <SectionTitle 
-            title="Featured Professional Tools" 
-            center
-            subtitle="Equip your team with industrial-grade tools designed for durability."
-          />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-            {plumbingItems ? (
-              plumbingItems.map(card => (
-                <ProductCard key={card.id} {...card} />
-              ))
-            ) : (
-              Array(6).fill(0).map((_, i) => <ProductSkeleton key={i} />)
-            )}
-          </div>
-        </Container>
-      </div>
-
-      <Container className="py-20">
-        <div className="flex justify-between items-end mb-10">
-          <div>
-            <h2 className="text-3xl font-black text-secondary">More For You</h2>
-            <p className="text-slate-500 mt-2">Personalized recommendations based on your recent activity.</p>
-          </div>
-          <ReactLink to="/categories" className="text-primary font-bold flex items-center gap-2 hover:underline">
-            View more <ArrowRight size={18} />
-          </ReactLink>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-          {electricityItems ? (
-            electricityItems.map(card => (
-              <ProductCard key={card.id} {...card} />
-            ))
-          ) : (
-            Array(6).fill(0).map((_, i) => <ProductSkeleton key={i} />)
-          )}
-        </div>
-      </Container>
-
     </ClientLayout>
   );
 }

@@ -32,12 +32,12 @@ const RequestedOrder = ({ oneRequest }) => {
     <tr key={id} className="group hover:bg-slate-50/80 transition-all duration-300">
       <td className="px-8 py-6">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-500">
+          <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-500">
             <User size={20} />
           </div>
           <div>
             <p className="font-black text-secondary group-hover:text-primary transition-colors">{names}</p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">Quinca Customer</p>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mt-1">Quinca Customer</p>
           </div>
         </div>
       </td>
@@ -47,8 +47,8 @@ const RequestedOrder = ({ oneRequest }) => {
           <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
             <Phone size={12} className="text-slate-300" /> {phoneNumber}
           </div>
-          <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
-            <Mail size={12} className="text-slate-300" /> {email}
+          <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
+            <Mail size={12} className="text-slate-400" /> {email}
           </div>
         </div>
       </td>
@@ -62,7 +62,7 @@ const RequestedOrder = ({ oneRequest }) => {
       <td className="px-8 py-6 text-right">
         <div className="flex flex-col items-end">
           <p className="text-xs font-bold text-slate-600">{dayjs(createdAt).format('MMM DD, YYYY')}</p>
-          <div className="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 mt-1">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 mt-1">
             <Clock size={10} /> {dayjs(createdAt).fromNow()}
           </div>
         </div>

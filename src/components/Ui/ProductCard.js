@@ -21,7 +21,7 @@ export const ProductCard = ({ id, itemName, itemImage, itemPrice, category, rati
     </ReactLink>
     <CardContent className="flex-grow flex flex-col pt-4 px-4 pb-4">
       <div className="flex items-center justify-between mb-1">
-        <Typography variant="caption" className="text-slate-400">
+        <Typography variant="caption" className="text-slate-500 font-bold">
           {category}
         </Typography>
         <div className="flex items-center gap-1 text-[10px] font-bold text-orange-500">
@@ -35,7 +35,7 @@ export const ProductCard = ({ id, itemName, itemImage, itemPrice, category, rati
       
       <div className="mt-auto flex items-end justify-between">
         <div>
-          <p className="text-[10px] font-bold text-accent line-through opacity-40">RWF {(itemPrice * 1.2).toFixed(0)}</p>
+          <p className="text-[10px] font-bold text-accent line-through opacity-60">RWF {(itemPrice * 1.2).toFixed(0)}</p>
           <div className="flex items-baseline gap-1">
             <span className="text-[10px] font-bold text-primary italic">RWF</span>
             <span className="text-lg font-black text-primary leading-none">{itemPrice}</span>

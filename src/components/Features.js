@@ -32,19 +32,19 @@ export default function Orders() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Transaction Date</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Customer</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Shipment Location</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Payment</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Amount</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Transaction Date</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Customer</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Shipment Location</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Payment</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {rows.map((row) => (
                 <tr key={row.id} className="group hover:bg-slate-50/50 transition-colors">
                   <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
-                      <Calendar size={14} className="text-slate-300" />
+                    <div className="flex items-center gap-3 text-xs font-bold text-slate-700">
+                      <Calendar size={14} className="text-slate-500" />
                       {row.date}
                     </div>
                   </td>
@@ -55,14 +55,14 @@ export default function Orders() {
                     </div>
                   </td>
                   <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-xs font-bold text-slate-500">
-                      <MapPin size={14} className="text-slate-300" />
+                    <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
+                      <MapPin size={14} className="text-slate-500" />
                       {row.shipTo}
                     </div>
                   </td>
                   <td className="px-8 py-5">
-                    <div className="flex items-center gap-3 text-xs font-medium text-slate-400">
-                      <CreditCard size={14} className="text-slate-200" />
+                    <div className="flex items-center gap-3 text-xs font-black text-slate-500">
+                      <CreditCard size={14} className="text-slate-400" />
                       {row.paymentMethod}
                     </div>
                   </td>

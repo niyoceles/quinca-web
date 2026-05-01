@@ -16,7 +16,7 @@ export const CardHeader = ({ title, subtitle, action, className = '' }) => {
     <div className={`p-5 flex justify-between items-start ${className}`}>
       <div>
         <h3 className="text-lg font-bold text-secondary">{title}</h3>
-        {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
+        {subtitle && <p className="text-sm text-slate-600 mt-1 font-medium">{subtitle}</p>}
       </div>
       {action && <div>{action}</div>}
     </div>

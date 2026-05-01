@@ -39,7 +39,7 @@ const AllOrders = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <Typography variant="h3">Requested Orders</Typography>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+          <p className="text-xs font-black text-slate-500 uppercase tracking-widest mt-1">
             Total {orderList.length} orders found
           </p>
         </div>
@@ -54,11 +54,11 @@ const AllOrders = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Customer</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Items</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Created</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Customer</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Contact</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Items</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Created</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -68,7 +68,7 @@ const AllOrders = () => {
                     <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-200">
                       <Search size={24} />
                     </div>
-                    <p className="font-bold text-slate-400">No orders found.</p>
+                    <p className="font-black text-slate-500">No orders found.</p>
                   </td>
                 </tr>
               ) : (
@@ -83,7 +83,7 @@ const AllOrders = () => {
         {/* Custom Pagination */}
         <div className="px-8 py-6 bg-slate-50/50 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-100">
           <div className="flex items-center gap-4">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Rows per page:</span>
+            <span className="text-xs font-black text-slate-500 uppercase tracking-widest">Rows per page:</span>
             <select 
               value={rowsPerPage}
               onChange={(e) => {
@@ -97,35 +97,35 @@ const AllOrders = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-400 tracking-tight mr-4">
+            <span className="text-xs font-black text-slate-500 tracking-tight mr-4">
               Page <span className="text-secondary">{page + 1}</span> of <span className="text-secondary">{totalPages || 1}</span>
             </span>
             <div className="flex items-center gap-1">
               <button 
                 onClick={() => setPage(0)}
                 disabled={page === 0}
-                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-600 hover:text-primary disabled:opacity-30 transition-all"
               >
                 <ChevronsLeft size={16} />
               </button>
               <button 
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-600 hover:text-primary disabled:opacity-30 transition-all"
               >
                 <ChevronLeft size={16} />
               </button>
               <button 
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
-                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-600 hover:text-primary disabled:opacity-30 transition-all"
               >
                 <ChevronRight size={16} />
               </button>
               <button 
                 onClick={() => setPage(totalPages - 1)}
                 disabled={page >= totalPages - 1}
-                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-400 hover:text-primary disabled:opacity-30 transition-all"
+                className="p-2 rounded-xl border border-slate-100 bg-white text-slate-600 hover:text-primary disabled:opacity-30 transition-all"
               >
                 <ChevronsRight size={16} />
               </button>
