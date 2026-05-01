@@ -114,7 +114,7 @@ const ViewItem = () => {
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left: Product Gallery */}
-            <div className="lg:col-span-5 xl:col-span-5">
+            <div className="lg:col-span-4">
               <Card hover={false} className="p-2 bg-white border-none shadow-premium overflow-hidden rounded-[1.5rem]">
                 <div className="aspect-square relative overflow-hidden rounded-xl group">
                   <img 
@@ -157,8 +157,8 @@ const ViewItem = () => {
             </div>
 
             {/* Right: Product Info */}
-            <div className="lg:col-span-7 xl:col-span-7">
-              <div className="bg-white p-4 md:p-5 rounded-[1.5rem] shadow-premium border-none sticky top-24">
+            <div className="lg:col-span-8">
+              <div className="bg-white p-3 md:p-4 rounded-[1.2rem] shadow-premium border-none sticky top-24">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
                     Official store
@@ -168,29 +168,29 @@ const ViewItem = () => {
                   </div>
                 </div>
 
-                <Typography variant="h3" className="mb-2 leading-tight">{itemDetails.itemName}</Typography>
+                <Typography variant="h4" className="mb-1.5 leading-tight">{itemDetails.itemName}</Typography>
                 
                 <div className="flex items-center gap-3 mb-3 pb-3 border-b border-slate-50">
-                  <div className="bg-slate-50 p-3 rounded-2xl">
-                    <Award className="text-secondary" size={24} />
+                  <div className="bg-slate-50 p-2 rounded-xl">
+                    <Award className="text-secondary" size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Supplier</p>
-                    <p className="text-sm font-bold text-secondary">{itemDetails.owner.organization}</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Supplier</p>
+                    <p className="text-xs font-bold text-secondary">{itemDetails.owner.organization}</p>
                   </div>
                 </div>
 
-                <div className="mb-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Market Price</p>
+                <div className="mb-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+                  <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Market Price</p>
                   <div className="flex items-baseline gap-2">
-                    <Typography variant="h2" className="text-primary font-black">
+                    <Typography variant="h3" className="text-primary font-black">
                       RWF {itemDetails.itemPrice}
                     </Typography>
-                    <span className="text-slate-400 line-through text-xs font-bold">RWF {(itemDetails.itemPrice * 1.5).toFixed(0)}</span>
+                    <span className="text-slate-400 line-through text-[10px] font-bold">RWF {(itemDetails.itemPrice * 1.5).toFixed(0)}</span>
                   </div>
-                  <div className="mt-2 flex items-center gap-2 text-emerald-600 font-bold text-[10px]">
+                  <div className="mt-1 flex items-center gap-2 text-emerald-600 font-bold text-[9px]">
                     <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                    In stock - Ready to ship
+                    In stock
                   </div>
                 </div>
 
@@ -200,11 +200,11 @@ const ViewItem = () => {
                   checkSubmitted1={submitted}
                 />
 
-                <div className="mt-4">
-                  <div className="flex items-center gap-2 mb-4 text-secondary font-black">
-                    <Info size={18} /> Description
+                <div className="mt-3">
+                  <div className="flex items-center gap-2 mb-2 text-secondary font-black text-sm">
+                    <Info size={16} /> Description
                   </div>
-                  <Typography variant="body1" className="text-slate-500 leading-relaxed">
+                  <Typography variant="body2" className="text-slate-500 leading-snug">
                     {itemDetails.itemDescription}
                   </Typography>
                 </div>

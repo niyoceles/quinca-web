@@ -34,10 +34,12 @@ import AboutUs from './pages/client/AboutUs';
 import ViewOrder from './pages/supplier/ViewOrder';
 import TermsConditions from './pages/client/TermsConditions';
 import MessagesPage from './pages/supplier/MessagesPage';
+import ScrollToTop from './utils/ScrollToTop';
 
 export const Routes = () => {
 	return (
 		<Router>
+			<ScrollToTop />
 			<RouterRoutes>
 				<Route path='/' element={<LandingPage />} />
 				<Route path='/categories' element={<CategoriesPage />} />

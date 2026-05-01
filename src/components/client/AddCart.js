@@ -23,7 +23,7 @@ const AddCart = (props) => {
 
   return (
     <div className="mt-8 select-none">
-      <form noValidate onSubmit={handleSubmit} className="space-y-6">
+      <form noValidate onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-end gap-4">
           <div className="w-32">
             <Input
@@ -43,8 +43,8 @@ const AddCart = (props) => {
             <Button
               type="submit"
               variant="outline"
-              size="lg"
-              className="flex-1 font-black rounded-xl border-primary text-primary hover:bg-primary/5 shadow-sm"
+              size="md"
+              className="flex-1 font-black rounded-xl border-primary text-primary hover:bg-primary/5 shadow-sm h-11"
               icon={ShoppingCart}
             >
               Add to Cart
@@ -53,8 +53,8 @@ const AddCart = (props) => {
             <Button
               type="button"
               variant="primary"
-              size="lg"
-              className="flex-1 font-black rounded-xl shadow-premium bg-gradient-to-r from-primary to-orange-600 border-none"
+              size="md"
+              className="flex-1 font-black rounded-xl shadow-premium bg-gradient-to-r from-primary to-orange-600 border-none h-11"
               onClick={handleBuyNow}
               icon={Zap}
             >
@@ -65,17 +65,17 @@ const AddCart = (props) => {
       </form>
       
       {/* Trust Badges */}
-      <div className="mt-8 flex flex-wrap gap-6 items-center border-t border-slate-50 pt-6">
-        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-emerald-500" />
+      <div className="mt-6 flex flex-wrap gap-4 items-center border-t border-slate-50 pt-4">
+        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           Secure Transaction
         </div>
-        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-blue-500" />
+        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+          <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
           Buyer Protection
         </div>
-        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-orange-500" />
+        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+          <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
           Verified Shop
         </div>
       </div>

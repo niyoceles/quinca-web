@@ -24,7 +24,7 @@ const NavItem = ({ link }) => {
   return (
     <Link
       to={link.path}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
+      className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all group ${
         isActive 
           ? 'bg-primary text-white shadow-lg shadow-primary/20' 
           : 'text-slate-500 hover:bg-slate-50 hover:text-secondary'
@@ -40,7 +40,7 @@ const NavItem = ({ link }) => {
 };
 
 const NavSection = ({ title, links }) => (
-  <div className="mb-8 px-4">
+  <div className="mb-4 px-4">
     <p className="px-4 mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">{title}</p>
     <div className="space-y-1">
       {links.map((link) => (

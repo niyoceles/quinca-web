@@ -25,7 +25,7 @@ import { getMyProfile } from '../../redux/actions/supplierActions';
 const COLORS = ['#ff4400', '#1e293b', '#64748b', '#94a3b8'];
 
 const MetricCard = ({ title, value, change, icon: Icon, trend }) => (
-  <Card hover className="p-6 border-none shadow-premium rounded-3xl group overflow-hidden relative bg-white">
+  <Card hover className="p-4 border-none shadow-premium rounded-3xl group overflow-hidden relative bg-white">
     <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:bg-primary/10 transition-colors" />
     <div className="flex items-start justify-between relative z-10">
       <div>
@@ -135,7 +135,7 @@ const DashboardPage = () => {
 
   return (
     <SupplierLayout>
-      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-primary/10 text-primary rounded-lg">
@@ -143,11 +143,11 @@ const DashboardPage = () => {
             </div>
             <Typography variant="h2">Supplier Analytics</Typography>
           </div>
-          <p className="text-slate-400 font-medium">Live metrics from your database</p>
+          <p className="text-slate-400 font-medium text-xs">Live metrics from your database</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="rounded-xl font-bold bg-white">Download CSV</Button>
-          <Button size="sm" className="rounded-xl font-black shadow-premium" onClick={() => {
+          <Button variant="outline" size="sm" className="rounded-xl font-bold bg-white h-9 text-[11px]">Download CSV</Button>
+          <Button size="sm" className="rounded-xl font-black shadow-premium h-9 text-[11px]" onClick={() => {
             dispatch(getAllOrders());
             dispatch(getMyProfile());
           }}>Sync Data</Button>
@@ -155,7 +155,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <MetricCard 
           title="Total Revenue" 
           value={formatCurrency(totalRevenue)} 
@@ -184,18 +184,18 @@ const DashboardPage = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
         {/* Sales Trend Chart */}
         <div className="lg:col-span-8">
-          <Card hover={false} className="p-8 border-none shadow-premium rounded-[2rem] h-full bg-white">
-            <div className="flex items-center justify-between mb-10">
+          <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem] h-full bg-white">
+            <div className="flex items-center justify-between mb-6">
               <h3 className="font-black text-secondary uppercase tracking-widest text-[11px] flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-primary rounded-full" />
                 7-Day Revenue & Orders
               </h3>
             </div>
             
-            <div className="h-[350px] w-full">
+            <div className="h-[250px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={salesData}>
                   <defs>
@@ -240,13 +240,13 @@ const DashboardPage = () => {
 
         {/* Order Distribution Chart */}
         <div className="lg:col-span-4">
-          <Card hover={false} className="p-8 border-none shadow-premium rounded-[2rem] h-full bg-white">
-            <h3 className="font-black text-secondary uppercase tracking-widest text-[11px] flex items-center gap-2 mb-10">
+          <Card hover={false} className="p-6 border-none shadow-premium rounded-[2rem] h-full bg-white">
+            <h3 className="font-black text-secondary uppercase tracking-widest text-[11px] flex items-center gap-2 mb-6">
               <div className="w-1.5 h-6 bg-secondary rounded-full" />
               Category Inventory
             </h3>
             
-            <div className="h-[300px] w-full mb-8">
+            <div className="h-[200px] w-full mb-6">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={categoryData}>
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 10, fontWeight: 700}} dy={16} />
@@ -277,26 +277,6 @@ const DashboardPage = () => {
           </Card>
         </div>
       </div>
-
-      {/* Real-time Status Card */}
-      <Card hover={false} className="p-8 border-none shadow-premium rounded-[2.5rem] bg-gradient-to-r from-secondary to-slate-800 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
-            <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-primary border border-white/10">
-              <Zap size={32} />
-            </div>
-            <div>
-              <h4 className="text-xl font-black mb-1">Quinca Live Gateway</h4>
-              <p className="text-slate-400 text-sm font-medium">Real-time channel status active via Socket.io</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 px-6 py-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-widest text-emerald-400">All Systems Operational</span>
-          </div>
-        </div>
-      </Card>
     </SupplierLayout>
   );
 };

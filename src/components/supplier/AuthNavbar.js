@@ -21,11 +21,12 @@ import Hadiwa_logo from '../../assets/images/hadiwa-logo.png';
 export default function AuthNavbar() {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(state => state.ui.isSidebarOpen);
+  const user = useSelector(state => state.auth.user);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Safety check for token
-  let decodedToken = { email: 'Supplier' };
+  let decodedToken = { email: 'User', userType: 'supplier' };
   try {
     if (localStorage.IdToken) {
       decodedToken = jwtDecode(localStorage.IdToken);
@@ -34,12 +35,15 @@ export default function AuthNavbar() {
     console.error('Invalid token');
   }
 
+  // Determine user type from Redux or Token
+  const currentUserType = user?.userType || decodedToken?.userType;
+
   const handleToggleSidebar = () => dispatch(toggleSidebar());
 
   return (
     <Fragment>
       {/* Top Navbar */}
-      <nav className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-100 z-[60] px-6">
+      <nav className="fixed top-0 left-0 right-0 h-24 bg-white border-b border-slate-100 z-[60] px-6">
         <div className="h-full flex items-center justify-between">
           <div className="flex items-center gap-6">
             <button 
@@ -49,10 +53,12 @@ export default function AuthNavbar() {
               <Menu size={22} />
             </button>
             <Link to="/" className="flex items-center gap-3 group">
-              <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
+              <img src={Hadiwa_logo} alt="Hadiwa" className="h-16 md:h-18 w-auto object-contain transition-transform group-hover:scale-105" />
               <div className="hidden md:block">
                 <span className="font-black text-secondary tracking-tight block leading-none">Hadiwa</span>
-                <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Supplier Center</span>
+                <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
+                  {currentUserType === 'admin' ? 'Admin Center' : 'Supplier Center'}
+                </span>
               </div>
             </Link>
           </div>
@@ -63,7 +69,7 @@ export default function AuthNavbar() {
               <Search size={16} className="text-slate-400" />
               <input 
                 type="text" 
-                placeholder="Search orders..." 
+                placeholder="Search..." 
                 className="bg-transparent border-none text-sm font-medium w-full focus:ring-0 placeholder:text-slate-300"
               />
             </div>
@@ -83,11 +89,11 @@ export default function AuthNavbar() {
                 }`}
               >
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-primary/20">
-                  {decodedToken?.email ? decodedToken.email[0].toUpperCase() : 'S'}
+                  {(user?.email || decodedToken?.email)?.[0].toUpperCase() || 'U'}
                 </div>
                 <div className="hidden lg:block text-left">
                   <p className="text-xs font-black text-secondary truncate max-w-[120px] uppercase tracking-tight">
-                    {decodedToken?.email ? decodedToken.email.split('@')[0] : 'Supplier'}
+                    {(user?.email || decodedToken?.email)?.split('@')[0] || 'User'}
                   </p>
                 </div>
                 <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isProfileOpen ? 'rotate-180 text-primary' : ''}`} />
@@ -97,7 +103,7 @@ export default function AuthNavbar() {
                 <div className="absolute top-full right-0 mt-3 w-64 bg-white rounded-3xl shadow-2xl border border-slate-50 overflow-hidden py-3 animate-in fade-in slide-in-from-top-2 duration-300 z-[100]">
                   <div className="px-6 py-4 border-b border-slate-50 mb-2">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Signed in as</p>
-                    <p className="font-bold text-secondary truncate">{decodedToken.email}</p>
+                    <p className="font-bold text-secondary truncate">{user?.email || decodedToken?.email}</p>
                   </div>
                   <Link to="/account/supplier/myaccount" className="flex items-center gap-4 px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition-all">
                     <User size={18} className="text-slate-400" />
@@ -127,7 +133,7 @@ export default function AuthNavbar() {
 
       {/* Sidebar */}
       <aside 
-        className={`fixed top-20 bottom-0 left-0 bg-white border-r border-slate-100 z-[50] transition-all duration-500 overflow-y-auto ${
+        className={`fixed top-24 bottom-0 left-0 bg-white border-r border-slate-100 z-[50] transition-all duration-500 overflow-y-auto ${
           isSidebarOpen ? 'w-[280px]' : 'w-0 -translate-x-full md:w-0'
         }`}
       >

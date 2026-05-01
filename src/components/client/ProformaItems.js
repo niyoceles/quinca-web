@@ -126,7 +126,7 @@ const ProformaItems = ({ items, addItem }) => {
                 required
               />
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
-                Total Estimated: <span className="text-primary">{selectedItem ? (selectedItem.itemPrice * quantity).toLocaleString() : 0} RWF</span>
+                Total Estimated: <span className="text-primary">{selectedItem ? (Number(selectedItem.itemPrice) * (Number(quantity) || 0)).toLocaleString() : 0} RWF</span>
               </p>
             </div>
 
