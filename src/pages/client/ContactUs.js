@@ -51,7 +51,7 @@ export default function ContactUs() {
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cloud Mail</p>
-                          <p className="text-sm font-black text-secondary">info@hadiwa.com</p>
+                          <p className="text-sm font-black text-secondary">paradisebountyco@gmail.com</p>
                         </div>
                       </div>
 
@@ -90,15 +90,6 @@ export default function ContactUs() {
                 </div>
               </Card>
 
-              <div className="bg-primary p-8 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden group">
-                <div className="absolute bottom-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700">
-                  <ShieldCheck size={120} />
-                </div>
-                <h4 className="font-black text-lg mb-2">Verified Support</h4>
-                <p className="text-xs font-medium text-white/70 leading-relaxed">
-                   All inquiries are tracked and verified to ensure high-quality service standards and reliable procurement advice.
-                </p>
-              </div>
             </div>
 
             {/* Form Column */}
