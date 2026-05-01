@@ -22,7 +22,7 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.register();
+// To fix the "MIME type ('text/html')" security error on production,
+// we unregister the service worker unless offline caching is specifically required.
+// This prevents the browser from incorrectly requesting service-worker.js
+serviceWorker.unregister();
