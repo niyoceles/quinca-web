@@ -32,43 +32,43 @@ export default function Orders() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Transaction Date</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Customer</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Shipment Location</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Payment</th>
-                <th className="px-8 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Amount</th>
+                <th className="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Transaction Date</th>
+                <th className="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Customer</th>
+                <th className="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Shipment Location</th>
+                <th className="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Payment</th>
+                <th className="px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {rows.map((row) => (
                 <tr key={row.id} className="group hover:bg-slate-50/50 transition-colors">
-                  <td className="px-8 py-5">
+                  <td className="px-6 py-3">
                     <div className="flex items-center gap-3 text-xs font-bold text-slate-700">
                       <Calendar size={14} className="text-slate-500" />
                       {row.date}
                     </div>
                   </td>
-                  <td className="px-8 py-5">
+                  <td className="px-6 py-3">
                     <div className="flex items-center gap-3 text-sm font-black text-secondary">
                       <User size={14} className="text-primary/40" />
                       {row.name}
                     </div>
                   </td>
-                  <td className="px-8 py-5">
+                  <td className="px-6 py-3">
                     <div className="flex items-center gap-3 text-xs font-bold text-slate-600">
                       <MapPin size={14} className="text-slate-500" />
                       {row.shipTo}
                     </div>
                   </td>
-                  <td className="px-8 py-5">
+                  <td className="px-6 py-3">
                     <div className="flex items-center gap-3 text-xs font-black text-slate-500">
                       <CreditCard size={14} className="text-slate-400" />
                       {row.paymentMethod}
                     </div>
                   </td>
-                  <td className="px-8 py-5 text-right">
-                    <div className="flex items-center justify-end gap-1.5 text-sm font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl w-fit ml-auto">
-                      <DollarSign size={14} />
+                  <td className="px-6 py-3 text-right">
+                    <div className="flex items-center justify-end gap-1.5 text-xs font-black text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg w-fit ml-auto">
+                      <DollarSign size={13} />
                       {row.amount.toFixed(2)}
                     </div>
                   </td>

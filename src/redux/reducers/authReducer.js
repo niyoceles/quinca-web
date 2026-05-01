@@ -80,6 +80,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				authenticated: true,
+				user: { ...state.user, ...action.payload }
 			};
 		case SET_UNAUTHENTICATED:
 			return initialState;

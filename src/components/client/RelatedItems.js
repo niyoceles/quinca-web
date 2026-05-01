@@ -7,7 +7,7 @@ import DialogQuantity from './DialogQuantity';
 
 const RelatedItems = (props) => {
   return (
-    <div className="bg-slate-50 py-20 border-t border-slate-100">
+    <div className="bg-slate-50 py-10 border-t border-slate-100">
       <DialogQuantity
         open={props.setDialog}
         close={props.closeDialog}
@@ -19,7 +19,7 @@ const RelatedItems = (props) => {
         <SectionTitle 
           title="Related Materials & Tools" 
           subtitle="Other customers also viewed these items for their construction projects."
-          className="mb-12"
+          className="mb-8"
         />
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">

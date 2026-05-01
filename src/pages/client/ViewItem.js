@@ -97,7 +97,7 @@ const ViewItem = () => {
     <ClientLayout>
       <main className="bg-slate-50 pb-12">
         {/* Breadcrumbs */}
-        <div className="bg-white border-b border-slate-100 mb-4 py-2">
+        <div className="bg-white border-b border-slate-100 mb-3 py-1.5">
           <Container>
             <nav className="flex items-center gap-2 text-sm font-medium">
               <RouterLink to="/" className="text-slate-400 hover:text-primary transition-colors">Home</RouterLink>
@@ -158,7 +158,7 @@ const ViewItem = () => {
 
             {/* Right: Product Info */}
             <div className="lg:col-span-7 xl:col-span-7">
-              <div className="bg-white p-5 md:p-6 rounded-[1.5rem] shadow-premium border-none sticky top-24">
+              <div className="bg-white p-4 md:p-5 rounded-[1.5rem] shadow-premium border-none sticky top-24">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
                     Official store
@@ -170,7 +170,7 @@ const ViewItem = () => {
 
                 <Typography variant="h3" className="mb-2 leading-tight">{itemDetails.itemName}</Typography>
                 
-                <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-50">
+                <div className="flex items-center gap-3 mb-3 pb-3 border-b border-slate-50">
                   <div className="bg-slate-50 p-3 rounded-2xl">
                     <Award className="text-secondary" size={24} />
                   </div>
@@ -180,7 +180,7 @@ const ViewItem = () => {
                   </div>
                 </div>
 
-                <div className="mb-4 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                <div className="mb-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Market Price</p>
                   <div className="flex items-baseline gap-2">
                     <Typography variant="h2" className="text-primary font-black">
@@ -200,7 +200,7 @@ const ViewItem = () => {
                   checkSubmitted1={submitted}
                 />
 
-                <div className="mt-6">
+                <div className="mt-4">
                   <div className="flex items-center gap-2 mb-4 text-secondary font-black">
                     <Info size={18} /> Description
                   </div>

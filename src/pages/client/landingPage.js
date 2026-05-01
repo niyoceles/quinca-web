@@ -66,10 +66,10 @@ export default function LandingPage() {
       {/* Hero & Content Section */}
       <section className="bg-slate-50 pt-4 pb-12">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {/* Left Sidebar: Categories */}
-            <div className="hidden md:block md:col-span-3 lg:col-span-2">
-              <Card hover={false} className="p-2 border-none shadow-sm sticky top-24">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+            {/* Left Sidebar: Categories - Sticky */}
+            <div className="hidden md:block md:col-span-3 lg:col-span-2 sticky top-24 z-30">
+              <Card hover={false} className="p-2 border-none shadow-premium-sm bg-white overflow-hidden">
                 <div className="p-3 border-b border-slate-50 mb-2">
                   <h3 className="font-black text-xs uppercase tracking-widest text-secondary flex items-center gap-2">
                     <TrendingUp size={16} className="text-primary" /> Categories
@@ -80,7 +80,7 @@ export default function LandingPage() {
                     <CategoryItem key={cat.name} {...cat} />
                   ))}
                 </div>
-                <div className="p-3 mt-4 mt-auto">
+                <div className="p-3 mt-4">
                   <div className="bg-orange-50 rounded-xl p-4 border border-orange-100">
                     <p className="text-xs font-bold text-orange-600 mb-2">Welcome Offer</p>
                     <p className="text-[10px] text-orange-800">Get 20% off on your first proforma request today!</p>
@@ -155,11 +155,11 @@ export default function LandingPage() {
               </div>
 
               {/* Most Featured Materials - Now Under Slider */}
-              <div className="mt-12">
+              <div className="mt-8">
                 <SectionTitle 
                   title="Most Featured Materials" 
                   subtitle="Direct from the best regional suppliers at unbeatable factory prices."
-                  className="mb-8"
+                  className="mb-6"
                 />
                 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -172,19 +172,19 @@ export default function LandingPage() {
                   )}
                 </div>
                 
-                <div className="mt-8 flex justify-start">
-                  <Button variant="outline" className="px-10 rounded-full font-black">
+                <div className="mt-6 flex justify-start">
+                  <Button variant="outline" className="px-8 py-2 rounded-full font-black text-xs">
                     View All Materials
                   </Button>
                 </div>
               </div>
 
               {/* Featured Professional Tools - Now Under Slider */}
-              <div className="mt-12 pt-12 border-t border-slate-100">
+              <div className="mt-8 pt-8 border-t border-slate-100">
                 <SectionTitle 
                   title="Featured Professional Tools" 
                   subtitle="Equip your team with industrial-grade tools designed for durability."
-                  className="mb-8"
+                  className="mb-6"
                 />
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {plumbingItems ? (
@@ -198,11 +198,11 @@ export default function LandingPage() {
               </div>
 
               {/* More For You - Now Under Slider */}
-              <div className="mt-12 pt-12 border-t border-slate-100">
-                <div className="flex justify-between items-end mb-8">
+              <div className="mt-8 pt-8 border-t border-slate-100">
+                <div className="flex justify-between items-end mb-6">
                   <div>
-                    <h2 className="text-2xl font-black text-secondary uppercase tracking-tight">More For You</h2>
-                    <p className="text-slate-500 text-sm mt-1">Personalized recommendations based on your recent activity.</p>
+                    <h2 className="text-xl font-black text-secondary uppercase tracking-tight">More For You</h2>
+                    <p className="text-slate-500 text-xs mt-1">Personalized recommendations based on your recent activity.</p>
                   </div>
                   <ReactLink to="/categories" className="text-primary font-bold text-sm flex items-center gap-2 hover:underline">
                     View more <ArrowRight size={18} />

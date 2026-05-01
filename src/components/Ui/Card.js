@@ -13,7 +13,7 @@ export const Card = ({ children, className = '', hover = true, ...props }) => {
 
 export const CardHeader = ({ title, subtitle, action, className = '' }) => {
   return (
-    <div className={`p-5 flex justify-between items-start ${className}`}>
+    <div className={`p-3 flex justify-between items-start ${className}`}>
       <div>
         <h3 className="text-lg font-bold text-secondary">{title}</h3>
         {subtitle && <p className="text-sm text-slate-600 mt-1 font-medium">{subtitle}</p>}
@@ -25,7 +25,7 @@ export const CardHeader = ({ title, subtitle, action, className = '' }) => {
 
 export const CardContent = ({ children, className = '' }) => {
   return (
-    <div className={`px-5 pb-5 ${className}`}>
+    <div className={`px-4 pb-4 ${className}`}>
       {children}
     </div>
   );

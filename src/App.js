@@ -11,13 +11,18 @@ import SocketHandler from "./components/common/SocketHandler";
 
 const token = localStorage.IdToken;
 if (token) {
-  const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1000 < Date.now()) {
-    store.dispatch(logoutUser());
-    window.location.href = "/login";
-  } else {
-    store.dispatch({ type: SET_AUTHENTICATED });
-    axios.defaults.headers.common["Authorization"] = token;
+  try {
+    const decodedToken = jwtDecode(token);
+    if (decodedToken.exp * 1000 < Date.now()) {
+      store.dispatch(logoutUser());
+      window.location.href = "/login";
+    } else {
+      store.dispatch({ type: SET_AUTHENTICATED, payload: decodedToken });
+      axios.defaults.headers.common["Authorization"] = token;
+    }
+  } catch (err) {
+    console.error("Invalid token", err);
+    localStorage.removeItem("IdToken");
   }
 }
 

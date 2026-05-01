@@ -23,25 +23,25 @@ import Button from '../../components/Ui/Button';
 import Spinner from '../../components/Ui/Spinner/Spinner';
 
 const SuccessView = ({ names, onReset }) => (
-  <div className="flex flex-col items-center justify-center py-20 animate-in fade-in zoom-in duration-700">
-    <div className="w-24 h-24 bg-emerald-100 rounded-[2rem] flex items-center justify-center text-emerald-500 mb-8 shadow-xl shadow-emerald-500/10">
-      <CheckCircle size={48} strokeWidth={2.5} />
+  <div className="flex flex-col items-center justify-center py-12 animate-in fade-in zoom-in duration-700">
+    <div className="w-20 h-20 bg-emerald-100 rounded-[2rem] flex items-center justify-center text-emerald-500 mb-6 shadow-xl shadow-emerald-500/10">
+      <CheckCircle size={40} strokeWidth={2.5} />
     </div>
-    <Typography variant="h1" className="text-center mb-4 text-secondary">Request <span className="text-primary italic">Sent!</span></Typography>
-    <p className="text-slate-500 font-medium text-center max-w-md mx-auto mb-10 leading-relaxed">
-      Thank you, <span className="text-secondary font-black">{names || 'valued customer'}</span>! Your request has been successfully dispatched to our procurement experts. We'll review your material list and get back to you within 24 hours.
+    <Typography variant="h2" className="text-center mb-3 text-secondary">Request <span className="text-primary italic">Sent!</span></Typography>
+    <p className="text-slate-500 font-medium text-center max-w-md mx-auto mb-8 leading-relaxed text-sm">
+      Thank you, <span className="text-secondary font-black">{names || 'valued customer'}</span>! Your request has been successfully dispatched. We'll get back to you within 24 hours.
     </p>
-    <div className="flex flex-col sm:flex-row gap-4 w-full max-w-xs">
+    <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
       <Button 
         variant="primary" 
-        className="w-full rounded-2xl h-14 font-black shadow-lg shadow-primary/20"
+        className="w-full rounded-2xl h-12 font-black shadow-lg shadow-primary/20"
         onClick={onReset}
       >
         Track My Requests
       </Button>
       <Button 
         variant="ghost" 
-        className="w-full rounded-2xl h-14 font-bold text-slate-400"
+        className="w-full rounded-2xl h-12 font-bold text-slate-400"
         onClick={() => window.location.href = '/'}
       >
         Back to Home
@@ -172,34 +172,34 @@ const RequestProforma = () => {
 
   return (
     <CartLayout>
-      <main className="min-h-screen bg-slate-50 pb-12 pt-6">
+      <main className="min-h-screen bg-slate-50 pb-8 pt-4">
         <Container>
           {requestSuccess ? (
             <SuccessView names={proformaInfo.names} onReset={handleReset} />
           ) : (
             <Fragment>
               {/* Page Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-4 rounded-[1.5rem] text-primary">
-                    <FileText size={32} />
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-primary/10 p-3 rounded-[1.5rem] text-primary">
+                    <FileText size={28} />
                   </div>
                   <div>
-                    <Typography variant="h2">Request <span className="text-primary italic">Proforma</span></Typography>
-                    <p className="text-slate-600 font-bold">Add materials to your list and get a custom quote.</p>
+                    <Typography variant="h3">Request <span className="text-primary italic">Proforma</span></Typography>
+                    <p className="text-slate-600 font-bold text-xs">Add materials and get a custom quote.</p>
                   </div>
                 </div>
                 {proformaSummary.length > 0 && (
                   <button 
                     onClick={handleCancelProforma}
-                    className="hidden md:flex items-center gap-2 text-xs font-black text-slate-500 hover:text-accent uppercase tracking-widest transition-colors"
+                    className="hidden md:flex items-center gap-2 text-[10px] font-black text-slate-500 hover:text-accent uppercase tracking-widest transition-colors"
                   >
-                    <X size={14} /> Clear List
+                    <X size={14} /> Clear
                   </button>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Left Column: Items Browser */}
                 <div className="lg:col-span-8">
                   <ProformaItems
@@ -213,47 +213,47 @@ const RequestProforma = () => {
                 </div>
 
                 {/* Right Column: Sidebar Summary */}
-                <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit space-y-8">
-                  <Card className="p-6 border-none shadow-premium bg-white rounded-[2.5rem] overflow-hidden relative">
+                <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit space-y-6">
+                  <Card className="p-4 border-none shadow-premium bg-white rounded-[2.5rem] overflow-hidden relative">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
                     
-                    <h3 className="font-black text-secondary flex items-center gap-2 mb-4">
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">1</span>
+                    <h3 className="font-black text-secondary flex items-center gap-2 mb-3 text-sm">
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-secondary text-white text-[9px]">1</span>
                       Selected Materials
                     </h3>
 
-                    <div className="space-y-4 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="space-y-3 mb-6 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
                       {proformaSummary.length > 0 ? (
                         proformaSummary.map((item) => (
-                          <div key={item.id} className="flex items-center gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-50 hover:border-slate-100 transition-all group">
+                          <div key={item.id} className="flex items-center gap-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-50 hover:border-slate-100 transition-all group">
                             <div className="flex-grow">
-                              <p className="font-bold text-secondary text-sm group-hover:text-primary transition-colors line-clamp-1">{item.itemName}</p>
-                              <p className="text-[10px] font-black text-slate-600 uppercase tracking-tighter mt-1">
+                              <p className="font-bold text-secondary text-xs group-hover:text-primary transition-colors line-clamp-1">{item.itemName}</p>
+                              <p className="text-[9px] font-black text-slate-600 uppercase tracking-tighter mt-1">
                                  RWF {item.itemPrice.toLocaleString()} <span className="mx-1 text-slate-500">|</span> <span className="text-primary">{item.itemNumber} Units</span>
                               </p>
                             </div>
                             <button 
                               onClick={(e) => handleRemoveItem(e, item.id)}
-                              className="w-8 h-8 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-500 hover:text-accent hover:shadow-md transition-all"
+                              className="w-7 h-7 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-500 hover:text-accent hover:shadow-md transition-all"
                             >
-                              <Trash2 size={14} />
+                              <Trash2 size={12} />
                             </button>
                           </div>
                         ))
                       ) : (
-                        <div className="text-center py-10">
-                          <div className="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-4 text-slate-300">
-                            <ShoppingCart size={24} />
+                        <div className="text-center py-8">
+                          <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-slate-300">
+                            <ShoppingCart size={20} />
                           </div>
-                          <p className="text-xs font-black text-slate-500">Your list is currently empty.</p>
+                          <p className="text-[10px] font-black text-slate-500">List is empty.</p>
                         </div>
                       )}
                     </div>
 
-                    <Divider className="border-slate-50 mb-4" />
+                    <Divider className="border-slate-50 mb-3" />
                     
-                    <h3 className="font-black text-secondary flex items-center gap-2 mb-4">
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-white text-[10px]">2</span>
+                    <h3 className="font-black text-secondary flex items-center gap-2 mb-3 text-sm">
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-secondary text-white text-[9px]">2</span>
                        Procurement Details
                     </h3>
 
@@ -270,10 +270,10 @@ const RequestProforma = () => {
                       error={proformaInfo}
                     />
 
-                    <div className="pt-10 space-y-4">
+                    <div className="pt-6 space-y-3">
                       <Button
                         variant="primary"
-                        className="w-full rounded-2xl h-14 font-black text-lg shadow-premium"
+                        className="w-full rounded-2xl h-12 font-black text-base shadow-premium"
                         onClick={handlePayLater}
                         disabled={proformaSummary.length === 0}
                         icon={Send}
@@ -292,13 +292,13 @@ const RequestProforma = () => {
                   </Card>
 
                   {/* Trust Tag */}
-                  <div className="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-center gap-4 group">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm transition-transform group-hover:scale-110">
-                      <CheckCircle size={24} />
+                  <div className="p-4 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-center gap-3 group">
+                    <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm transition-transform group-hover:scale-110">
+                      <CheckCircle size={20} />
                     </div>
                     <div>
-                      <p className="text-xs font-black text-emerald-700 uppercase tracking-widest">Verified Quote</p>
-                      <p className="text-[10px] text-emerald-600 font-medium">Review by experts within 24h.</p>
+                      <p className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Verified Quote</p>
+                      <p className="text-[9px] text-emerald-600 font-medium">Expert review in 24h.</p>
                     </div>
                   </div>
                 </div>
@@ -311,20 +311,20 @@ const RequestProforma = () => {
       {/* Custom Toast Notification */}
       {snack && (
         <div className="fixed bottom-10 left-10 z-[100] animate-in slide-in-from-left-10 duration-500">
-          <div className="bg-secondary text-white px-8 py-5 rounded-[2rem] shadow-2xl flex items-center gap-4 relative overflow-hidden group">
+          <div className="bg-secondary text-white px-6 py-4 rounded-[1.5rem] shadow-2xl flex items-center gap-3 relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
             <div className="bg-emerald-500 p-2 rounded-xl text-white shadow-lg">
-              <CheckCircle size={20} />
+              <CheckCircle size={18} />
             </div>
             <div>
-              <p className="font-black text-sm tracking-tight text-white">Item Added!</p>
-              <p className="text-[10px] text-slate-300 font-black uppercase tracking-widest">Added to proforma summary</p>
+              <p className="font-black text-xs tracking-tight text-white">Item Added!</p>
+              <p className="text-[9px] text-slate-300 font-black uppercase tracking-widest">Added to proforma</p>
             </div>
             <button 
               onClick={() => setSnack(false)}
-              className="ml-4 p-1 hover:bg-white/10 rounded-lg transition-colors"
+              className="ml-3 p-1 hover:bg-white/10 rounded-lg transition-colors"
             >
-              <X size={14} className="text-slate-500" />
+              <X size={12} className="text-slate-500" />
             </button>
           </div>
         </div>

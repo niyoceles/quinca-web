@@ -7,7 +7,7 @@ const ClientLayout = props => {
 	return (
 		<div className="min-h-screen flex flex-col bg-background">
 			<Navbar />
-			<main className="flex-grow">
+			<main className="flex-grow pt-24 md:pt-28">
 				{props.children}
 			</main>
 			<Footer />

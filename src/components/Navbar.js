@@ -50,7 +50,7 @@ export default function Navbar() {
   const orderedItems = JSON.parse(localStorage.getItem('orderSummary'));
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
     if (isAuthenticated) dispatch(getMyNotifications());
     return () => window.removeEventListener('scroll', handleScroll);
@@ -63,9 +63,9 @@ export default function Navbar() {
   };
 
   return (
-    <header className="relative w-full z-50">
-      {/* Top Utility Bar */}
-      <div className="bg-slate-50 border-b border-slate-100 hidden md:block py-1">
+    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'}`}>
+      {/* Top Utility Bar - Hidden on Scroll */}
+      <div className={`bg-slate-50 border-b border-slate-100 hidden md:block py-1 transition-all duration-300 overflow-hidden ${scrolled ? 'max-h-0 py-0 border-none' : 'max-h-10'}`}>
         <Container className="flex justify-between items-center text-slate-600 text-xs font-bold">
           <div className="flex items-center gap-6">
             <NavLink to="/">{t('home')}</NavLink>
@@ -77,32 +77,6 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-6">
-            {/* Language Selector commented out for now 
-            <div className="relative">
-              <button 
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-1 hover:text-primary transition-colors"
-              >
-                <Globe size={14} />
-                <span>{i18n.language.toUpperCase()}</span>
-                <ChevronDown size={14} />
-              </button>
-              {isLangOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-xl border border-slate-100 py-1 z-[60]">
-                  {['en', 'rw', 'fr'].map((lang) => (
-                    <button
-                      key={lang}
-                      onClick={() => changeLanguage(lang)}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 hover:text-primary capitalize"
-                    >
-                      {lang === 'en' ? 'English' : lang === 'rw' ? 'Kinyarwanda' : 'Français'}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            */}
-
             {isAuthenticated && userInformation && (
               <div className="flex items-center gap-2 text-slate-700">
                 <Mail size={14} className="text-primary" />
@@ -124,14 +98,8 @@ export default function Navbar() {
         </Container>
       </div>
 
-      {/* Main Header Bar */}
-      <div 
-        className={`w-full transition-all duration-300 ${
-          scrolled 
-            ? 'bg-white/80 backdrop-blur-lg shadow-md py-2 sticky top-0' 
-            : 'bg-white py-3'
-        }`}
-      >
+      {/* Main Header Bar - Always Fixed */}
+      <div className={`w-full transition-all duration-300 ${scrolled ? 'py-1' : 'py-2'}`}>
         <Container className="flex items-center gap-8">
           {/* Mobile Menu Toggle */}
           <button 
@@ -143,7 +111,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <img src={Hadiwa_logo} alt="Hadiwa" className="h-8 md:h-10 w-auto rounded-lg shadow-sm" />
+            <img src={Hadiwa_logo} alt="Hadiwa" className="h-14 md:h-16 w-auto object-contain" />
           </Link>
 
           {/* Search Bar - Permanent */}
