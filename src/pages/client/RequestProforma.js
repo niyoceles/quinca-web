@@ -8,7 +8,8 @@ import {
   X, 
   ChevronRight,
   ShoppingCart,
-  Send
+  Send,
+  Loader2
 } from 'lucide-react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -67,6 +68,7 @@ const RequestProforma = () => {
   const [snack, setSnack] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
   const [proformaInfo, setProformaInfo] = useState({
     pickupDate: moment().format('YYYY-MM-DD HH:mm:ss'),
     deadline: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -155,7 +157,13 @@ const RequestProforma = () => {
       ...proformaInfo,
       itemsArray: proformaSummary,
     };
-    dispatch(requestProforma(requestInfo));
+    
+    setIsRequesting(true);
+    try {
+      await dispatch(requestProforma(requestInfo));
+    } finally {
+      setIsRequesting(false);
+    }
   };
 
   const handleCancelProforma = () => {
@@ -178,6 +186,17 @@ const RequestProforma = () => {
             <SuccessView names={proformaInfo.names} onReset={handleReset} />
           ) : (
             <Fragment>
+              {/* Loading Overlay */}
+              {isRequesting && (
+                <div className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm animate-in fade-in duration-300">
+                  <div className="bg-white p-8 rounded-[2.5rem] shadow-premium flex flex-col items-center">
+                    <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
+                    <p className="font-black text-secondary text-sm uppercase tracking-widest">Processing Request</p>
+                    <p className="text-slate-400 text-[10px] font-bold mt-2">Connecting to Hadiwa...</p>
+                  </div>
+                </div>
+              )}
+
               {/* Page Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -275,16 +294,18 @@ const RequestProforma = () => {
                         variant="primary"
                         className="w-full rounded-2xl h-12 font-black text-base shadow-premium"
                         onClick={handlePayLater}
-                        disabled={proformaSummary.length === 0}
-                        icon={Send}
+                        disabled={proformaSummary.length === 0 || isRequesting}
+                        icon={isRequesting ? Loader2 : Send}
+                        iconClassName={isRequesting ? 'animate-spin' : ''}
                       >
-                        Send Request
+                        {isRequesting ? 'Sending...' : 'Send Request'}
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="w-full text-slate-500 font-black"
                         onClick={handleCancelProforma}
+                        disabled={isRequesting}
                       >
                         Discard Selections
                       </Button>

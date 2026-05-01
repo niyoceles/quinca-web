@@ -10,7 +10,8 @@ import {
   Info,
   Calendar,
   CreditCard,
-  X
+  X,
+  Loader2
 } from 'lucide-react';
 import moment from 'moment';
 import { createOrder } from '../../redux/actions';
@@ -27,6 +28,7 @@ const Cart = () => {
     (localStorage.getItem('totalPrice') || 0) * 1
   );
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isOrdering, setIsOrdering] = useState(false);
   const [selectedDate] = useState(moment());
   const [checkInDate, setCheckInDate] = useState(moment());
   const [checkOutDate, setCheckOutDate] = useState(moment());
@@ -101,10 +103,15 @@ const Cart = () => {
       category,
     };
     
+    setIsOrdering(true);
     setIsButtonDisabled(true);
-    await dispatch(createOrder(bookInfo));
-    setOpen(true);
-    // Success handling would go here, e.g., redirect or confirmation view
+    try {
+      await dispatch(createOrder(bookInfo));
+      setOpen(true);
+    } finally {
+      setIsOrdering(false);
+      setIsButtonDisabled(false);
+    }
   };
 
   const handleCancelOrder = () => {
@@ -116,6 +123,17 @@ const Cart = () => {
 
   return (
     <CartLayout>
+      {/* Loading Overlay */}
+      {isOrdering && (
+        <div className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-secondary/20 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-premium flex flex-col items-center">
+            <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
+            <p className="font-black text-secondary text-sm uppercase tracking-widest">Processing Order</p>
+            <p className="text-slate-400 text-[10px] font-bold mt-2">Connecting to Hadiwa...</p>
+          </div>
+        </div>
+      )}
+
       <Container>
         <div className="flex items-center gap-3 mb-6">
           <div className="bg-primary/10 p-3 rounded-2xl text-primary">
@@ -240,15 +258,17 @@ const Cart = () => {
                     size="lg" 
                     className="w-full rounded-2xl bg-primary hover:bg-orange-600 border-none font-black shadow-premium h-14"
                     onClick={handlePayLater}
-                    disabled={isButtonDisabled}
-                    icon={Zap}
+                    disabled={isOrdering}
+                    icon={isOrdering ? Loader2 : Zap}
+                    iconClassName={isOrdering ? 'animate-spin' : ''}
                   >
-                    Proceed to Proforma
+                    {isOrdering ? 'Processing...' : 'Proceed to Proforma'}
                   </Button>
                   <Button 
                     variant="ghost" 
                     className="w-full rounded-2xl text-slate-400 hover:text-secondary hover:bg-slate-50 font-black"
                     onClick={handleCancelOrder}
+                    disabled={isOrdering}
                   >
                     Cancel Order
                   </Button>

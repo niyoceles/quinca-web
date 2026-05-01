@@ -45,7 +45,7 @@ export default function LandingPage() {
     { name: 'All Categories', url: '/categories' },
     { name: 'Construction Materials', url: '/category/construction' },
     { name: 'Plumbing Materials', url: '/category/plumbing' },
-    { name: 'Electricity Materials', url: '/category/electricity' },
+    { name: 'Electrical Materials', url: '/category/electrical' },
     { name: 'Interior Design', url: '/category/interior' },
     { name: 'Painting & Deco', url: '/category/painting' },
     { name: 'Solar Energy', url: '/category/solar' },
@@ -53,7 +53,7 @@ export default function LandingPage() {
 
   const constructionItems = useSelector(state => state.client.homeItems.construction);
   const plumbingItems = useSelector(state => state.client.homeItems.plumbing);
-  const electricityItems = useSelector(state => state.client.homeItems.electricity);
+  const electricalItems = useSelector(state => state.client.homeItems.electrical);
   
   const dispatch = useDispatch();
 
@@ -210,8 +210,8 @@ export default function LandingPage() {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {electricityItems ? (
-                    electricityItems.map(card => (
+                  {electricalItems ? (
+                    electricalItems.map(card => (
                       <ProductCard key={card.id} {...card} />
                     ))
                   ) : (

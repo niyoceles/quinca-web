@@ -48,7 +48,7 @@ const Footer = () => {
     { name: 'All Categories', url: '/categories' },
     { name: 'Construction materials', url: '/category/construction' },
     { name: 'Plumbing materials', url: '/category/plumbing' },
-    { name: 'Electricity materials', url: '/category/electricity' },
+    { name: 'Electrical materials', url: '/category/electrical' },
   ];
 
   const social = [

@@ -174,7 +174,7 @@ const EditItem = ({
                                         }`}
                                     >
                                         <option value="construction">Construction</option>
-                                        <option value="electricity">Electricity</option>
+                                        <option value="electrical">Electrical</option>
                                         <option value="plumbing">Plumbing</option>
                                         <option value="tools">Tools & Hardware</option>
                                     </select>

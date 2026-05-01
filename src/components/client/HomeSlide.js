@@ -33,7 +33,7 @@ export const HomeSlide = () => {
       image: constructionImage3,
       title: 'Reliable Electrical Supplies',
       subtitle: 'Everything you need for safe and smart electrical installations.',
-      link: '/category/electricity',
+      link: '/category/electrical',
       buttonText: 'See Electricals'
     },
   ];

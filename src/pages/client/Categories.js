@@ -21,8 +21,8 @@ const CategoriesPage = () => {
       description: 'Pipes, fittings, valves, and bathroom fixtures'
     },
     { 
-      name: 'Electricity Materials', 
-      url: '/category/electricity', 
+      name: 'Electrical Materials', 
+      url: '/category/electrical', 
       icon: <Flame className="text-accent" />,
       description: 'Wiring, switches, lighting, and solar panels'
     },

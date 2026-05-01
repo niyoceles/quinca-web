@@ -120,7 +120,7 @@ export default function AboutUs() {
                     <div className="space-y-4">
                       <p className="flex gap-3">
                         <span className="text-primary font-black">01</span>
-                        Distribution, supply and import of construction, plumbing and electricity materials
+                        Distribution, supply and import of construction, plumbing and electrical materials
                       </p>
                       <p className="flex gap-3">
                         <span className="text-primary font-black">02</span>
