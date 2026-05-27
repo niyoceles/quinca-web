@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   ChevronLeft, 
@@ -7,8 +7,7 @@ import {
   ChevronsRight,
   Filter,
   Download,
-  Search,
-  ArrowUpDown
+  Search
 } from 'lucide-react';
 import { getAllOrders } from '../../redux/actions';
 import { Card } from '../Ui/Card';
@@ -19,6 +18,9 @@ import RequestedOrder from './RequestedOrder';
 const AllOrders = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [showFilters, setShowFilters] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [paymentFilter, setPaymentFilter] = useState('all');
   const orders = useSelector(state => state.order.allOrders);
   const dispatch = useDispatch();
 
@@ -26,13 +28,103 @@ const AllOrders = () => {
     dispatch(getAllOrders());
   }, [dispatch]);
 
-  const orderList = Array.isArray(orders) ? orders : [];
-  const totalPages = Math.ceil(orderList.length / rowsPerPage);
+  const orderList = useMemo(() => (Array.isArray(orders) ? orders : []), [orders]);
+  const filteredOrders = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    return orderList.filter((order) => {
+      const client = order.client || {};
+      const searchableText = [
+        order.id,
+        client.names,
+        client.email,
+        client.phoneNumber
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      const matchesSearch = !normalizedSearch || searchableText.includes(normalizedSearch);
+      const matchesPayment =
+        paymentFilter === 'all' ||
+        (paymentFilter === 'paid' && order.isPaid) ||
+        (paymentFilter === 'pending' && !order.isPaid);
+
+      return matchesSearch && matchesPayment;
+    });
+  }, [orderList, paymentFilter, searchTerm]);
+
+  const totalPages = Math.ceil(filteredOrders.length / rowsPerPage);
   
-  const paginatedOrders = orderList.slice(
+  const paginatedOrders = filteredOrders.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+
+  useEffect(() => {
+    if (page > 0 && page >= totalPages) {
+      setPage(Math.max(totalPages - 1, 0));
+    }
+  }, [page, totalPages]);
+
+  const getOrderTotal = (order) => {
+    return (order.itemsArray || []).reduce((total, item) => {
+      const quantity = Number(item.itemNumber || item.quantity || 0);
+      const price = Number(item.itemPrice || item.expectedPrice || item.price || 0);
+      return total + (quantity * price);
+    }, 0);
+  };
+
+  const escapeCsvValue = (value) => {
+    const stringValue = String(value ?? '');
+    return `"${stringValue.replace(/"/g, '""')}"`;
+  };
+
+  const handleExport = () => {
+    if (filteredOrders.length === 0) return;
+
+    const headers = [
+      'Order ID',
+      'Customer',
+      'Email',
+      'Phone',
+      'Items',
+      'Total Rwf',
+      'Payment Status',
+      'Created At'
+    ];
+
+    const rows = filteredOrders.map((order) => {
+      const client = order.client || {};
+      return [
+        order.id,
+        client.names,
+        client.email,
+        client.phoneNumber,
+        (order.itemsArray || []).length,
+        getOrderTotal(order),
+        order.isPaid ? 'Settled' : 'Pending',
+        order.createdAt ? new Date(order.createdAt).toLocaleString() : ''
+      ];
+    });
+
+    const csvContent = [headers, ...rows]
+      .map((row) => row.map(escapeCsvValue).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `requested-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setPaymentFilter('all');
+    setPage(0);
+  };
 
   return (
     <div className="space-y-6">
@@ -40,14 +132,77 @@ const AllOrders = () => {
         <div>
           <Typography variant="h3">Requested Orders</Typography>
           <p className="text-xs font-black text-slate-500 uppercase tracking-widest mt-1">
-            Total {orderList.length} orders found
+            Total {filteredOrders.length} orders found
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" icon={Filter}>Filter</Button>
-          <Button variant="outline" size="sm" icon={Download}>Export</Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            icon={Filter}
+            onClick={() => setShowFilters((current) => !current)}
+          >
+            Filter
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            icon={Download}
+            onClick={handleExport}
+            disabled={filteredOrders.length === 0}
+          >
+            Export
+          </Button>
         </div>
       </div>
+
+      {showFilters && (
+        <Card hover={false} className="border-none shadow-premium rounded-[2rem] bg-white p-5">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_220px_auto] gap-4 md:items-end">
+            <label className="space-y-2">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Search Orders</span>
+              <div className="relative">
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(event) => {
+                    setSearchTerm(event.target.value);
+                    setPage(0);
+                  }}
+                  placeholder="Customer, email, phone, or order ID"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm font-bold text-secondary outline-none transition-all focus:border-primary/30 focus:bg-white focus:ring-2 focus:ring-primary/10"
+                />
+              </div>
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Payment</span>
+              <select
+                value={paymentFilter}
+                onChange={(event) => {
+                  setPaymentFilter(event.target.value);
+                  setPage(0);
+                }}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-secondary outline-none transition-all focus:border-primary/30 focus:bg-white focus:ring-2 focus:ring-primary/10"
+              >
+                <option value="all">All Orders</option>
+                <option value="paid">Settled</option>
+                <option value="pending">Pending</option>
+              </select>
+            </label>
+
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-11 rounded-2xl px-5 font-black uppercase tracking-widest"
+              onClick={handleClearFilters}
+            >
+              Clear
+            </Button>
+          </div>
+        </Card>
+      )}
 
       <Card hover={false} className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white">
         <div className="overflow-x-auto">
@@ -62,7 +217,7 @@ const AllOrders = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {orderList.length === 0 ? (
+              {filteredOrders.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-8 py-20 text-center">
                     <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-200">

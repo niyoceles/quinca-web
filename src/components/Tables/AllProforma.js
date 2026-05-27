@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   ChevronLeft, 
@@ -19,6 +19,9 @@ import Requested from './RequestedProforma';
 const AllProforma = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [showFilters, setShowFilters] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const proformas = useSelector(state => state.proforma.allProforma);
   const dispatch = useDispatch();
 
@@ -26,13 +29,112 @@ const AllProforma = () => {
     dispatch(getAllProforma());
   }, [dispatch]);
 
-  const proformaList = Array.isArray(proformas) ? proformas : [];
-  const totalPages = Math.ceil(proformaList.length / rowsPerPage);
+  const proformaList = useMemo(() => (Array.isArray(proformas) ? proformas : []), [proformas]);
+  const statusOptions = useMemo(() => {
+    const knownStatuses = ['pending', 'confirmed', 'cancelled', 'active', 'approved'];
+    const dataStatuses = proformaList
+      .map((proforma) => proforma.status || 'pending')
+      .filter(Boolean)
+      .map((status) => status.toLowerCase());
+
+    return Array.from(new Set([...knownStatuses, ...dataStatuses]));
+  }, [proformaList]);
+
+  const filteredProformas = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    return proformaList.filter((proforma) => {
+      const client = proforma.client || {};
+      const currentStatus = (proforma.status || 'pending').toLowerCase();
+      const searchableText = [
+        proforma.id,
+        client.names,
+        client.email,
+        client.phoneNumber,
+        currentStatus
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      const matchesSearch = !normalizedSearch || searchableText.includes(normalizedSearch);
+      const matchesStatus = statusFilter === 'all' || currentStatus === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [proformaList, searchTerm, statusFilter]);
+
+  const totalPages = Math.ceil(filteredProformas.length / rowsPerPage);
   
-  const paginatedProformas = proformaList.slice(
+  const paginatedProformas = filteredProformas.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+
+  useEffect(() => {
+    if (page > 0 && page >= totalPages) {
+      setPage(Math.max(totalPages - 1, 0));
+    }
+  }, [page, totalPages]);
+
+  const getProformaTotal = (proforma) => {
+    return (proforma.itemsArray || []).reduce((total, item) => {
+      const quantity = Number(item.itemNumber || item.quantity || 0);
+      const price = Number(item.itemPrice || item.expectedPrice || item.price || 0);
+      return total + (quantity * price);
+    }, 0);
+  };
+
+  const escapeCsvValue = (value) => {
+    const stringValue = String(value ?? '');
+    return `"${stringValue.replace(/"/g, '""')}"`;
+  };
+
+  const handleExport = () => {
+    if (filteredProformas.length === 0) return;
+
+    const headers = [
+      'Proforma ID',
+      'Requester',
+      'Email',
+      'Phone',
+      'Items',
+      'Estimated Total Rwf',
+      'Status',
+      'Received At'
+    ];
+
+    const rows = filteredProformas.map((proforma) => {
+      const client = proforma.client || {};
+      return [
+        proforma.id,
+        client.names,
+        client.email,
+        client.phoneNumber,
+        (proforma.itemsArray || []).length,
+        getProformaTotal(proforma),
+        proforma.status || 'pending',
+        proforma.createdAt ? new Date(proforma.createdAt).toLocaleString() : ''
+      ];
+    });
+
+    const csvContent = [headers, ...rows]
+      .map((row) => row.map(escapeCsvValue).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `proforma-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('all');
+    setPage(0);
+  };
 
   return (
     <div className="space-y-6">
@@ -40,14 +142,80 @@ const AllProforma = () => {
         <div>
           <Typography variant="h3">Proforma Requests</Typography>
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
-            Total {proformaList.length} inquiries received
+            Total {filteredProformas.length} inquiries received
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" icon={Filter}>Filter</Button>
-          <Button variant="outline" size="sm" icon={Download}>Export</Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            icon={Filter}
+            onClick={() => setShowFilters((current) => !current)}
+          >
+            Filter
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            icon={Download}
+            onClick={handleExport}
+            disabled={filteredProformas.length === 0}
+          >
+            Export
+          </Button>
         </div>
       </div>
+
+      {showFilters && (
+        <Card hover={false} className="border-none shadow-premium rounded-[2rem] bg-white p-5">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_220px_auto] gap-4 md:items-end">
+            <label className="space-y-2">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Search Requests</span>
+              <div className="relative">
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(event) => {
+                    setSearchTerm(event.target.value);
+                    setPage(0);
+                  }}
+                  placeholder="Requester, email, phone, status, or ID"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm font-bold text-secondary outline-none transition-all focus:border-primary/30 focus:bg-white focus:ring-2 focus:ring-primary/10"
+                />
+              </div>
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</span>
+              <select
+                value={statusFilter}
+                onChange={(event) => {
+                  setStatusFilter(event.target.value);
+                  setPage(0);
+                }}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-black text-secondary outline-none transition-all focus:border-primary/30 focus:bg-white focus:ring-2 focus:ring-primary/10"
+              >
+                <option value="all">All Requests</option>
+                {statusOptions.map((status) => (
+                  <option key={status} value={status.toLowerCase()}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-11 rounded-2xl px-5 font-black uppercase tracking-widest"
+              onClick={handleClearFilters}
+            >
+              Clear
+            </Button>
+          </div>
+        </Card>
+      )}
 
       <Card hover={false} className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white">
         <div className="overflow-x-auto">
@@ -62,7 +230,7 @@ const AllProforma = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {proformaList.length === 0 ? (
+              {filteredProformas.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-8 py-20 text-center">
                     <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-200">
