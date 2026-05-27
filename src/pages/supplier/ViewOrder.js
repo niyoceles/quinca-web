@@ -137,18 +137,18 @@ const ViewOrder = () => {
               </div>
             </Card>
 
-            <Card className="border-none shadow-premium rounded-[2.5rem] bg-secondary p-8 text-white">
-              <Typography variant="h4" className="text-white mb-6 flex items-center gap-2">
-                <CreditCard size={18} className="text-primary" /> Invoice Summary
+            <Card className="border-none shadow-premium rounded-[2.5rem] bg-secondary p-8">
+              <Typography variant="h4" className="text-black mb-6 flex items-center gap-2">
+                <CreditCard size={18} className="text-black" /> Invoice Summary
               </Typography>
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-white/10">
-                  <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Grand Total</span>
-                  <span className="text-xl font-black">{calculateTotal().toLocaleString()} Rwf</span>
+                <div className="flex justify-between items-center py-2 border-b border-white/20">
+                  <span className="text-[10px] font-black text-white/80 uppercase tracking-widest text-black">Grand Total</span>
+                  <span className="text-xl font-black text-black">{calculateTotal().toLocaleString()} Rwf</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-white/10">
-                  <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">Payment Status</span>
-                  <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-lg ${order.isPaid ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>
+                <div className="flex justify-between items-center py-2 border-b border-white/20">
+                  <span className="text-[10px] font-black text-black uppercase tracking-widest">Payment Status</span>
+                  <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-lg ${order.isPaid ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
                     {order.isPaid ? 'Settled' : 'Pending'}
                   </span>
                 </div>

@@ -104,7 +104,7 @@ export const MainNav = () => {
         title: 'Relationships',
         links: [
           { title: 'My Customers', path: '/account/supplier/customers', icon: Users },
-          { title: 'Direct Messages', path: '/account/supplier/messages', icon: MessageSquare },
+          // { title: 'Direct Messages', path: '/account/supplier/messages', icon: MessageSquare },
         ]
       }
     );

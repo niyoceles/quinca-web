@@ -10,7 +10,7 @@ import {
   Image as ImageIcon,
   Loader2
 } from 'lucide-react';
-import { addItem } from '../../redux/actions';
+import { addItem, resetItemStatus, clearErrors } from '../../redux/actions';
 import { Modal } from '../Ui/Modal';
 import Button from '../Ui/Button';
 import Input from '../Ui/Input';
@@ -29,6 +29,7 @@ const AddItem = () => {
     const [imageUrl, setImageUrl] = useState('');
 
     const itemSubmitted = useSelector(state => state.item.addItemSuccess);
+    const uiError = useSelector(state => state.ui.error);
     const dispatch = useDispatch();
 
     const handleChange = e => {
@@ -36,12 +37,18 @@ const AddItem = () => {
         setItem(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        dispatch(clearErrors());
+        dispatch(resetItemStatus());
+        setOpen(true);
+    };
     const handleClose = () => {
         setOpen(false);
         setItem({ itemName: '', category: '', itemDescription: '', itemPrice: '' });
         setImageUrl('');
         setSubmitted(false);
+        dispatch(clearErrors());
+        dispatch(resetItemStatus());
     };
 
     const uploadFile = async (e) => {
@@ -150,6 +157,12 @@ const AddItem = () => {
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-8">
+                        {uiError && (
+                            <div className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-600 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <AlertCircle size={18} className="shrink-0" />
+                                <p className="text-xs font-bold uppercase tracking-wide">{uiError}</p>
+                            </div>
+                        )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-6">
                                 <Input

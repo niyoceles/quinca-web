@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Trash2, 
@@ -7,7 +7,7 @@ import {
   Check,
   Package
 } from 'lucide-react';
-import { deleteItem } from '../../redux/actions';
+import { deleteItem, resetItemStatus, clearErrors } from '../../redux/actions';
 import { Modal } from '../Ui/Modal';
 import Button from '../Ui/Button';
 import { Typography } from '../Ui/Typography';
@@ -16,14 +16,20 @@ const DeleteItem = ({ itemId, itemName, itemPrice }) => {
   const [open, setOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const itemSubmitted = useSelector(state => state.item.deletedItem);
+  const uiError = useSelector(state => state.ui.error);
   const dispatch = useDispatch();
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    dispatch(clearErrors());
+    dispatch(resetItemStatus());
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
     setIsDeleting(false);
-    // window.location.reload(); 
-  };
+    dispatch(clearErrors());
+    dispatch(resetItemStatus());
+};
 
   const handleSubmit = () => {
     setIsDeleting(true);
@@ -32,7 +38,20 @@ const DeleteItem = ({ itemId, itemName, itemPrice }) => {
     }
   };
 
-  if (itemSubmitted && open) {
+  // Reset deleting state after successful deletion or error
+  useEffect(() => {
+    if (itemSubmitted === itemId && open) {
+      setIsDeleting(false);
+    }
+  }, [itemSubmitted, open, itemId]);
+
+  useEffect(() => {
+    if (uiError) {
+      setIsDeleting(false);
+    }
+  }, [uiError]);
+
+  if (itemSubmitted === itemId && open) {
     setTimeout(() => {
       handleClose();
     }, 3000);
@@ -54,7 +73,7 @@ const DeleteItem = ({ itemId, itemName, itemPrice }) => {
         title="Confirm Deletion"
         maxWidth="sm"
       >
-        {itemSubmitted ? (
+        {itemSubmitted === itemId ? (
           <div className="py-8 text-center animate-in zoom-in-95 duration-500">
             <div className="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500 border border-rose-100">
               <Check size={32} />
@@ -64,6 +83,12 @@ const DeleteItem = ({ itemId, itemName, itemPrice }) => {
           </div>
         ) : (
           <div className="space-y-6">
+            {uiError && (
+              <div className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-600 animate-in fade-in slide-in-from-top-4 duration-300">
+                <AlertTriangle size={18} className="shrink-0" />
+                <p className="text-xs font-bold uppercase tracking-wide">{uiError}</p>
+              </div>
+            )}
             <div className="flex items-start gap-4 p-4 bg-rose-50 border border-rose-100 rounded-2xl">
               <div className="p-2 bg-white rounded-xl text-rose-500 shadow-sm">
                 <AlertTriangle size={20} />

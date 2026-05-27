@@ -109,10 +109,10 @@ export default function AuthNavbar() {
                     <User size={18} className="text-slate-400" />
                     <span className="font-bold text-sm">My Profile</span>
                   </Link>
-                  <Link to="/account/supplier/settings" className="flex items-center gap-4 px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition-all">
+                  {/* <Link to="/account/supplier/settings" className="flex items-center gap-4 px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-primary transition-all">
                     <Settings size={18} className="text-slate-400" />
                     <span className="font-bold text-sm">Settings</span>
-                  </Link>
+                  </Link> */}
                   <div className="mt-2 pt-2 border-t border-slate-50">
                     <Logout variant="sidebar" />
                   </div>

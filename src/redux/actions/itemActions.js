@@ -4,10 +4,12 @@ import {
 	SET_ERRORS,
 	POST_ITEM,
 	LOADING_UI,
+	STOP_LOADING_UI,
 	GET_ITEM_RELATED_FAILURE,
 	GET_ITEM_RELATED_SUCCESS,
 	GET_ALL_ITEMS_FAILURE,
 	GET_ALL_ITEMS_SUCCESS,
+	RESET_ITEM_STATUS,
 } from '../types';
 import { clearErrors } from './uiActions';
 import axios from 'axios';
@@ -55,18 +57,24 @@ export const updateItem = (itemId, updateData) => dispatch => {
 };
 
 export const deleteItem = itemId => dispatch => {
-	axios
-		.delete(`${REACT_APP_BACKEND}/item/delete/${itemId}`)
-		.then(res => {
-			dispatch({ type: DELETE_ITEM, payload: res.data });
-			toast.success(res.data.message);
-		})
-		.catch(err => {
-			dispatch({
-				type: SET_ERRORS,
-				payload: err.response ? err.response.data.error : null,
-			});
-		});
+    // Start loading UI
+    dispatch({ type: LOADING_UI });
+    axios
+        .delete(`${REACT_APP_BACKEND}/item/delete/${itemId}`)
+        .then(res => {
+            dispatch({ type: DELETE_ITEM, payload: res.data });
+            toast.success(res.data.message);
+            // Stop loading UI
+            dispatch({ type: STOP_LOADING_UI });
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response ? err.response.data.error : null,
+            });
+            // Stop loading UI even on error
+            dispatch({ type: STOP_LOADING_UI });
+        });
 };
 
 export const relatedItems = category => dispatch => {
@@ -110,3 +118,8 @@ export const getMyItems = () => dispatch => {
 			});
 		});
 };
+
+export const resetItemStatus = () => dispatch => {
+	dispatch({ type: RESET_ITEM_STATUS });
+};
+

@@ -11,7 +11,7 @@ import {
   Loader2,
   Save
 } from 'lucide-react';
-import { updateItem } from '../../redux/actions';
+import { updateItem, resetItemStatus, clearErrors } from '../../redux/actions';
 import { Modal } from '../Ui/Modal';
 import Button from '../Ui/Button';
 import Input from '../Ui/Input';
@@ -37,6 +37,7 @@ const EditItem = ({
     const [imageUrl, setImageUrl] = useState(initialImage);
 
     const itemSubmitted = useSelector(state => state.item.updateItemSuccess);
+    const uiError = useSelector(state => state.ui.error);
     const dispatch = useDispatch();
 
     const handleChange = e => {
@@ -44,10 +45,23 @@ const EditItem = ({
         setItem(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setItem({
+            itemName: initialName,
+            category: initialCategory,
+            itemDescription: initialDescription,
+            itemPrice: initialPrice,
+        });
+        setImageUrl(initialImage);
+        dispatch(clearErrors());
+        dispatch(resetItemStatus());
+        setOpen(true);
+    };
     const handleClose = () => {
         setOpen(false);
         setSubmitted(false);
+        dispatch(clearErrors());
+        dispatch(resetItemStatus());
     };
 
     const uploadFile = async (e) => {
@@ -153,6 +167,12 @@ const EditItem = ({
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-8">
+                        {uiError && (
+                            <div className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-600 animate-in fade-in slide-in-from-top-4 duration-300">
+                                <AlertCircle size={18} className="shrink-0" />
+                                <p className="text-xs font-bold uppercase tracking-wide">{uiError}</p>
+                            </div>
+                        )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-6">
                                 <Input

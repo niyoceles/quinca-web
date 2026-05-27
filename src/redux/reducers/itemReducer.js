@@ -7,7 +7,9 @@ import {
 	GET_ITEM_RELATED_SUCCESS,
 	GET_ALL_ITEMS_FAILURE,
 	GET_ALL_ITEMS_SUCCESS,
+	RESET_ITEM_STATUS,
 } from '../types';
+
 
 const initialState = {
 	items: [],
@@ -74,6 +76,13 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				relatedItems: action.payload,
+			};
+		case RESET_ITEM_STATUS:
+			return {
+				...state,
+				addItemSuccess: null,
+				updateItemSuccess: null,
+				deletedItem: null,
 			};
 		default:
 			return state;

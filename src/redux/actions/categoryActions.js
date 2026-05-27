@@ -4,8 +4,10 @@ import {
 	SET_ERRORS,
 	POST_CATEGORY,
 	LOADING_UI,
+	STOP_LOADING_UI,
 	GET_ALL_CATEGORIES_FAILURE,
 	GET_ALL_CATEGORIES_SUCCESS,
+	RESET_CATEGORY_STATUS,
 } from '../types';
 import { clearErrors } from './uiActions';
 import axios from 'axios';
@@ -53,16 +55,19 @@ export const updateCategory = (categoryId, updateData) => dispatch => {
 };
 
 export const deleteCategory = categoryId => dispatch => {
+	dispatch({ type: LOADING_UI });
 	axios
 		.delete(`${REACT_APP_BACKEND}/category/delete/${categoryId}`)
 		.then(res => {
 			dispatch({ type: DELETE_CATEGORY, payload: categoryId });
+			dispatch({ type: STOP_LOADING_UI });
 		})
 		.catch(err => {
 			dispatch({
 				type: SET_ERRORS,
 				payload: err.response ? err.response.data.error : null,
 			});
+			dispatch({ type: STOP_LOADING_UI });
 		});
 };
 
@@ -82,3 +87,8 @@ export const getAllCategories = () => dispatch => {
 			});
 		});
 };
+
+export const resetCategoryStatus = () => dispatch => {
+	dispatch({ type: RESET_CATEGORY_STATUS });
+};
+

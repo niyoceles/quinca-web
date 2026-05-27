@@ -146,7 +146,7 @@ const DashboardPage = () => {
           <p className="text-slate-400 font-medium text-xs">Live metrics from your database</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="rounded-xl font-bold bg-white h-9 text-[11px]">Download CSV</Button>
+          {/* <Button variant="outline" size="sm" className="rounded-xl font-bold bg-white h-9 text-[11px]">Download CSV</Button> */}
           <Button size="sm" className="rounded-xl font-black shadow-premium h-9 text-[11px]" onClick={() => {
             dispatch(getAllOrders());
             dispatch(getMyProfile());

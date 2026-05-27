@@ -7,6 +7,7 @@ import {
 	GET_CAT_RELATED_SUCCESS,
 	GET_ALL_CATEGORIES_FAILURE,
 	GET_ALL_CATEGORIES_SUCCESS,
+	RESET_CATEGORY_STATUS,
 } from '../types';
 
 const initialState = {
@@ -71,6 +72,12 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				relatedCategories: action.payload,
+			};
+		case RESET_CATEGORY_STATUS:
+			return {
+				...state,
+				addCategorySuccess: null,
+				updateCategorySuccess: null,
 			};
 		default:
 			return state;

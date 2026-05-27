@@ -18,6 +18,7 @@ import Bookings from './pages/client/Bookings';
 import MyProforma from './pages/client/MyProforma';
 import SingleProformaPage from './pages/client/SingleProformaPage';
 import MyProfile from './pages/client/MyProfile';
+import SettingsPage from './pages/supplier/SettingsPage';
 // Auth
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
@@ -151,6 +152,14 @@ export const Routes = () => {
 					element={
 						<AuthRoute>
 							<ProfilePage />
+						</AuthRoute>
+					}
+				/>
+				<Route
+					path='/account/supplier/settings'
+					element={
+						<AuthRoute>
+							<SettingsPage />
 						</AuthRoute>
 					}
 				/>
