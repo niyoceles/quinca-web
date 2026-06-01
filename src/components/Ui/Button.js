@@ -2,6 +2,7 @@ import React from 'react';
 
 const Button = ({ 
   children, 
+  as: Component = 'button',
   variant = 'primary', 
   size = 'md', 
   className = '', 
@@ -30,11 +31,12 @@ const Button = ({
   };
 
   const widthStyle = fullWidth ? 'w-full' : '';
+  const isNativeButton = Component === 'button';
 
   return (
-    <button
+    <Component
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${widthStyle} ${className}`}
-      disabled={disabled || loading}
+      {...(isNativeButton ? { disabled: disabled || loading } : {})}
       {...props}
     >
       {loading && (
@@ -45,7 +47,7 @@ const Button = ({
       )}
       {!loading && Icon && <Icon className="mr-2 h-5 w-5" />}
       {children}
-    </button>
+    </Component>
   );
 };
 

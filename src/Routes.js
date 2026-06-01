@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes as RouterRoutes } from 'react-router-dom';
 import LandingPage from './pages/client/landingPage';
+import AllMaterials from './pages/client/AllMaterials';
 import CategoriesPage from './pages/client/Categories';
 import AuthRoute from './utils/AuthRoute';
 import VerifiedAccount from './pages/Auth/VerifiedAccount';
@@ -43,6 +44,7 @@ export const Routes = () => {
 			<ScrollToTop />
 			<RouterRoutes>
 				<Route path='/' element={<LandingPage />} />
+				<Route path='/materials' element={<AllMaterials />} />
 				<Route path='/categories' element={<CategoriesPage />} />
 				<Route path='/login' element={<LoginPage />} />
 				<Route path='/signup' element={<SignupPage />} />

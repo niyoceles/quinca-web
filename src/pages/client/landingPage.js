@@ -173,7 +173,7 @@ export default function LandingPage() {
                 </div>
                 
                 <div className="mt-6 flex justify-start">
-                  <Button variant="outline" className="px-8 py-2 rounded-full font-black text-xs">
+                  <Button as={ReactLink} to="/materials" variant="outline" className="px-8 py-2 rounded-full font-black text-xs">
                     View All Materials
                   </Button>
                 </div>
