@@ -144,12 +144,21 @@ const Login = () => {
                   <p className="text-xs font-medium text-amber-700 leading-relaxed">
                     Your supplier account is pending verification. Please check your email inbox for the verification link we sent when you signed up.
                   </p>
-                  <p className="text-xs font-medium text-amber-600 mt-2">
-                    Didn't receive it? Check your spam folder, or contact{' '}
-                    <a href="mailto:support@hadiwa.com" className="font-black underline hover:text-amber-800 transition-colors">
-                      support@hadiwa.com
-                    </a>
-                  </p>
+                 <p className="mt-2 text-xs font-medium text-amber-600">
+                  Didn't receive it? Check your spam folder, or contact us at{' '}
+                  <a href="mailto:paradisebountyco@gmail.com"
+                    className="font-black underline transition-colors hover:text-amber-800"
+                  >
+                    paradisebountyco@gmail.com
+                  </a>{' '}
+                  or{' '}
+                  <a href="tel:+250788550184"
+                    className="font-black underline transition-colors hover:text-amber-800"
+                  >
+                    +250 788 550 184
+                  </a>
+                  .
+                </p>
                 </div>
               </div>
             </div>
