@@ -17,13 +17,13 @@ import {
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-const { REACT_APP_BACKEND } = process.env;
+const BACKEND_URL = process.env.REACT_APP_BACKEND || 'https://api.hadiwa.com/api';
 
 export const loginUser = loginData => dispatch => {
 	// dispatch({ type: LOADING_UI });
 	dispatch({ type: LOGIN_REQUEST, payload: loginData });
 	axios
-		.post(`${REACT_APP_BACKEND}/user/login`, loginData)
+		.post(`${BACKEND_URL}/user/login`, loginData)
 		.then(res => {
 			const token = res.data.token || (res.data.data && res.data.data.token);
 			if (token) {
@@ -53,7 +53,7 @@ export const signupUser = newUserData => dispatch => {
   const endpoint = newUserData.userType === 'supplier' ? '/user/supplier' : '/user';
   
 	axios
-		.post(`${REACT_APP_BACKEND}${endpoint}`, newUserData)
+		.post(`${BACKEND_URL}${endpoint}`, newUserData)
 		.then(res => {
 			const token = res.data.token || (res.data.data && res.data.data.token);
 			if (token) {
@@ -100,7 +100,7 @@ export const logoutUser = () => dispatch => {
 export const forgotPassword = emailData => dispatch => {
 	dispatch({ type: FORGOT_PASSWORD_REQUEST });
 	axios
-		.post(`${REACT_APP_BACKEND}/user/reset`, emailData)
+		.post(`${BACKEND_URL}/user/reset`, emailData)
 		.then(res => {
 			dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: res.data.message });
 		})
@@ -115,7 +115,7 @@ export const forgotPassword = emailData => dispatch => {
 export const resetPassword = (token, passwordData) => dispatch => {
 	dispatch({ type: RESET_PASSWORD_REQUEST });
 	axios
-		.post(`${REACT_APP_BACKEND}/user/reset/${token}`, passwordData)
+		.post(`${BACKEND_URL}/user/reset/${token}`, passwordData)
 		.then(res => {
 			dispatch({ type: RESET_PASSWORD_SUCCESS, payload: res.data.message });
 		})
