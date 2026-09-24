@@ -195,9 +195,9 @@ const EditProfile = ({ user: initialUser, onCancel }) => {
                             onChange={handleChange}
                         />
                         <Input
-                            label="State/Province"
-                            name="state"
-                            value={user.state}
+                            label="City / District"
+                            name="city"
+                            value={user.city}
                             onChange={handleChange}
                         />
                         <Input

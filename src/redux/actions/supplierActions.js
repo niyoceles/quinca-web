@@ -55,6 +55,20 @@ export const toggleSupplierStatus = (id) => dispatch => {
 		});
 };
 
+// Verify supplier account (Admin)
+export const verifySupplier = (id) => dispatch => {
+	return axios
+		.patch(`${REACT_APP_BACKEND}/user/verify/${id}/admin`, {})
+		.then(res => {
+			toast.success(res.data.message || 'Supplier account verified successfully');
+			dispatch(getAllSuppliers());
+		})
+		.catch(err => {
+			const msg = err.response?.data?.error || err.response?.data?.message || 'Failed to verify supplier';
+			toast.error(msg);
+		});
+};
+
 // Get my profile
 export const getMyProfile = () => dispatch => {
 	return axios

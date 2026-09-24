@@ -59,12 +59,14 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				loginData: action.payload,
+				loginCode: null,
 			};
 		case LOGIN_SUCCESS:
 			return {
 				...state,
 				loginSuccess: action.payload.message,
 				loginFailure: null,
+				loginCode: null,
 				loginData: null,
 				authenticated: true,
 				user: {...state.user, ...jwtDecode(action.payload.token)}
@@ -73,6 +75,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				loginFailure: action.payload,
+				loginCode: action.code || null,
 				loginSuccess: null,
 				loginData: null,
 			};

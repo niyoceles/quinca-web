@@ -5,6 +5,7 @@ import {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAILURE,
+	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
 	FORGOT_PASSWORD_REQUEST,
 	FORGOT_PASSWORD_SUCCESS,
@@ -36,9 +37,11 @@ export const loginUser = loginData => dispatch => {
 			}
 		})
 		.catch(err => {
+			const data = err.response?.data;
 			dispatch({
 				type: LOGIN_FAILURE,
-				payload: err.response ? err.response.data.error : err.message,
+				payload: data?.error || err.message,
+				code: data?.code || null,
 			});
 		});
 };
@@ -53,13 +56,26 @@ export const signupUser = newUserData => dispatch => {
 		.post(`${REACT_APP_BACKEND}${endpoint}`, newUserData)
 		.then(res => {
 			const token = res.data.token || (res.data.data && res.data.data.token);
-			if (token) setAuthorization(token);
-			dispatch({ type: REGISTER_SUCCESS, payload: res.data.message });
+			if (token) {
+				setAuthorization(token);
+				dispatch({ type: SET_AUTHENTICATED });
+			}
+			dispatch({ type: REGISTER_SUCCESS, payload: res.data.message || 'Account successfully created!' });
 		})
 		.catch(err => {
-			const errorMessage = err.response && err.response.data && err.response.data.error 
-        ? err.response.data.error 
-        : 'Registration failed. Please try again.';
+			let errorMessage = 'Registration failed. Please try again.';
+			if (err.response && err.response.data) {
+				const data = err.response.data;
+				if (Array.isArray(data.error)) {
+					errorMessage = data.error.join('. ');
+				} else if (typeof data.error === 'string') {
+					errorMessage = data.error;
+				} else if (data.message) {
+					errorMessage = Array.isArray(data.message) ? data.message.join('. ') : data.message;
+				}
+			} else if (err.message) {
+				errorMessage = err.message;
+			}
 			dispatch({ type: REGISTER_FAILURE, payload: errorMessage });
 		});
 };
