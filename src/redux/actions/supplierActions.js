@@ -69,6 +69,22 @@ export const verifySupplier = (id) => dispatch => {
 		});
 };
 
+// Delete supplier account completely (Admin)
+export const deleteSupplier = (id) => dispatch => {
+	return axios
+		.delete(`${REACT_APP_BACKEND}/supplier/${id}`)
+		.then(res => {
+			toast.success(res.data.message || 'Supplier account deleted completely');
+			dispatch(getAllSuppliers());
+			return res;
+		})
+		.catch(err => {
+			const msg = err.response?.data?.error || err.response?.data?.message || 'Failed to delete supplier';
+			toast.error(msg);
+			throw err;
+		});
+};
+
 // Get my profile
 export const getMyProfile = () => dispatch => {
 	return axios

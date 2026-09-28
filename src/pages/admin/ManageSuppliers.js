@@ -15,8 +15,10 @@ import {
   Search,
   Phone,
   Building2,
+  Trash2,
+  Package,
 } from 'lucide-react';
-import { getAllSuppliers, toggleSupplierStatus, verifySupplier } from '../../redux/actions';
+import { getAllSuppliers, toggleSupplierStatus, verifySupplier, deleteSupplier } from '../../redux/actions';
 
 const StatusBadge = ({ isVerified, status }) => {
   if (!isVerified) {
@@ -43,7 +45,7 @@ const ManageSuppliers = () => {
   const dispatch = useDispatch();
   const { allSuppliers } = useSelector(state => state.supplier);
   const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('all'); // all | pending | active | suspended
+  const [filter, setFilter] = useState('all'); // all | pending | active | suspended | no-materials
   const [confirmAction, setConfirmAction] = useState(null); // { type, supplier }
 
   useEffect(() => {
@@ -64,12 +66,14 @@ const ManageSuppliers = () => {
       filter === 'all' ||
       (filter === 'pending' && !s.isVerified) ||
       (filter === 'active' && s.isVerified && s.status) ||
-      (filter === 'suspended' && s.isVerified && !s.status);
+      (filter === 'suspended' && s.isVerified && !s.status) ||
+      (filter === 'no-materials' && (!s.items || s.items.length === 0));
 
     return matchesSearch && matchesFilter;
   });
 
   const pendingCount = suppliers.filter(s => !s.isVerified).length;
+  const noMaterialsCount = suppliers.filter(s => !s.items || s.items.length === 0).length;
 
   const handleConfirm = () => {
     if (!confirmAction) return;
@@ -78,6 +82,8 @@ const ManageSuppliers = () => {
       dispatch(verifySupplier(supplier.id));
     } else if (type === 'toggle') {
       dispatch(toggleSupplierStatus(supplier.id));
+    } else if (type === 'delete') {
+      dispatch(deleteSupplier(supplier.id));
     }
     setConfirmAction(null);
   };
@@ -93,14 +99,24 @@ const ManageSuppliers = () => {
               Review and manage all registered hardware suppliers
             </p>
           </div>
-          {pendingCount > 0 && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-2xl">
-              <Clock size={14} className="text-amber-600" />
-              <span className="text-xs font-black text-amber-700">
-                {pendingCount} pending verification{pendingCount > 1 ? 's' : ''}
-              </span>
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {pendingCount > 0 && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-2xl">
+                <Clock size={14} className="text-amber-600" />
+                <span className="text-xs font-black text-amber-700">
+                  {pendingCount} pending verification{pendingCount > 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
+            {noMaterialsCount > 0 && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl">
+                <Package size={14} className="text-slate-500" />
+                <span className="text-xs font-black text-slate-600">
+                  {noMaterialsCount} without materials
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Search + Filter Bar */}
@@ -115,8 +131,8 @@ const ManageSuppliers = () => {
               className="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-100 bg-white text-sm font-medium text-secondary placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          <div className="flex gap-2">
-            {['all', 'pending', 'active', 'suspended'].map(f => (
+          <div className="flex flex-wrap gap-2">
+            {['all', 'pending', 'active', 'suspended', 'no-materials'].map(f => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
@@ -126,7 +142,7 @@ const ManageSuppliers = () => {
                     : 'bg-white border border-slate-100 text-slate-400 hover:text-secondary'
                 }`}
               >
-                {f}
+                {f === 'no-materials' ? 'No Materials' : f}
               </button>
             ))}
           </div>
@@ -147,125 +163,177 @@ const ManageSuppliers = () => {
               </p>
             </Card>
           ) : (
-            filtered.map(supplier => (
-              <Card
-                key={supplier.id}
-                className="border-none shadow-premium rounded-[2.5rem] bg-white p-8 group hover:ring-2 hover:ring-primary/10 transition-all"
-              >
-                {/* Card Header */}
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center overflow-hidden border border-slate-100 group-hover:border-primary/20 transition-colors">
-                      {supplier.profile ? (
-                        <img src={supplier.profile} alt={supplier.organization} className="w-full h-full object-cover" />
-                      ) : (
-                        <Truck size={24} className="text-slate-300" />
+            filtered.map(supplier => {
+              const materialCount = Array.isArray(supplier.items) ? supplier.items.length : 0;
+              const hasMaterials = materialCount > 0;
+
+              return (
+                <Card
+                  key={supplier.id}
+                  className="border-none shadow-premium rounded-[2.5rem] bg-white p-8 group hover:ring-2 hover:ring-primary/10 transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Card Header */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center overflow-hidden border border-slate-100 group-hover:border-primary/20 transition-colors">
+                          {supplier.profile ? (
+                            <img src={supplier.profile} alt={supplier.organization} className="w-full h-full object-cover" />
+                          ) : (
+                            <Truck size={24} className="text-slate-300" />
+                          )}
+                        </div>
+                        <div>
+                          <Typography variant="h4" className="text-secondary">
+                            {supplier.organization || supplier.names}
+                          </Typography>
+                          <div className="mt-1">
+                            <StatusBadge isVerified={supplier.isVerified} status={supplier.status} />
+                          </div>
+                        </div>
+                      </div>
+                      {supplier.isVerified && (
+                        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-500" title="Verified Supplier">
+                          <BadgeCheck size={18} />
+                        </div>
                       )}
                     </div>
-                    <div>
-                      <Typography variant="h4" className="text-secondary">
-                        {supplier.organization || supplier.names}
-                      </Typography>
-                      <div className="mt-1">
-                        <StatusBadge isVerified={supplier.isVerified} status={supplier.status} />
+
+                    {/* Details */}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                          <Mail size={14} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Email</p>
+                          <p className="text-xs font-bold text-secondary">{supplier.email}</p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  {supplier.isVerified && (
-                    <div className="p-2 rounded-xl bg-emerald-50 text-emerald-500" title="Verified Supplier">
-                      <BadgeCheck size={18} />
-                    </div>
-                  )}
-                </div>
 
-                {/* Details */}
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                      <Mail size={14} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Email</p>
-                      <p className="text-xs font-bold text-secondary">{supplier.email}</p>
-                    </div>
-                  </div>
-
-                  {supplier.phoneNumber && (
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                        <Phone size={14} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Phone</p>
-                        <p className="text-xs font-bold text-secondary">{supplier.phoneNumber}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                      <MapPin size={14} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Location</p>
-                      <p className="text-xs font-bold text-secondary">{supplier.city || supplier.location || 'Not Specified'}</p>
-                    </div>
-                  </div>
-
-                  {supplier.organization && supplier.names && (
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                        <Building2 size={14} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Contact Person</p>
-                        <p className="text-xs font-bold text-secondary">{supplier.names}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {supplier.description && (
-                  <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 mb-6">
-                    <p className="text-xs font-medium text-slate-500 line-clamp-2 italic leading-relaxed">
-                      {supplier.description}
-                    </p>
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex items-center gap-3">
-                  {/* Verify Button — only show when not yet verified */}
-                  {!supplier.isVerified && (
-                    <button
-                      onClick={() => setConfirmAction({ type: 'verify', supplier })}
-                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-black text-xs uppercase tracking-widest bg-emerald-500 text-white hover:bg-emerald-600 transition-all shadow-sm shadow-emerald-200"
-                    >
-                      <ShieldCheck size={14} />
-                      Verify Account
-                    </button>
-                  )}
-
-                  {/* Suspend / Activate — only after verified */}
-                  {supplier.isVerified && (
-                    <button
-                      onClick={() => setConfirmAction({ type: 'toggle', supplier })}
-                      className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all ${
-                        supplier.status
-                          ? 'bg-rose-50 text-rose-600 hover:bg-rose-100'
-                          : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
-                      }`}
-                    >
-                      {supplier.status ? (
-                        <><ShieldAlert size={14} /> Suspend</>
-                      ) : (
-                        <><UserCheck size={14} /> Activate</>
+                      {supplier.phoneNumber && (
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                            <Phone size={14} />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Phone</p>
+                            <p className="text-xs font-bold text-secondary">{supplier.phoneNumber}</p>
+                          </div>
+                        </div>
                       )}
-                    </button>
-                  )}
-                </div>
-              </Card>
-            ))
+
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                          <MapPin size={14} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Location</p>
+                          <p className="text-xs font-bold text-secondary">{supplier.city || supplier.location || 'Not Specified'}</p>
+                        </div>
+                      </div>
+
+                      {supplier.organization && supplier.names && (
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                            <Building2 size={14} />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Contact Person</p>
+                            <p className="text-xs font-bold text-secondary">{supplier.names}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Materials Count */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                          <Package size={14} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-0.5">Materials Registered</p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-xs font-bold text-secondary">
+                              {materialCount} {materialCount === 1 ? 'material' : 'materials'}
+                            </p>
+                            {!hasMaterials ? (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-50 text-amber-700 border border-amber-200 uppercase tracking-wider">
+                                0 items • Can delete
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase tracking-wider">
+                                Active products
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {supplier.description && (
+                      <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-100 mb-6">
+                        <p className="text-xs font-medium text-slate-500 line-clamp-2 italic leading-relaxed">
+                          {supplier.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-2 pt-2">
+                    {/* Verify Button — only show when not yet verified */}
+                    {!supplier.isVerified && (
+                      <button
+                        onClick={() => setConfirmAction({ type: 'verify', supplier })}
+                        className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-black text-xs uppercase tracking-widest bg-emerald-500 text-white hover:bg-emerald-600 transition-all shadow-sm shadow-emerald-200"
+                      >
+                        <ShieldCheck size={14} />
+                        Verify Account
+                      </button>
+                    )}
+
+                    {/* Suspend / Activate — only after verified */}
+                    {supplier.isVerified && (
+                      <button
+                        onClick={() => setConfirmAction({ type: 'toggle', supplier })}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all ${
+                          supplier.status
+                            ? 'bg-rose-50 text-rose-600 hover:bg-rose-100'
+                            : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+                        }`}
+                      >
+                        {supplier.status ? (
+                          <><ShieldAlert size={14} /> Suspend</>
+                        ) : (
+                          <><UserCheck size={14} /> Activate</>
+                        )}
+                      </button>
+                    )}
+
+                    {/* Delete Account Button — enabled only if no materials added */}
+                    {!hasMaterials ? (
+                      <button
+                        onClick={() => setConfirmAction({ type: 'delete', supplier })}
+                        title="Delete supplier account completely (no materials added)"
+                        className="px-4 py-3 rounded-2xl font-black text-xs uppercase tracking-widest bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-200 hover:border-rose-600 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                      >
+                        <Trash2 size={14} />
+                        <span>Delete</span>
+                      </button>
+                    ) : (
+                      <button
+                        disabled
+                        title={`Cannot delete: supplier has registered ${materialCount} material${materialCount > 1 ? 's' : ''}. Only accounts without materials can be deleted.`}
+                        className="px-4 py-3 rounded-2xl font-black text-xs uppercase tracking-widest bg-slate-100 text-slate-300 border border-slate-200 cursor-not-allowed flex items-center justify-center gap-1.5"
+                      >
+                        <Trash2 size={14} />
+                        <span>Delete</span>
+                      </button>
+                    )}
+                  </div>
+                </Card>
+              );
+            })
           )}
         </div>
       </div>
@@ -277,12 +345,16 @@ const ManageSuppliers = () => {
             <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 ${
               confirmAction.type === 'verify'
                 ? 'bg-emerald-50 text-emerald-600'
+                : confirmAction.type === 'delete'
+                ? 'bg-rose-100 text-rose-600'
                 : confirmAction.supplier.status
                 ? 'bg-rose-50 text-rose-600'
                 : 'bg-emerald-50 text-emerald-600'
             }`}>
               {confirmAction.type === 'verify' ? (
                 <ShieldCheck size={26} />
+              ) : confirmAction.type === 'delete' ? (
+                <Trash2 size={26} />
               ) : confirmAction.supplier.status ? (
                 <ShieldAlert size={26} />
               ) : (
@@ -293,13 +365,17 @@ const ManageSuppliers = () => {
             <Typography variant="h4" className="text-center text-secondary mb-2">
               {confirmAction.type === 'verify'
                 ? 'Verify Supplier Account?'
+                : confirmAction.type === 'delete'
+                ? 'Delete Supplier Completely?'
                 : confirmAction.supplier.status
                 ? 'Suspend Supplier?'
                 : 'Activate Supplier?'}
             </Typography>
-            <p className="text-sm text-slate-400 text-center font-medium mb-6">
+            <p className="text-sm text-slate-500 text-center font-medium mb-6 leading-relaxed">
               {confirmAction.type === 'verify'
                 ? `This will verify and activate the account for "${confirmAction.supplier.organization || confirmAction.supplier.names}" and send them a confirmation email.`
+                : confirmAction.type === 'delete'
+                ? `Are you sure you want to permanently delete "${confirmAction.supplier.organization || confirmAction.supplier.names}"? This supplier has not registered any materials. This action will completely remove their account and cannot be undone.`
                 : confirmAction.supplier.status
                 ? `This will suspend "${confirmAction.supplier.organization || confirmAction.supplier.names}" and prevent them from accessing their account.`
                 : `This will reactivate "${confirmAction.supplier.organization || confirmAction.supplier.names}".`}
@@ -315,12 +391,12 @@ const ManageSuppliers = () => {
               <button
                 onClick={handleConfirm}
                 className={`flex-1 py-3 rounded-2xl font-black text-xs uppercase tracking-widest text-white transition-all ${
-                  confirmAction.type === 'verify' || !confirmAction.supplier.status
+                  confirmAction.type === 'verify' || (!confirmAction.supplier.status && confirmAction.type !== 'delete')
                     ? 'bg-emerald-500 hover:bg-emerald-600'
-                    : 'bg-rose-500 hover:bg-rose-600'
+                    : 'bg-rose-600 hover:bg-rose-700'
                 }`}
               >
-                Confirm
+                {confirmAction.type === 'delete' ? 'Delete Account' : 'Confirm'}
               </button>
             </div>
           </div>
